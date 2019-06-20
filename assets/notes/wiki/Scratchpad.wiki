@@ -1,0 +1,10 @@
+= Scratchpad =
+    
+=== Basic Concepts ===
+    * Companions
+      * 3 companions each with their own abilities, skill tree, areas of expertise and lore
+    * Fillable pokedex style journal 
+      * First encounter with anything (weapon, ability, enemy) gives short description until identified
+      * Companions have specific skills and areas where they can help identify things in their area of expertise
+      * Different levels of knowledge on something grant new traits (ie level 2 of "skeleton" allows alternate use of their bones")
+
