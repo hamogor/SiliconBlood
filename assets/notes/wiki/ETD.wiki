@@ -8,3 +8,4 @@
       * Companions have specific skills and areas where they can help identify things in their area of expertise
       * Different levels of knowledge on something grant new traits (ie level 2 of "skeleton" allows alternate use of their bones")
 
+
