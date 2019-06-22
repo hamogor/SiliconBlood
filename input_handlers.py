@@ -1,4 +1,5 @@
 import tcod as libtcod
+from enum import Enum
 
 
 def handle_keys(key):
@@ -11,6 +12,21 @@ def handle_keys(key):
         return {'move': (-1, 0)}
     if key.vk == libtcod.KEY_RIGHT:
         return {'move': (1, 0)}
+
+    if key.vk == libtcod.KEY_CHAR:
+        if key.c == ord('h'):
+            return {'move': (-1, 0)}
+    if key.vk == libtcod.KEY_CHAR:
+        if key.c == ord('j'):
+            return {'move': (0, 1)}
+    if key.vk == libtcod.KEY_CHAR:
+        if key.c == ord('k'):
+            return {'move': (0, -1)}
+    if key.vk == libtcod.KEY_CHAR:
+        if key.c == ord('l'):
+            return {'move': (1, 0)}
+    if key.vk == left:
+        return {'move': (0, -1)}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: Toggle fullscreen
