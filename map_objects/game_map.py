@@ -18,6 +18,18 @@ class GameMap:
 
         return tiles
 
+    def make_cell(self):
+        chance = 0.45
+        x = 0
+        y = 0
+        for x in range(self.width):
+            for y in range(self.height):
+                if randint(0, 100) < chance:
+                    self.tiles[x][y].blocked = False
+                    self.tiles[x][y].block_sight = False
+        for tile in self.tiles:
+            print(tile)
+
     def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player,
                  entities, max_monsters_per_room):
         rooms = []
@@ -114,6 +126,7 @@ class GameMap:
             return True
 
         return False
+
 
 
 
