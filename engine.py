@@ -9,7 +9,6 @@ from map_objects.game_map import GameMap
 from render_functions import clear_all, render_all
 
 
-@pysnooper.snoop()
 def main():
     screen_width = 80
     screen_height = 50
@@ -30,7 +29,7 @@ def main():
     max_monsters_per_room = 3
 
     colors = {
-        'dark_wall': libtcod.Color(0, 0, 100),
+        'dark_wall': libtcod.Color(85, 85, 85),
         'dark_ground': libtcod.Color(50, 50, 150),
         'light_wall': libtcod.Color(130, 110, 50),
         'light_ground': libtcod.Color(200, 180, 50)
