@@ -1,4 +1,4 @@
-import libtcodpy as libtcod
+import tcod as libtcod
 import pysnooper
 
 from entity import Entity, get_blocking_entities_at_location
