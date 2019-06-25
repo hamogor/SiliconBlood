@@ -1,2 +1,3 @@
-= ETD Index =
-    * [[Scratchpad]] -- Random notes that probably need organising
+= Index =
+    * [[ETD]] -- Escape The Deepwoods 
+    * [[Infopocalypse]] -- Notes and inspiration 

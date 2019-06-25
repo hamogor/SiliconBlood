@@ -1,2 +1,2 @@
-![alt text](assets/title_splash.png)
+![title-splash](assets/art/title_splash.png)
 

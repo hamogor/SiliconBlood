@@ -8,8 +8,11 @@
       * Companions have specific skills and areas where they can help identify things in their area of expertise
       * Different levels of knowledge on something grant new traits (ie level 2 of "skeleton" allows alternate use of their bones")
 
+<<<<<<< HEAD:assets/notes/wiki/Scratchpad.wiki
 === Ai ===
     * Very unique attributes and "personalities", reading about these in the journal will actually better help you fight them
     * Some that stay in packs, some are friendly/hostile towards other types and will work together in different ways.
     * Seeing one of these actions performed gives some knowledge xp
+=======
+>>>>>>> 50ca0ac683b1a94a949163e972e0bb68727d1af3:assets/notes/wiki/ETD.wiki
 
