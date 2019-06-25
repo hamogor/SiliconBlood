@@ -1,6 +1,7 @@
 import tcod as tcod
-from entities.player import Player
+from entity import Entity
 from input_handlers import handle_keys
+from render_functions import clear_all, render_all
 
 def main():
     screen_width = 80
@@ -14,7 +15,9 @@ def main():
 
     console = tcod.console_init_root(screen_width, screen_height, 'Escape The Deepwoods', False)
 
-    player = Player('@', player_x, player_y)
+    player = Entity(player_x, player_y, '@', tcod.brass)
+    npc = Entity(int(screen_width / 2), int(screen_height / 2), '@', tcod.red)
+    entities = [npc, player]
 
     key = tcod.Key()
     mouse = tcod.Mouse()
@@ -22,21 +25,17 @@ def main():
     while not tcod.console_is_window_closed():
         tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS, key, mouse)
 
-        tcod.console_set_default_foreground(console, tcod.brass)
-
-        tcod.console_put_char(console, player.x, player.y, '@', tcod.BKGND_NONE)
-
-        tcod.console_blit(console, 0, 0, screen_width, screen_height, console, 0, 0)
+        render_all(console, entities, screen_width, screen_height)
 
         tcod.console_flush()
 
-        tcod.console_put_char(console, player.x, player.y, ' ', tcod.BKGND_NONE)
+        clear_all(console, entities)
 
         action = handle_keys(key)
 
         player.perform_action(action)
 
-        if player.exit_signal:
+        if action.get('exit'):
             return True
 
 
