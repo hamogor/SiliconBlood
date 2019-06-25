@@ -1,7 +1,16 @@
 import tcod as tcod
 
 
-def render_all(console, entities, screen_width, screen_height):
+def render_all(console, entities, game_map, screen_width, screen_height):
+    for y in range(game_map.height):
+        for x in range(game_map.width):
+            wall = game_map.tiles[x][y].block_sight
+
+            if wall:
+                tcod.console_put_char(console, x, y, '#', tcod.BKGND_SET)
+            else:
+                tcod.console_put_char(console, x, y, '.', tcod.BKGND_SET)
+
     for entity in entities:
         draw_entity(console, entity)
 
