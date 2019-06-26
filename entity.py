@@ -1,12 +1,14 @@
 from map_objects.game_map import GameMap
+import tcod as tcod
 
 
 class Entity:
-    def __init__(self, x, y, char, color):
+    def __init__(self, x, y, char, fcolor, bcolor=tcod.black):
         self.x = x
         self.y = y
         self.char = char
-        self.color = color
+        self.fcolor = fcolor
+        self.bcolor = bcolor
 
     def perform_action(self, action, game_map):
         if action.get('move'):
