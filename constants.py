@@ -25,3 +25,4 @@ COLOR_DEFAULT_BG = COLOR_GREY
 S_PLAYER = pygame.image.load("data/player.png")
 S_WALL = pygame.image.load("data/wall.png")
 S_FLOOR = pygame.image.load("data/floor.png")
+S_WIGWIG = pygame.image.load("data/wigwig.png")

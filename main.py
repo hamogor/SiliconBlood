@@ -1,6 +1,6 @@
 # 3rd party modules
 import pygame
-
+import time
 # game files
 import constants
 
@@ -13,10 +13,14 @@ class StrucTile:
 class ObjActor:
     """Our basic actor object."""
 
-    def __init__(self, x, y, sprite):
+    def __init__(self, x, y, name_object, sprite, creature=None):
         self.x = x
         self.y = y
         self.sprite = sprite
+
+        if creature:
+            self.creature = creature
+            creature.owner = self
 
     def draw(self):
         SURFACE_MAIN.blit(self.sprite, (self.x*constants.CELL_WIDTH,
@@ -26,6 +30,18 @@ class ObjActor:
         if not GAME_MAP[self.x + dx][self.y + dy].block_path:
             self.x += dx
             self.y += dy
+
+class ComCreature:
+    def __init__(self, name_instance, hp=10):
+        self.name_instance = name_instance
+        self.hp = hp
+
+# class ComItem:
+
+
+#class ComContainer:
+
+
 
 
 def map_create():
@@ -47,7 +63,9 @@ def draw_game():
     draw_map(GAME_MAP)
 
     # draw the character
+    ENEMY.draw()
     PLAYER.draw()
+
 
     # update the display
     pygame.display.flip()
@@ -80,6 +98,7 @@ def game_main_loop():
                 game_quit = True
 
             if event.type == pygame.KEYDOWN:
+
                 if event.key == pygame.K_UP:
                     PLAYER.move(0, -1)
                 if event.key == pygame.K_DOWN:
@@ -88,8 +107,10 @@ def game_main_loop():
                     PLAYER.move(-1, 0)
                 if event.key == pygame.K_RIGHT:
                     PLAYER.move(1, 0)
-        # draw the game
+                if event.key == pygame.K_ESCAPE:
+                    game_quit = True
         draw_game()
+        # draw the game
 
     pygame.quit()
     exit()
@@ -98,20 +119,23 @@ def game_main_loop():
 def game_initialize():
     """This function initializes the main window, and pygame"""
 
-    global SURFACE_MAIN, GAME_MAP, PLAYER
+    global SURFACE_MAIN, GAME_MAP, PLAYER, ENEMY
     # initialize pygame
     pygame.init()
 
-    # set sufrace dimensions
+    # set surface dimensions
     SURFACE_MAIN = pygame.display.set_mode((constants.GAME_WIDTH, constants.GAME_HEIGHT))
     # Ideally the surface should be resizable -- we are going to skip this for now
 
     GAME_MAP = map_create()  # Create the game map. Fills the 2D array with values.
 
-    PLAYER = ObjActor(int(constants.MAP_WIDTH / 2), int(constants.MAP_HEIGHT / 2), constants.S_PLAYER)
+    creature_com = ComCreature("Player")
+    PLAYER = ObjActor(0, 0, "player", constants.S_PLAYER, creature=creature_com)
+
+    creature_com2 = ComCreature("Wig Wig")
+    ENEMY = ObjActor(15, 15, "Wig Wig", constants.S_WIGWIG, creature=creature_com2)
 
 
 if __name__ == '__main__':
     game_initialize()
-    print(GAME_MAP)
     game_main_loop()
