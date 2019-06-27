@@ -23,8 +23,7 @@ class ObjActor:
                                         self.y*constants.CELL_HEIGHT))
 
     def move(self, dx, dy):
-        print("called")
-        if GAME_MAP[self.x + dx][self.y + dy].block_path:
+        if not GAME_MAP[self.x + dx][self.y + dy].block_path:
             self.x += dx
             self.y += dy
 
@@ -90,7 +89,7 @@ def game_main_loop():
                 if event.key == pygame.K_RIGHT:
                     PLAYER.move(1, 0)
         # draw the game
-            draw_game()
+        draw_game()
 
     pygame.quit()
     exit()
@@ -114,4 +113,5 @@ def game_initialize():
 
 if __name__ == '__main__':
     game_initialize()
+    print(GAME_MAP)
     game_main_loop()
