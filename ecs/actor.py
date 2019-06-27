@@ -20,7 +20,5 @@ class ObjActor:
 
     def move(self, directions):
         dx, dy = directions
-
-        if not GameMap.is_blocked(self.x + dx, self.y + dy):
-            self.x += dx
-            self.y += dy
+        self.x += dx
+        self.y += dy

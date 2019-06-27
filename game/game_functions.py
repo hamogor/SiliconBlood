@@ -7,33 +7,47 @@ from ecs.actor import ObjActor
 from ecs.creature import ComCreature
 from ecs.ai import ComAi
 from map.game_map import GameMap
+import pysnooper
 
-
+#@pysnooper.snoop()
 def game_main_loop():
     game_quit = False
 
-    while not game_quit:
+    while True:
+        action = game_handle_keys()
+        if action:
+            action[0](action[1])
         game_handle_keys()
         draw_game(SURFACE_MAIN, GAME_MAP, GAME_OBJECTS)
-    #while not game_quit:
 
-    #    # handle player input
-    #    player_action = game_handle_keys()
 
-    #    if player_action == "QUIT":
-    #        game_quit = True
+#@pysnooper.snoop()
+def game_handle_keys():
+    # get player input
+    events_list = pygame.event.get()
 
-    #    if player_action != "no-action":
-    #        for obj in GAME_OBJECTS:
-    #            if obj.ai:
-    #                obj.ai.take_turn()
+    # process input
+    for event in events_list:
+        if event.type == pygame.QUIT:
+            return game_quit
 
-    #    # draw the game
-    #    draw_game(SURFACE_MAIN, GAME_MAP, GAME_OBJECTS)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                return PLAYER.move, (0, -1)
 
-    ## quit the game
-    #pygame.quit()
-    #exit()
+            if event.key == pygame.K_DOWN:
+                return PLAYER.move, (0, 1)
+
+            if event.key == pygame.K_LEFT:
+                return PLAYER.move, (-1, 0)
+
+            if event.key == pygame.K_RIGHT:
+                return PLAYER.move, (1, 0)
+
+
+def game_quit():
+    pygame.quit()
+    exit()
 
 
 def game_initialize():
@@ -52,35 +66,6 @@ def game_initialize():
 
     creature_com2 = ComCreature("WigWig")
     ai_com = ComAi()
-    ENEMY = ObjActor(15, 15, "WigWig", constants.S_WIGWIG, ai=ai_com)
+    ENEMY = ObjActor(15, 15, "WigWig", constants.S_WIGWIG, creature=creature_com2, ai=ai_com)
 
     GAME_OBJECTS = [PLAYER, ENEMY]
-
-
-def game_handle_keys():
-    # get player input
-    events_list = pygame.event.get()
-
-    # process input
-    for event in events_list:
-        if event.type == pygame.QUIT:
-            return "QUIT"
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                PLAYER.move((0, -1))
-                return "player-moved"
-
-            if event.key == pygame.K_DOWN:
-                PLAYER.move((0, 1))
-                return "player-moved"
-
-            if event.key == pygame.K_LEFT:
-                PLAYER.move((-1, 0))
-                return "player-moved"
-
-            if event.key == pygame.K_RIGHT:
-                PLAYER.move((1, 0))
-                return "player-moved"
-
-    return "no-action"
