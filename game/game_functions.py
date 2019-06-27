@@ -7,6 +7,7 @@ from ecs.actor import ObjActor
 from ecs.creature import ComCreature
 from ecs.ai import ComAi
 from map.game_map import GameMap
+from functools import partial
 import pysnooper
 
 #@pysnooper.snoop()
@@ -16,7 +17,8 @@ def game_main_loop():
     while True:
         action = game_handle_keys()
         if action:
-            action[0](action[1])
+            print(type(action.args))
+            action()
         game_handle_keys()
         draw_game(SURFACE_MAIN, GAME_MAP, GAME_OBJECTS)
 
@@ -33,16 +35,16 @@ def game_handle_keys():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                return PLAYER.move, (0, -1)
+                return partial(PLAYER.move, 0, -1, GAME_MAP)
 
             if event.key == pygame.K_DOWN:
-                return PLAYER.move, (0, 1)
+                return partial(PLAYER.move, 0, 1, GAME_MAP)
 
             if event.key == pygame.K_LEFT:
-                return PLAYER.move, (-1, 0)
+                return partial(PLAYER.move, -1, 0, GAME_MAP)
 
             if event.key == pygame.K_RIGHT:
-                return PLAYER.move, (1, 0)
+                return partial(PLAYER.move, 1, 0, GAME_MAP)
 
 
 def game_quit():
