@@ -1,9 +1,16 @@
 # 3rd party modules
 import pygame
-import time
+from random import randint
 # game files
 import constants
 
+
+#      _______.___________..______       __    __    ______ .___________.
+#     /       |           ||   _  \     |  |  |  |  /      ||           |
+#    |   (----`---|  |----`|  |_)  |    |  |  |  | |  ,----'`---|  |----`
+#     \   \       |  |     |      /     |  |  |  | |  |         |  |
+# .----)   |      |  |     |  |\  \----.|  `--'  | |  `----.    |  |
+# |_______/       |__|     | _| `._____| \______/   \______|    |__|
 
 class StrucTile:
     def __init__(self, block_path):
@@ -11,37 +18,37 @@ class StrucTile:
 
 
 class ObjActor:
-    """Our basic actor object."""
-
-    def __init__(self, x, y, name_object, sprite, creature=None):
-        self.x = x
-        self.y = y
+    def __init__(self, x, y, name_object, sprite, creature=None, ai=None):
+        self.x = x  # map address
+        self.y = y  # map address
         self.sprite = sprite
 
+        self.creature = creature
         if creature:
-            self.creature = creature
             creature.owner = self
 
+        self.ai = ai
+        if ai:
+            ai.owner = self
+
     def draw(self):
-        SURFACE_MAIN.blit(self.sprite, (self.x*constants.CELL_WIDTH,
-                                        self.y*constants.CELL_HEIGHT))
+        SURFACE_MAIN.blit(self.sprite, (self.x * constants.CELL_WIDTH, self.y * constants.CELL_HEIGHT))
 
     def move(self, dx, dy):
         if not GAME_MAP[self.x + dx][self.y + dy].block_path:
             self.x += dx
             self.y += dy
 
+
 class ComCreature:
     def __init__(self, name_instance, hp=10):
         self.name_instance = name_instance
         self.hp = hp
 
-# class ComItem:
 
-
-#class ComContainer:
-
-
+class ComAi:
+    def take_turn(self):
+        self.owner.move(randint(-1, 1), randint(-1, 1))
 
 
 def map_create():
@@ -54,86 +61,100 @@ def map_create():
 
 
 def draw_game():
-    global SURFACE_MAIN
 
-    # clear the surface
     SURFACE_MAIN.fill(constants.COLOR_DEFAULT_BG)
 
-    # draw the map
     draw_map(GAME_MAP)
 
-    # draw the character
-    ENEMY.draw()
-    PLAYER.draw()
+    for obj in GAME_OBJECTS:
+        obj.draw()
 
-
-    # update the display
     pygame.display.flip()
 
 
 def draw_map(map_to_draw):
-
     for x in range(0, constants.MAP_WIDTH):
         for y in range(0, constants.MAP_HEIGHT):
-            if map_to_draw[x][y].block_path: # if True there is a wall here
+            if map_to_draw[x][y].block_path:
                 # draw wall
-                SURFACE_MAIN.blit(constants.S_WALL, (x*constants.CELL_WIDTH, y*constants.CELL_HEIGHT))
+                SURFACE_MAIN.blit(constants.S_WALL, (x * constants.CELL_WIDTH, y * constants.CELL_HEIGHT))
             else:
-                # draw floor
-                SURFACE_MAIN.blit(constants.S_FLOOR, (x*constants.CELL_WIDTH, y*constants.CELL_HEIGHT))
+                SURFACE_MAIN.blit(constants.S_FLOOR, (x * constants.CELL_WIDTH, y * constants.CELL_HEIGHT))
 
 
 def game_main_loop():
-    """In this function we loop the main game."""
     game_quit = False
 
     while not game_quit:
 
-        # get player input
-        events_list = pygame.event.get()
+        # handle player input
+        player_action = game_handle_keys()
 
-        # process input
-        for event in events_list:  # loop through all events that have happened
-            if event.type == pygame.QUIT:  # QUIT attribute - someone closed window
-                game_quit = True
+        if player_action == "QUIT":
+            game_quit = True
 
-            if event.type == pygame.KEYDOWN:
+        if player_action != "no-action":
+            for obj in GAME_OBJECTS:
+                if obj.ai:
+                    obj.ai.take_turn()
 
-                if event.key == pygame.K_UP:
-                    PLAYER.move(0, -1)
-                if event.key == pygame.K_DOWN:
-                    PLAYER.move(0, 1)
-                if event.key == pygame.K_LEFT:
-                    PLAYER.move(-1, 0)
-                if event.key == pygame.K_RIGHT:
-                    PLAYER.move(1, 0)
-                if event.key == pygame.K_ESCAPE:
-                    game_quit = True
-        draw_game()
         # draw the game
+        draw_game()
 
+    # quit the game
     pygame.quit()
     exit()
 
 
 def game_initialize():
-    """This function initializes the main window, and pygame"""
+    '''This function initializes the main window, and pygame'''
 
-    global SURFACE_MAIN, GAME_MAP, PLAYER, ENEMY
+    global SURFACE_MAIN, GAME_MAP, PLAYER, ENEMY, GAME_OBJECTS
+
     # initialize pygame
     pygame.init()
 
-    # set surface dimensions
     SURFACE_MAIN = pygame.display.set_mode((constants.GAME_WIDTH, constants.GAME_HEIGHT))
-    # Ideally the surface should be resizable -- we are going to skip this for now
 
-    GAME_MAP = map_create()  # Create the game map. Fills the 2D array with values.
+    GAME_MAP = map_create()
 
-    creature_com = ComCreature("Player")
-    PLAYER = ObjActor(0, 0, "player", constants.S_PLAYER, creature=creature_com)
+    creature_com1 = ComCreature("greg")
+    PLAYER = ObjActor(0, 0, "python", constants.S_PLAYER, creature=creature_com1)
 
-    creature_com2 = ComCreature("Wig Wig")
-    ENEMY = ObjActor(15, 15, "Wig Wig", constants.S_WIGWIG, creature=creature_com2)
+    creature_com2 = ComCreature("WigWig")
+    ai_com = ComAi()
+    ENEMY = ObjActor(15, 15, "WigWig", constants.S_WIGWIG, ai=ai_com)
+
+    GAME_OBJECTS = [PLAYER, ENEMY]
+
+
+def game_handle_keys():
+    # get player input
+    events_list = pygame.event.get()
+
+    # process input
+    for event in events_list:
+        if event.type == pygame.QUIT:
+            return "QUIT"
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                PLAYER.move(0, -1)
+                return "player-moved"
+
+            if event.key == pygame.K_DOWN:
+                PLAYER.move(0, 1)
+                return "player-moved"
+
+            if event.key == pygame.K_LEFT:
+                PLAYER.move(-1, 0)
+                return "player-moved"
+
+            if event.key == pygame.K_RIGHT:
+                PLAYER.move(1, 0)
+                return "player-moved"
+
+    return "no-action"
 
 
 if __name__ == '__main__':
