@@ -7,6 +7,7 @@ from ecs.actor import ObjActor
 from ecs.creature import ComCreature
 from ecs.ai import ComAi
 from map.game_map import GameMap
+from ecs.ai import death_monster
 from functools import partial
 
 
@@ -71,7 +72,7 @@ def game_initialize():
     creature_com1 = ComCreature("Oref")
     PLAYER = ObjActor(1, 1, "Player", constants.S_PLAYER, creature=creature_com1)
 
-    creature_com2 = ComCreature("WigWig")
+    creature_com2 = ComCreature("WigWig", death_function=death_monster)
     ai_com = ComAi()
     ENEMY = ObjActor(15, 15, "WigWig", constants.S_WIGWIG, creature=creature_com2, ai=ai_com)
 

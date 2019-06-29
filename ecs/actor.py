@@ -37,6 +37,7 @@ class ObjActor:
 
         if target:
             print(self.creature.name_instance + " attacks " + target.creature.name_instance)
+            target.creature.take_damage(5)
 
         if not tile_is_wall and target is None:
             self.x += dx
