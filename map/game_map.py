@@ -1,4 +1,5 @@
 from structs.tile import StrucTile
+import constants
 
 
 class GameMap:
@@ -18,5 +19,15 @@ class GameMap:
 
         tiles[10][10].block_path = True
         tiles[10][15].block_path = True
+
+        for x in range(constants.MAP_WIDTH):
+            tiles[x][0].block_path = True
+            tiles[x][constants.MAP_HEIGHT-1].block_path = True
+
+        for y in range(constants.MAP_HEIGHT):
+            tiles[0][y].block_path = True
+            tiles[constants.MAP_WIDTH - 1][y].block_path = True
+
+
 
         return tiles

@@ -35,23 +35,25 @@ def game_handle_keys():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                return partial(PLAYER.move, 0, -1, GAME_MAP)
+                return partial(PLAYER.move, 0, -1, GAME_MAP, GAME_OBJECTS)
 
             if event.key == pygame.K_DOWN:
-                return partial(PLAYER.move, 0, 1, GAME_MAP)
+                return partial(PLAYER.move, 0, 1, GAME_MAP, GAME_OBJECTS)
 
             if event.key == pygame.K_LEFT:
-                return partial(PLAYER.move, -1, 0, GAME_MAP)
+                return partial(PLAYER.move, -1, 0, GAME_MAP, GAME_OBJECTS)
 
             if event.key == pygame.K_RIGHT:
-                return partial(PLAYER.move, 1, 0, GAME_MAP)
+                return partial(PLAYER.move, 1, 0, GAME_MAP, GAME_OBJECTS)
+
+            if event.key == pygame.K_ESCAPE:
+                return partial(game_quit)
 
 
 def game_take_turn():
     for obj in GAME_OBJECTS:
         if obj.ai:
-            obj.ai.take_turn(GAME_MAP)
-
+            obj.ai.take_turn(GAME_MAP, GAME_OBJECTS)
 
 
 def game_initialize():
@@ -61,12 +63,13 @@ def game_initialize():
     # initialize pygame
     pygame.init()
 
-    SURFACE_MAIN = pygame.display.set_mode((constants.GAME_WIDTH, constants.GAME_HEIGHT))
+    SURFACE_MAIN = pygame.display.set_mode((constants.MAP_WIDTH * constants.CELL_WIDTH,
+                                            constants.MAP_HEIGHT * constants.CELL_HEIGHT))
 
     GAME_MAP = GameMap(constants.MAP_HEIGHT, constants.MAP_WIDTH)
 
-    creature_com1 = ComCreature("greg")
-    PLAYER = ObjActor(0, 0, "python", constants.S_PLAYER, creature=creature_com1)
+    creature_com1 = ComCreature("Oref")
+    PLAYER = ObjActor(1, 1, "Player", constants.S_PLAYER, creature=creature_com1)
 
     creature_com2 = ComCreature("WigWig")
     ai_com = ComAi()
