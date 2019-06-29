@@ -8,22 +8,22 @@ from ecs.creature import ComCreature
 from ecs.ai import ComAi
 from map.game_map import GameMap
 from functools import partial
-import pysnooper
 
-#@pysnooper.snoop()
+
 def game_main_loop():
-    game_quit = False
 
     while True:
         action = game_handle_keys()
+
         if action:
-            print(type(action.args))
             action()
+            game_take_turn()
+
         game_handle_keys()
+
         draw_game(SURFACE_MAIN, GAME_MAP, GAME_OBJECTS)
 
 
-#@pysnooper.snoop()
 def game_handle_keys():
     # get player input
     events_list = pygame.event.get()
@@ -47,9 +47,11 @@ def game_handle_keys():
                 return partial(PLAYER.move, 1, 0, GAME_MAP)
 
 
-def game_quit():
-    pygame.quit()
-    exit()
+def game_take_turn():
+    for obj in GAME_OBJECTS:
+        if obj.ai:
+            obj.ai.take_turn(GAME_MAP)
+
 
 
 def game_initialize():
@@ -70,4 +72,9 @@ def game_initialize():
     ai_com = ComAi()
     ENEMY = ObjActor(15, 15, "WigWig", constants.S_WIGWIG, creature=creature_com2, ai=ai_com)
 
-    GAME_OBJECTS = [PLAYER, ENEMY]
+    GAME_OBJECTS = [ENEMY, PLAYER]
+
+
+def game_quit():
+    pygame.quit()
+    exit()
