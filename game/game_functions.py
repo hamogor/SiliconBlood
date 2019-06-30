@@ -35,17 +35,30 @@ def game_handle_keys():
             return game_quit
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                return partial(PLAYER.move, 0, -1, GAME_MAP, GAME_OBJECTS)
 
-            if event.key == pygame.K_DOWN:
+            if event.key in constants.MOVE_N:
+                return partial(PLAYER.move, 0,  -1, GAME_MAP, GAME_OBJECTS)
+
+            if event.key in constants.MOVE_S:
                 return partial(PLAYER.move, 0, 1, GAME_MAP, GAME_OBJECTS)
 
-            if event.key == pygame.K_LEFT:
+            if event.key in constants.MOVE_E:
+                return partial(PLAYER.move, 1, 0, GAME_MAP, GAME_OBJECTS)
+
+            if event.key in constants.MOVE_W:
                 return partial(PLAYER.move, -1, 0, GAME_MAP, GAME_OBJECTS)
 
-            if event.key == pygame.K_RIGHT:
-                return partial(PLAYER.move, 1, 0, GAME_MAP, GAME_OBJECTS)
+            if event.key in constants.MOVE_NW:
+                return partial(PLAYER.move, -1, -1, GAME_MAP, GAME_OBJECTS)
+
+            if event.key in constants.MOVE_NE:
+                return partial(PLAYER.move, 1, -1, GAME_MAP, GAME_OBJECTS)
+
+            if event.key in constants.MOVE_SW:
+                return partial(PLAYER.move, -1, 1, GAME_MAP, GAME_OBJECTS)
+
+            if event.key in constants.MOVE_SE:
+                return partial(PLAYER.move, 1, 1, GAME_MAP, GAME_OBJECTS)
 
             if event.key == pygame.K_ESCAPE:
                 return partial(game_quit)
@@ -63,7 +76,7 @@ def game_initialize():
 
     # initialize pygame
     pygame.init()
-
+    pygame.display.set_caption("Silicon Blood")
     SURFACE_MAIN = pygame.display.set_mode((constants.MAP_WIDTH * constants.CELL_WIDTH,
                                             constants.MAP_HEIGHT * constants.CELL_HEIGHT))
 

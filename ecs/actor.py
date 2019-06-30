@@ -1,7 +1,4 @@
 import constants
-from map.game_map import GameMap
-import pysnooper
-
 
 
 class ObjActor:
