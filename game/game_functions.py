@@ -67,7 +67,7 @@ def game_handle_keys():
 def game_take_turn():
     for obj in GAME_OBJECTS:
         if obj.ai:
-            obj.ai.take_turn(GAME_MAP, GAME_OBJECTS)
+            obj.ai.move_towards(obj.x, obj.y, GAME_MAP, GAME_OBJECTS)
 
 
 def game_initialize():
