@@ -1,6 +1,6 @@
 from structs.tile import StrucTile
 import constants
-from random import randint
+from random import uniform
 import pysnooper
 
 
@@ -29,12 +29,11 @@ class GameMap:
 
         return tiles
 
-    def cellular_automaton(self, tiles=None):
-        chance_to_live = float(0.45)
-        tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
+    def cellular_automaton(self, tiles):
+        chance_to_live = float(0.68)
         for x in range(constants.MAP_WIDTH):
             for y in range(constants.MAP_HEIGHT):
-                if randint(0, 1) > chance_to_live:
+                if uniform(0, 1) > chance_to_live:
                     tiles[x][y].block_path = True
         return tiles
 
@@ -52,21 +51,21 @@ class GameMap:
                     count += 1
                 elif tiles[neighbour_x][neighbour_y].block_path:
                     count += 1
-
         return count
 
     def do_ca_step(self, old_map):
         new_map = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
-        for x in range(len(old_map)):
-            for y in range(len(old_map[0])):
+        for x in range(self.width):
+            for y in range(self.height):
                 nbs = self.count_alive_neighbours(old_map, x, y)
+                # Living cells
                 if old_map[x][y].block_path:
                     if nbs < 2:
                         new_map[x][y].block_path = False
                     else:
                         new_map[x][y].block_path = True
                 else:
-                    if nbs == 3:
+                    if nbs > 2:
                         new_map[x][y].block_path = True
                     else:
                         new_map[x][y].block_path = False
@@ -78,5 +77,5 @@ class GameMap:
         cell_map = self.cellular_automaton(tiles)
         for i in range(4):
             cell_map = self.do_ca_step(cell_map)
-
+        print(cell_map[0][0].block_path)
         return cell_map
