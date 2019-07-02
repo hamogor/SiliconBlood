@@ -30,7 +30,7 @@ class GameMap:
         return tiles
 
     def cellular_automaton(self, tiles):
-        chance_to_live = float(0.66)
+        chance_to_live = float(0.65)
         for x in range(constants.MAP_WIDTH):
             for y in range(constants.MAP_HEIGHT):
                 if uniform(0, 1) > chance_to_live:
