@@ -30,7 +30,7 @@ class GameMap:
         return tiles
 
     def cellular_automaton(self, tiles):
-        chance_to_live = float(0.68)
+        chance_to_live = float(0.66)
         for x in range(constants.MAP_WIDTH):
             for y in range(constants.MAP_HEIGHT):
                 if uniform(0, 1) > chance_to_live:
@@ -39,15 +39,13 @@ class GameMap:
 
     def count_alive_neighbours(self, tiles, x, y):
         count = 0
-        i = -1
-        j = -1
-        for i in range(i, 2, 1):
-            for j in range(j, 2, 1):
+        for i in range(-1, 2, 1):
+            for j in range(-1, 2, 1):
                 neighbour_x = x+i
                 neighbour_y = y+j
                 if i == 0 and j == 0:
                     pass
-                elif neighbour_x < 0 or neighbour_y < 0 or neighbour_x >= len(tiles) or neighbour_y >= len(tiles[0]):
+                elif neighbour_x < 0 or neighbour_y < 0 or neighbour_x >= self.width or neighbour_y >= self.height:
                     count += 1
                 elif tiles[neighbour_x][neighbour_y].block_path:
                     count += 1
@@ -60,22 +58,15 @@ class GameMap:
                 nbs = self.count_alive_neighbours(old_map, x, y)
                 # Living cells
                 if old_map[x][y].block_path:
-                    if nbs < 2:
-                        new_map[x][y].block_path = False
-                    else:
-                        new_map[x][y].block_path = True
+                    new_map[x][y].block_path = nbs >= 3
                 else:
-                    if nbs > 2:
-                        new_map[x][y].block_path = True
-                    else:
-                        new_map[x][y].block_path = False
+                    new_map[x][y].block_path = nbs > 4
 
         return new_map
 
     def generate_map(self):
         tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
         cell_map = self.cellular_automaton(tiles)
-        for i in range(4):
+        for i in range(8):
             cell_map = self.do_ca_step(cell_map)
-        print(cell_map[0][0].block_path)
         return cell_map
