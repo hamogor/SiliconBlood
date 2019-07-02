@@ -1,10 +1,12 @@
 import constants
+import math
 
 
 class ObjActor:
     def __init__(self, x, y, name_object, sprite, creature=None, ai=None):
         self.x = x  # map address
         self.y = y  # map address
+        self.name_object = name_object
         self.sprite = sprite
 
         self.creature = creature
@@ -39,3 +41,12 @@ class ObjActor:
         if not tile_is_wall and target is None:
             self.x += dx
             self.y += dy
+
+
+
+
+def get_blocking_entities_at_location(entities, destination_x, destination_y):
+    for entity in entities:
+        if entity.blocks and entity.x == destination_x and entity.y == destination_y:
+            return entity
+    return None

@@ -18,6 +18,7 @@ class GameMap:
         tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
 
         tiles[10][10].block_path = True
+        tiles
         tiles[10][15].block_path = True
 
         for x in range(constants.MAP_WIDTH):
