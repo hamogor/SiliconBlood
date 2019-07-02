@@ -76,7 +76,7 @@ class GameMap:
     def generate_map(self):
         tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
         cell_map = self.cellular_automaton(tiles)
-        for i in range(20):
+        for i in range(4):
             cell_map = self.do_ca_step(cell_map)
 
         return cell_map
