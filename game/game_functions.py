@@ -83,7 +83,8 @@ def game_initialize():
     GAME_MAP = GameMap(constants.MAP_HEIGHT, constants.MAP_WIDTH)
 
     creature_com1 = ComCreature("Oref")
-    PLAYER = ObjActor(1, 1, "Player", constants.S_PLAYER, creature=creature_com1)
+    PLAYER = ObjActor(5, 5, "Player", constants.S_PLAYER, creature=creature_com1)
+
 
     creature_com2 = ComCreature("WigWig", death_function=death_monster)
     ai_com = ComAi()
