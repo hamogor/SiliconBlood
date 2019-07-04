@@ -1,1 +1,1 @@
-![title-splash](data/PlayerSceneUpscale.png)
+![title-splash](data/PlayerScene.png)
