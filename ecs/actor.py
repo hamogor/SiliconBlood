@@ -1,5 +1,7 @@
 import constants
 import math
+import pygame
+import constants as const
 
 
 class ObjActor:
@@ -8,6 +10,8 @@ class ObjActor:
         self.y = y  # map address
         self.name_object = name_object
         self.sprite = sprite
+        self.vx = 0
+        self.vy = 0
 
         self.creature = creature
         if creature:
@@ -17,11 +21,24 @@ class ObjActor:
         if ai:
             ai.owner = self
 
+    def get_keys(self):
+        self.vx, self.xy = 0, 0
+        keys = pygame.key.get_pressed()
+        if constants.MOVE_W in keys:
+            self.vx = - const.PLAYER_SPEED
+        elif constants.MOVE_E in keys:
+            self.vx = const.PLAYER_SPEED
+        elif constants.MOVE_N in keys:
+            self.vy = - const.PLAYER_SPEED
+        elif constants.MOVE_S in keys:
+            self.vy = const.PLAYER_SPEED
+
     def draw(self, surface_main):
         surface_main.blit(self.sprite, (self.x * constants.CELL_WIDTH, self.y * constants.CELL_HEIGHT))
 
     def move(self, dx, dy, game_map, game_objects):
         tile_is_wall = game_map.tiles[self.x + dx][self.y + dy].block_path
+        self.get_keys()
 
         target = None
 
@@ -41,8 +58,6 @@ class ObjActor:
         if not tile_is_wall and target is None:
             self.x += dx
             self.y += dy
-
-
 
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):

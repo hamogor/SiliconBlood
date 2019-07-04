@@ -36,3 +36,6 @@ MOVE_NW = (pygame.K_KP7, pygame.K_y)
 MOVE_NE = (pygame.K_KP9, pygame.K_u)
 MOVE_SW = (pygame.K_KP1, pygame.K_b)
 MOVE_SE = (pygame.K_KP3, pygame.K_n)
+
+# Player
+PLAYER_SPEED = 100
