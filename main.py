@@ -1,51 +1,63 @@
 from constants import *
+from ecs.display_component import DisplayComponent
+from display.display import DisplaySystem
+from ecs.entity import Entity
+from ecs.container import Container
 import sys
 import pygame
+
+
+class Player(Entity):
+    def __init__(self):
+        super().__init__(DisplayComponent(S_PLAYER, 0, 0))
 
 
 class Main:
     def __init__(self):
         pygame.init()
-        self.surface = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
-        player_x, player_y = (0, 0)
+
+        self.player = Player()
+        self.container = Container()
+
+        self.container.add_system(DisplaySystem())
+
+        self.container.add_entity(self.player)
+
+
+    def game_loop(self):
+        self.container.update()
 
         while True:
-            events_list = pygame.event.get()#
-            self.surface.fill(BGCOLOR)
-            self.draw_map()
-
+            events_list = pygame.event.get()
             for event in events_list:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key in MOVE_N:
-                        player_y -= 1
-                    elif event.key in MOVE_S:
-                        player_y += 1
-                    elif event.key in MOVE_W:
-                        player_x -= 1
-                    elif event.key in MOVE_E:
-                        player_x += 1
-                    elif event.key in MOVE_NW:
-                        player_x -= 1
-                        player_y -= 1
-                    elif event.key in MOVE_NE:
-                        player_x += 1
-                        player_y -= 1
-                    elif event.key in MOVE_SW:
-                        player_x -= 1
-                        player_y += 1
-                    elif event.key in MOVE_SE:
-                        player_x += 1
-                        player_y += 1
+                #if event.type == pygame.KEYDOWN:
+                #    if event.key in MOVE_N:
+                #        player_y -= 1
+                #    elif event.key in MOVE_S:
+                #        player_y += 1
+                #    elif event.key in MOVE_W:
+                #        player_x -= 1
+                #    elif event.key in MOVE_E:
+                #        player_x += 1
+                #    elif event.key in MOVE_NW:
+                #        player_x -= 1
+                #        player_y -= 1
+                #    elif event.key in MOVE_NE:
+                #        player_x += 1
+                #        player_y -= 1
+                #    elif event.key in MOVE_SW:
+                #        player_x -= 1
+                #        player_y += 1
+                #    elif event.key in MOVE_SE:
+                #        player_x += 1
+                #        player_y += 1
 
-                    print(player_x)
-                    print(player_y)
-
-            self.surface.blit(S_PLAYER, (player_x * TILESIZE, player_y * TILESIZE))
+            self.surface.blit(S_PLAYER, (0 * TILESIZE, 0 * TILESIZE))
 
             pygame.display.flip()
 
