@@ -29,6 +29,18 @@ class Main:
                         player_x -= 1
                     elif event.key in MOVE_E:
                         player_x += 1
+                    elif event.key in MOVE_NW:
+                        player_x -= 1
+                        player_y -= 1
+                    elif event.key in MOVE_NE:
+                        player_x += 1
+                        player_y -= 1
+                    elif event.key in MOVE_SW:
+                        player_x -= 1
+                        player_y += 1
+                    elif event.key in MOVE_SE:
+                        player_x += 1
+                        player_y += 1
 
                     print(player_x)
                     print(player_y)
