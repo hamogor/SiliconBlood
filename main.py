@@ -1,40 +1,33 @@
 from constants import *
 from display.display import DisplaySystem
 from display.display_component import DisplayComponent
-from input.keyboard import KeyboardInputSystem, KeyboardInputComponent
+from input.keyboard import KeyboardInputSystem
+from input.keyboard_input_component import KeyboardInputComponent
 from ecs.entity import Entity
 from ecs.container import Container
-import sys
 import pygame
 
 
 class Player(Entity):
     def __init__(self):
         super().__init__(DisplayComponent(S_PLAYER, 0, 0))
-        KeyboardInputComponent(self._process_input)
-        
-    def _process_input(self, key_pressed):
-        dc = self.get(DisplayComponent)
-        if key_pressed in MOVE_N:
-            dc.y -= 1
-        elif key_pressed in MOVE_S:
-            dc.y += 1
-        elif key_pressed in MOVE_W:
-            dc.x -= 1
-        elif key_pressed in MOVE_E:
-            dc.x += 1
-        elif key_pressed in MOVE_NW:
-            dc.x -= 1
-            dc.y -= 1
-        elif key_pressed in MOVE_NE:
-            dc.x += 1
-            dc.y -= 1
-        elif key_pressed in MOVE_SW:
-            dc.x -= 1
-            dc.y += 1
-        elif key_pressed in MOVE_SE:
-            dc.x += 1
-            dc.y += 1
+        self.set(KeyboardInputComponent(self._process_input))
+
+    def _process_input(self, keys_pressed):
+        for key_pressed in keys_pressed:
+            if key_pressed == MOVE_N:
+                print(MOVE_N)
+                print(keys_pressed)
+                self.get(DisplayComponent).y -= 1
+            elif key_pressed == MOVE_S:
+                self.get(DisplayComponent).y += 1
+            elif key_pressed == MOVE_W:
+                self.get(DisplayComponent).x -= 1
+            elif key_pressed == MOVE_E:
+                self.get(DisplayComponent).x += 1
+            else:
+                print("You pressed {}".format(key_pressed))
+
 
 
 class Main:
@@ -64,8 +57,8 @@ class Main:
             if time_passed:
                 self.container.update()
             else:
-                self.keyboard_input_system.update(self.container._entities)
                 self.display_system.update(self.container._entities)
+                self.keyboard_input_system.update(self.container._entities)
 
     def check_for_game_over(self):
         keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]

@@ -33,3 +33,24 @@ S_PLAYER = pygame.image.load("assets/player.png")
 S_WALL = pygame.image.load("assets/wall.png")
 S_FLOOR = pygame.image.load("assets/floor.png")
 S_ENEMY = pygame.image.load("assets/Enemy.png")
+
+#if key_pressed in MOVE_N:
+#    dc.y -= 1
+#elif key_pressed in MOVE_S:
+#    dc.y += 1
+#elif key_pressed in MOVE_W:
+#    dc.x -= 1
+#elif key_pressed in MOVE_E:
+#    dc.x += 1
+#elif key_pressed in MOVE_NW:
+#    dc.x -= 1
+#    dc.y -= 1
+#elif key_pressed in MOVE_NE:
+#    dc.x += 1
+#    dc.y -= 1
+#elif key_pressed in MOVE_SW:
+#    dc.x -= 1
+#    dc.y += 1
+#elif key_pressed in MOVE_SE:
+#    dc.x += 1
+#    dc.y += 1
