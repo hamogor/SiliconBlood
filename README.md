@@ -1,1 +1,1 @@
-![title-splash](data/PlayerScene.png)
+![title-splash](assets/PlayerScene.png)
