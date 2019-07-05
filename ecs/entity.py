@@ -1,6 +1,9 @@
 class Entity:
+    all_entities = []
+
     def __init__(self, *components):
         self.components = {}
+
         Entity.all_entities.append(self)
 
         for component in components:

@@ -1,6 +1,7 @@
 from constants import *
-from ecs.display_component import DisplayComponent
 from display.display import DisplaySystem
+from display.display_component import DisplayComponent
+from input.keyboard import KeyboardInputSystem, KeyboardInputComponent
 from ecs.entity import Entity
 from ecs.container import Container
 import sys
@@ -10,6 +11,30 @@ import pygame
 class Player(Entity):
     def __init__(self):
         super().__init__(DisplayComponent(S_PLAYER, 0, 0))
+        KeyboardInputComponent(self._process_input)
+        
+    def _process_input(self, key_pressed):
+        dc = self.get(DisplayComponent)
+        if key_pressed in MOVE_N:
+            dc.y -= 1
+        elif key_pressed in MOVE_S:
+            dc.y += 1
+        elif key_pressed in MOVE_W:
+            dc.x -= 1
+        elif key_pressed in MOVE_E:
+            dc.x += 1
+        elif key_pressed in MOVE_NW:
+            dc.x -= 1
+            dc.y -= 1
+        elif key_pressed in MOVE_NE:
+            dc.x += 1
+            dc.y -= 1
+        elif key_pressed in MOVE_SW:
+            dc.x -= 1
+            dc.y += 1
+        elif key_pressed in MOVE_SE:
+            dc.x += 1
+            dc.y += 1
 
 
 class Main:
@@ -18,55 +43,43 @@ class Main:
         pygame.display.set_caption(TITLE)
 
         self.player = Player()
+        self.game_over = False
+
+        self.display_system = DisplaySystem()
+        self.keyboard_input_system = KeyboardInputSystem()
+
         self.container = Container()
 
-        self.container.add_system(DisplaySystem())
-
+        self.container.add_system(self.keyboard_input_system)
+        self.container.add_system(self.display_system)
         self.container.add_entity(self.player)
-
 
     def game_loop(self):
         self.container.update()
 
-        while True:
-            events_list = pygame.event.get()
-            for event in events_list:
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+        while not self.game_over:
+            self.check_for_game_over()
+            time_passed = self.check_if_time_passed()
 
-                #if event.type == pygame.KEYDOWN:
-                #    if event.key in MOVE_N:
-                #        player_y -= 1
-                #    elif event.key in MOVE_S:
-                #        player_y += 1
-                #    elif event.key in MOVE_W:
-                #        player_x -= 1
-                #    elif event.key in MOVE_E:
-                #        player_x += 1
-                #    elif event.key in MOVE_NW:
-                #        player_x -= 1
-                #        player_y -= 1
-                #    elif event.key in MOVE_NE:
-                #        player_x += 1
-                #        player_y -= 1
-                #    elif event.key in MOVE_SW:
-                #        player_x -= 1
-                #        player_y += 1
-                #    elif event.key in MOVE_SE:
-                #        player_x += 1
-                #        player_y += 1
+            if time_passed:
+                self.container.update()
+            else:
+                self.keyboard_input_system.update(self.container._entities)
+                self.display_system.update(self.container._entities)
 
-            self.surface.blit(S_PLAYER, (0 * TILESIZE, 0 * TILESIZE))
+    def check_for_game_over(self):
+        keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]
+        if keys_pressed:
+            self.game_over = True
 
-            pygame.display.flip()
+    def check_if_time_passed(self):
+        all_keys_pressed = self.keyboard_input_system.get_all_keys_pressed()
 
-    def draw_map(self):
-        for x in range(0, WIDTH, TILESIZE):
-            pygame.draw.line(self.surface, LIGHTGREY, (x, 0), (x, HEIGHT))
-        for y in range(0, HEIGHT, TILESIZE):
-            pygame.draw.line(self.surface, LIGHTGREY, (0, y), (WIDTH, y))
+        keys_pressed = [e for e in all_keys_pressed
+                        if e == MOVE_N or e == MOVE_S or e == MOVE_W or e == MOVE_E]
+
+        return keys_pressed
 
 
 if __name__ == '__main__':
-    Main().run()
+    Main().game_loop()
