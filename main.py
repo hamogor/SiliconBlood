@@ -6,6 +6,7 @@ from input.keyboard_input_component import KeyboardInputComponent
 from ecs.entity import Entity
 from ecs.container import Container
 import pygame
+import pysnooper
 
 
 class Player(Entity):
@@ -15,16 +16,14 @@ class Player(Entity):
 
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:
-            if key_pressed == MOVE_N:
-                print(MOVE_N)
-                print(keys_pressed)
-                self.get(DisplayComponent).y -= 1
-            elif key_pressed == MOVE_S:
-                self.get(DisplayComponent).y += 1
-            elif key_pressed == MOVE_W:
-                self.get(DisplayComponent).x -= 1
-            elif key_pressed == MOVE_E:
-                self.get(DisplayComponent).x += 1
+            if key_pressed in MOVE_N:
+                self.get(DisplayComponent).y -= 1 * TILESIZE
+            elif key_pressed in MOVE_S:
+                self.get(DisplayComponent).y += 1 * TILESIZE
+            elif key_pressed in MOVE_W:
+                self.get(DisplayComponent).x -= 1 * TILESIZE
+            elif key_pressed in MOVE_E:
+                self.get(DisplayComponent).x += 1 * TILESIZE
             else:
                 print("You pressed {}".format(key_pressed))
 
@@ -70,7 +69,6 @@ class Main:
 
         keys_pressed = [e for e in all_keys_pressed
                         if e == MOVE_N or e == MOVE_S or e == MOVE_W or e == MOVE_E]
-
         return keys_pressed
 
 
