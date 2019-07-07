@@ -14,10 +14,6 @@ class DisplaySystem:
     def update(self, entities):
         self._root_display.fill(BGCOLOR)
         self.map.draw_map(self._root_display, self.map.tiles)
-        #for x in range(0, WIDTH, TILESIZE):
-        #    pygame.draw.line(self._root_display, LIGHTGREY, (x, 0), (x, HEIGHT))
-        #for y in range(0, HEIGHT, TILESIZE):
-        #    pygame.draw.line(self._root_display, LIGHTGREY, (0, y), (WIDTH, y))
 
         for e in entities:
             dc = e.get(DisplayComponent)

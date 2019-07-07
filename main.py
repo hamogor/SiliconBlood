@@ -5,7 +5,6 @@ from ecs.input.keyboard import KeyboardInputSystem
 from ecs.input.keyboard_input_component import KeyboardInputComponent
 from ecs.entity import Entity
 from ecs.container import Container
-from structs.game_map import GameMap
 import pygame
 
 
@@ -44,7 +43,7 @@ class Main:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
-
+        pygame.display.set_icon(S_PLAYER)
         self.player = Player()
         self.game_over = False
 

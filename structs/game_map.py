@@ -16,25 +16,11 @@ class GameMap:
 
         return False
 
-    def initialize_tiles(self):
-        tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
-
-        for x in range(GRIDHEIGHT):
-            tiles[x][0].block_path = True
-            tiles[x][GRIDWIDTH-1].block_path = True
-
-        for y in range(GRIDWIDTH):
-            tiles[0][y].block_path = True
-            tiles[GRIDWIDTH - 1][y].block_path = True
-
-        return tiles
-
     def cellular_automaton(self, tiles):
-        chance_to_live = float(0.65)
+        chance_to_live = float(0.68)
         for x in range(GRIDHEIGHT):
             for y in range(GRIDWIDTH):
                 if uniform(0, 1) > chance_to_live:
-                    print(x, y, tiles[x][y].block_path)
                     tiles[x][y].block_path = True
         return tiles
 
