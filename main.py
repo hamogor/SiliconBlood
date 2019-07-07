@@ -1,12 +1,12 @@
 from constants import *
-from display.display import DisplaySystem
-from display.display_component import DisplayComponent
-from input.keyboard import KeyboardInputSystem
-from input.keyboard_input_component import KeyboardInputComponent
+from ecs.display.display import DisplaySystem
+from ecs.display.display_component import DisplayComponent
+from ecs.input.keyboard import KeyboardInputSystem
+from ecs.input.keyboard_input_component import KeyboardInputComponent
 from ecs.entity import Entity
 from ecs.container import Container
+from structs.game_map import GameMap
 import pygame
-import pysnooper
 
 
 class Player(Entity):
@@ -24,9 +24,20 @@ class Player(Entity):
                 self.get(DisplayComponent).x -= 1 * TILESIZE
             elif key_pressed in MOVE_E:
                 self.get(DisplayComponent).x += 1 * TILESIZE
+            elif key_pressed in MOVE_NW:
+                self.get(DisplayComponent).x -= 1 * TILESIZE
+                self.get(DisplayComponent).y -= 1 * TILESIZE
+            elif key_pressed in MOVE_NE:
+                self.get(DisplayComponent).x += 1 * TILESIZE
+                self.get(DisplayComponent).y -= 1 * TILESIZE
+            elif key_pressed in MOVE_SW:
+                self.get(DisplayComponent).x -= 1 * TILESIZE
+                self.get(DisplayComponent).y += 1 * TILESIZE
+            elif key_pressed in MOVE_SE:
+                self.get(DisplayComponent).x += 1 * TILESIZE
+                self.get(DisplayComponent).y += 1 * TILESIZE
             else:
                 print("You pressed {}".format(key_pressed))
-
 
 
 class Main:
@@ -39,9 +50,7 @@ class Main:
 
         self.display_system = DisplaySystem()
         self.keyboard_input_system = KeyboardInputSystem()
-
         self.container = Container()
-
         self.container.add_system(self.keyboard_input_system)
         self.container.add_system(self.display_system)
         self.container.add_entity(self.player)

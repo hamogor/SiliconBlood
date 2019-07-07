@@ -1,5 +1,5 @@
 import pygame
-from input.keyboard_input_component import KeyboardInputComponent
+from ecs.input.keyboard_input_component import KeyboardInputComponent
 
 
 class KeyboardInputSystem:

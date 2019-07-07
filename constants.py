@@ -16,8 +16,10 @@ TITLE = "Silicon Blood"
 BGCOLOR = DARKGREY
 
 TILESIZE = 32
-GRIDWIDTH = WIDTH / TILESIZE
-GRIDHEIGHT = HEIGHT / TILESIZE
+#GRIDWIDTH = int(WIDTH / TILESIZE)
+#GRIDHEIGHT = int(HEIGHT / TILESIZE)
+GRIDWIDTH = 36
+GRIDHEIGHT = 36
 
 MOVE_N = (pygame.K_KP8, pygame.K_k, pygame.K_UP)
 MOVE_S = (pygame.K_KP2, pygame.K_j, pygame.K_DOWN)
@@ -42,15 +44,3 @@ S_ENEMY = pygame.image.load("assets/Enemy.png")
 #    dc.x -= 1
 #elif key_pressed in MOVE_E:
 #    dc.x += 1
-#elif key_pressed in MOVE_NW:
-#    dc.x -= 1
-#    dc.y -= 1
-#elif key_pressed in MOVE_NE:
-#    dc.x += 1
-#    dc.y -= 1
-#elif key_pressed in MOVE_SW:
-#    dc.x -= 1
-#    dc.y += 1
-#elif key_pressed in MOVE_SE:
-#    dc.x += 1
-#    dc.y += 1
