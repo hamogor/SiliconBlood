@@ -5,6 +5,7 @@ from ecs.input.keyboard import KeyboardInputSystem
 from ecs.input.keyboard_input_component import KeyboardInputComponent
 from ecs.entity import Entity
 from ecs.container import Container
+from ecs.collision.collision_component import CollissionComponent
 import pygame
 
 
@@ -12,6 +13,7 @@ class Player(Entity):
     def __init__(self):
         super().__init__(DisplayComponent(S_PLAYER, 0, 0))
         self.set(KeyboardInputComponent(self._process_input))
+        self.set()
 
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:
