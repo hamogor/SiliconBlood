@@ -1,3 +1,4 @@
+import pysnooper
 class Container:
     instance = None
 

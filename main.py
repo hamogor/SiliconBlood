@@ -2,6 +2,7 @@ from constants import *
 from ecs.display.display import DisplaySystem
 from ecs.human.player import Player
 from ecs.input.keyboard import KeyboardInputSystem
+from ecs.collision.collision import CollisionSystem
 from ecs.container import Container
 import pygame
 
@@ -16,9 +17,12 @@ class Main:
         self.player = Player()
         self.display_system = DisplaySystem()
         self.keyboard_input_system = KeyboardInputSystem()
+        self.collision_system = CollisionSystem(self.display_system.map.tiles)
+
         self.container = Container()
         self.container.add_system(self.keyboard_input_system)
         self.container.add_system(self.display_system)
+        self.container.add_system(self.collision_system)
         self.container.add_entity(self.player)
 
     def game_loop(self):
@@ -33,6 +37,7 @@ class Main:
             else:
                 self.display_system.update(self.container._entities)
                 self.keyboard_input_system.update(self.container._entities)
+                self.collision_system.update(self.container._entities)
 
     def check_for_game_over(self):
         keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]
