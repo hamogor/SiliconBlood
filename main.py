@@ -1,44 +1,9 @@
 from constants import *
 from ecs.display.display import DisplaySystem
-from ecs.display.display_component import DisplayComponent
+from ecs.human.player import Player
 from ecs.input.keyboard import KeyboardInputSystem
-from ecs.input.keyboard_input_component import KeyboardInputComponent
-from ecs.entity import Entity
 from ecs.container import Container
-from ecs.collision.collision_component import CollissionComponent
 import pygame
-
-
-class Player(Entity):
-    def __init__(self):
-        super().__init__(DisplayComponent(S_PLAYER, 0, 0))
-        self.set(KeyboardInputComponent(self._process_input))
-        self.set()
-
-    def _process_input(self, keys_pressed):
-        for key_pressed in keys_pressed:
-            if key_pressed in MOVE_N:
-                self.get(DisplayComponent).y -= 1 * TILESIZE
-            elif key_pressed in MOVE_S:
-                self.get(DisplayComponent).y += 1 * TILESIZE
-            elif key_pressed in MOVE_W:
-                self.get(DisplayComponent).x -= 1 * TILESIZE
-            elif key_pressed in MOVE_E:
-                self.get(DisplayComponent).x += 1 * TILESIZE
-            elif key_pressed in MOVE_NW:
-                self.get(DisplayComponent).x -= 1 * TILESIZE
-                self.get(DisplayComponent).y -= 1 * TILESIZE
-            elif key_pressed in MOVE_NE:
-                self.get(DisplayComponent).x += 1 * TILESIZE
-                self.get(DisplayComponent).y -= 1 * TILESIZE
-            elif key_pressed in MOVE_SW:
-                self.get(DisplayComponent).x -= 1 * TILESIZE
-                self.get(DisplayComponent).y += 1 * TILESIZE
-            elif key_pressed in MOVE_SE:
-                self.get(DisplayComponent).x += 1 * TILESIZE
-                self.get(DisplayComponent).y += 1 * TILESIZE
-            else:
-                print("You pressed {}".format(key_pressed))
 
 
 class Main:
@@ -46,9 +11,9 @@ class Main:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
-        self.player = Player()
         self.game_over = False
 
+        self.player = Player()
         self.display_system = DisplaySystem()
         self.keyboard_input_system = KeyboardInputSystem()
         self.container = Container()

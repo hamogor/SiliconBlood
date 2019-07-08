@@ -16,7 +16,8 @@ class GameMap:
 
         return False
 
-    def cellular_automaton(self, tiles):
+    @staticmethod
+    def cellular_automaton(tiles):
         chance_to_live = float(0.68)
         for x in range(GRIDHEIGHT):
             for y in range(GRIDWIDTH):
