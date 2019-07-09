@@ -1,6 +1,7 @@
 from ecs.display.display_component import DisplayComponent
 from ecs.input.keyboard_input_component import KeyboardInputComponent
 from ecs.movement.movement_component import MovementComponent
+from ecs.fov.fov_component import FovComponent
 from ecs.entity import Entity
 from constants import *
 import pysnooper
@@ -8,8 +9,9 @@ import pysnooper
 
 class Player(Entity):
     def __init__(self):
-        super().__init__(DisplayComponent(S_PLAYER, 0, 0),
-                         MovementComponent(0, 0))
+        super().__init__(DisplayComponent(S_PLAYER, 5 * TILESIZE, 5 * TILESIZE),
+                         MovementComponent(0, 0),
+                         FovComponent())
         self.set(KeyboardInputComponent(self._process_input))
 
     def _process_input(self, keys_pressed):

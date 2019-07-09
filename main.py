@@ -3,6 +3,7 @@ from ecs.display.display import DisplaySystem
 from ecs.human.player import Player
 from ecs.input.keyboard import KeyboardInputSystem
 from ecs.movement.movement import MovementSystem
+from ecs.fov.fov import FovSystem
 from ecs.container import Container
 import pygame
 
@@ -16,6 +17,7 @@ class Main:
 
         self.player = Player()
         self.display_system = DisplaySystem()
+        self.fov_system = FovSystem(self.display_system.map.tiles)
         self.keyboard_input_system = KeyboardInputSystem()
         self.movement_system = MovementSystem(self.display_system.map.tiles)
 
@@ -23,6 +25,7 @@ class Main:
         self.container.add_system(self.keyboard_input_system)
         self.container.add_system(self.display_system)
         self.container.add_system(self.movement_system)
+        self.container.add_system(self.fov_system)
         self.container.add_entity(self.player)
 
     def game_loop(self):

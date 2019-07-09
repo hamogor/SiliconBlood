@@ -1,6 +1,7 @@
 from structs.tile import StrucTile
 from constants import *
 from random import uniform
+import tcod
 import pysnooper
 
 
@@ -23,6 +24,7 @@ class GameMap:
             for y in range(GRIDWIDTH):
                 if uniform(0, 1) > chance_to_live:
                     tiles[x][y].block_path = True
+                    tiles[x][y].block_sight = True
         return tiles
 
     def count_alive_neighbours(self, tiles, x, y):
@@ -59,12 +61,3 @@ class GameMap:
         for i in range(4):
             cell_map = self.do_ca_step(cell_map)
         return cell_map
-
-    def draw_map(self, surface_main, map_to_draw):
-        for x in range(0, GRIDWIDTH):
-            for y in range(0, GRIDHEIGHT):
-                if map_to_draw[x][y].block_path:
-                    # draw wall
-                    surface_main.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
-                else:
-                    surface_main.blit(S_FLOOR, (x * TILESIZE, y * TILESIZE))

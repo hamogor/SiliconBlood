@@ -1,7 +1,9 @@
 from ecs.display.display_component import DisplayComponent
+from ecs.fov.fov_component import FovComponent
 from constants import *
 from structs.game_map import GameMap
 import pygame
+import tcod
 import pysnooper
 
 
@@ -12,8 +14,13 @@ class DisplaySystem:
         self.map = GameMap()
 
     def update(self, entities):
-        self._root_display.fill(BGCOLOR)
-        self.map.draw_map(self._root_display, self.map.tiles)
+        for x in range(0, GRIDWIDTH):
+            for y in range(0, GRIDHEIGHT):
+                    if self.map.tiles[x][y].block_path:
+                        # draw wall
+                        self._root_display.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
+                    else:
+                        self._root_display.blit(S_FLOOR, (x * TILESIZE, y * TILESIZE))
 
         for e in entities:
             dc = e.get(DisplayComponent)
