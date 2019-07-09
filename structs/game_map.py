@@ -55,11 +55,11 @@ class GameMap:
     def generate_map(self):
         tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
         tiles[10][10].block_path = True
-        #cell_map = self.cellular_automaton(tiles)
-        #for i in range(4):
-        #    cell_map = self.do_ca_step(cell_map)
-        #return cell_map
-        return tiles
+        cell_map = self.cellular_automaton(tiles)
+        for i in range(4):
+            cell_map = self.do_ca_step(cell_map)
+        return cell_map
+
     def draw_map(self, surface_main, map_to_draw):
         for x in range(0, GRIDWIDTH):
             for y in range(0, GRIDHEIGHT):

@@ -1,10 +1,10 @@
-from ecs.collision.collision_component import CollisionComponent
+from ecs.movement.movement_component import MovementComponent
 from ecs.display.display_component import DisplayComponent
 from constants import *
 import pysnooper
 
 
-class CollisionSystem:
+class MovementSystem:
     def __init__(self, game_map):
         self.game_map = game_map
 
@@ -13,8 +13,8 @@ class CollisionSystem:
             cur_x = e.get(DisplayComponent).x
             cur_y = e.get(DisplayComponent).y
 
-            d_x = e.get(CollisionComponent).x
-            d_y = e.get(CollisionComponent).y
+            d_x = e.get(MovementComponent).x
+            d_y = e.get(MovementComponent).y
 
             if not self.game_map[d_x][d_y].block_path:
                 e.get(DisplayComponent).x = d_x * TILESIZE
@@ -22,5 +22,5 @@ class CollisionSystem:
             else:
                 e.get(DisplayComponent).x = cur_x
                 e.get(DisplayComponent).y = cur_y
-                e.get(CollisionComponent).x = int(cur_x / TILESIZE)
-                e.get(CollisionComponent).y = int(cur_y / TILESIZE)
+                e.get(MovementComponent).x = int(cur_x / TILESIZE)
+                e.get(MovementComponent).y = int(cur_y / TILESIZE)
