@@ -19,8 +19,10 @@ class DisplaySystem:
             if e.get(FovComponent).fov_recalculate:
                 for x in range(0, GRIDWIDTH):
                     for y in range(0, GRIDHEIGHT):
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
-                        if not visible:
+                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map,
+                                                     e.get(DisplayComponent).x,
+                                                     e.get(DisplayComponent).y)
+                        if visible:
                             if self.map.tiles[x][y].block_path:
                                 self._root_display.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
                             else:

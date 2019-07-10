@@ -2,6 +2,7 @@ from constants import *
 from ecs.fov.fov_component import FovComponent
 from ecs.display.display_component import DisplayComponent
 import tcod
+import pysnooper
 
 
 class FovSystem:
@@ -26,6 +27,5 @@ class FovSystem:
                     FOV_LIGHT_WALLS,
                     FOV_ALGORITHM)
                 e.get(FovComponent).fov_map = self.fov_map
-                print(self.fov_map.fov)
 
 

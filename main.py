@@ -41,6 +41,7 @@ class Main:
                 self.display_system.update(self.container._entities)
                 self.keyboard_input_system.update(self.container._entities)
                 self.movement_system.update(self.container._entities)
+                self.fov_system.update(self.container._entities)
 
     def check_for_game_over(self):
         keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]
