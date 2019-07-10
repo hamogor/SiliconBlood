@@ -23,9 +23,9 @@ class Main:
 
         self.container = Container()
         self.container.add_system(self.keyboard_input_system)
-        self.container.add_system(self.display_system)
         self.container.add_system(self.movement_system)
         self.container.add_system(self.fov_system)
+        self.container.add_system(self.display_system)
         self.container.add_entity(self.player)
 
     def game_loop(self):

@@ -18,12 +18,14 @@ class FovSystem:
         for e in entities:
             if e.get(FovComponent).fov_recalculate:
                 e.get(FovComponent).fov_recalculate = False
-                print("compute")
-                tcod.map_compute_fov(self.fov_map,
-                                     e.get(DisplayComponent).x,
-                                     e.get(DisplayComponent).y,
-                                     FOV_RADIUS,
-                                     FOV_LIGHT_WALLS,
-                                     FOV_ALGORITHM)
+                tcod.map_compute_fov(
+                    self.fov_map,
+                    e.get(DisplayComponent).x,
+                    e.get(DisplayComponent).y,
+                    FOV_RADIUS,
+                    FOV_LIGHT_WALLS,
+                    FOV_ALGORITHM)
+                e.get(FovComponent).fov_map = self.fov_map
+                print(self.fov_map.fov)
 
 
