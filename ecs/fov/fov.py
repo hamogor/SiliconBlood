@@ -15,14 +15,15 @@ class FovSystem:
                                         not game_map[x][y].block_sight,
                                         not game_map[x][y].block_path)
 
+    # TODO - Fix fov being initialised via DisplayComponent resolution
     def update(self, entities):
         for e in entities:
             if e.get(FovComponent).fov_recalculate:
                 e.get(FovComponent).fov_recalculate = False
                 tcod.map_compute_fov(
                     self.fov_map,
-                    e.get(DisplayComponent).x,
-                    e.get(DisplayComponent).y,
+                    int(e.get(DisplayComponent).x / TILESIZE),
+                    int(e.get(DisplayComponent).y / TILESIZE),
                     FOV_RADIUS,
                     FOV_LIGHT_WALLS,
                     FOV_ALGORITHM)
