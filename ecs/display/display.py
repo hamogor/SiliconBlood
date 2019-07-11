@@ -22,7 +22,7 @@ class DisplaySystem:
                         visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map,
                                                      int(e.get(DisplayComponent).x / TILESIZE),
                                                      int(e.get(DisplayComponent).y / TILESIZE))
-                        if not visible:
+                        if visible:
                             if self.map.tiles[x][y].block_path:
                                 self._root_display.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
                             else:

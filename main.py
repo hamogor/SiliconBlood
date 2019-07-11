@@ -38,8 +38,8 @@ class Main:
             if time_passed:
                 self.container.update()
             else:
-                self.fov_system.update(self.container._entities)
                 self.display_system.update(self.container._entities)
+                self.fov_system.update(self.container._entities)
                 self.keyboard_input_system.update(self.container._entities)
                 self.movement_system.update(self.container._entities)
 
