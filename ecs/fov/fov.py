@@ -12,7 +12,7 @@ class FovSystem:
         for y in range(GRIDHEIGHT):
             for x in range(GRIDWIDTH):
                 tcod.map_set_properties(self.fov_map, x, y,
-                                        not game_map[x][y].block_sight,
+                                        not game_map[x][y].block_path,
                                         not game_map[x][y].block_path)
 
     # TODO - Fix fov being initialised via DisplayComponent resolution
@@ -26,6 +26,6 @@ class FovSystem:
                     int(e.get(DisplayComponent).y / TILESIZE),
                     FOV_RADIUS,
                     FOV_LIGHT_WALLS,
-                    FOV_ALGORITHM)
+                    tcod.FOV_BASIC)
                 e.get(FovComponent).fov_map = self.fov_map
 
