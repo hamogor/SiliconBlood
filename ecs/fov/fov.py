@@ -29,4 +29,3 @@ class FovSystem:
                     FOV_ALGORITHM)
                 e.get(FovComponent).fov_map = self.fov_map
 
-

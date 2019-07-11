@@ -10,8 +10,8 @@ import pysnooper
 class DisplaySystem:
 
     def __init__(self):
+        self._root_display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.map = GameMap()
-        self._root_display = pygame.display.set_mode((self.map.width, self.map.height))
 
     def update(self, entities):
         for e in entities:
