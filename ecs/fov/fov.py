@@ -26,6 +26,6 @@ class FovSystem:
                     int(e.get(DisplayComponent).y / TILESIZE),
                     FOV_RADIUS,
                     FOV_LIGHT_WALLS,
-                    tcod.FOV_BASIC)
+                    tcod.FOV_PERMISSIVE_0)
                 e.get(FovComponent).fov_map = self.fov_map
 
