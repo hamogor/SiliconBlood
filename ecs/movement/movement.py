@@ -12,18 +12,18 @@ class MovementSystem:
     # TODO - Stop moving diagonally if tile above and to the right is block_path
     def update(self, entities):
         for e in entities:
-            cur_x = e.get(DisplayComponent).x
-            cur_y = e.get(DisplayComponent).y
+            cur_x = int(e.get(DisplayComponent).x / TILESIZE)
+            cur_y = int(e.get(DisplayComponent).y / TILESIZE)
 
-            d_x = e.get(MovementComponent).x
-            d_y = e.get(MovementComponent).y
+            d_x = int(e.get(MovementComponent).x * TILESIZE)
+            d_y = int(e.get(MovementComponent).y * TILESIZE)
 
             if not self.game_map[d_x][d_y].block_path:
                 e.get(FovComponent).fov_recalculate = True
-                e.get(DisplayComponent).x = d_x * TILESIZE
-                e.get(DisplayComponent).y = d_y * TILESIZE
+                e.get(DisplayComponent).x = d_x
+                e.get(DisplayComponent).y = d_y
             else:
                 e.get(DisplayComponent).x = cur_x
                 e.get(DisplayComponent).y = cur_y
-                e.get(MovementComponent).x = int(cur_x / TILESIZE)
-                e.get(MovementComponent).y = int(cur_y / TILESIZE)
+                e.get(MovementComponent).x = cur_x 
+                e.get(MovementComponent).y = cur_y

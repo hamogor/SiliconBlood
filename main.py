@@ -1,6 +1,6 @@
 from constants import *
-from ecs.display.display import DisplaySystem
 from ecs.human.player import Player
+from ecs.display.display import DisplaySystem
 from ecs.input.keyboard import KeyboardInputSystem
 from ecs.movement.movement import MovementSystem
 from ecs.fov.fov import FovSystem
@@ -17,8 +17,8 @@ class Main:
 
         self.player = Player()
         self.display_system = DisplaySystem()
-        self.fov_system = FovSystem(self.display_system.map.tiles)
         self.keyboard_input_system = KeyboardInputSystem()
+        self.fov_system = FovSystem(self.display_system.map.tiles)
         self.movement_system = MovementSystem(self.display_system.map.tiles)
 
         self.container = Container()
@@ -38,10 +38,10 @@ class Main:
             if time_passed:
                 self.container.update()
             else:
-                self.fov_system.update(self.container._entities)
-                self.display_system.update(self.container._entities)
                 self.keyboard_input_system.update(self.container._entities)
                 self.movement_system.update(self.container._entities)
+                self.fov_system.update(self.container._entities)
+                self.display_system.update(self.container._entities)
 
     def check_for_game_over(self):
         keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]
@@ -52,7 +52,14 @@ class Main:
         all_keys_pressed = self.keyboard_input_system.get_all_keys_pressed()
 
         keys_pressed = [e for e in all_keys_pressed
-                        if e == MOVE_N or e == MOVE_S or e == MOVE_W or e == MOVE_E]
+                        if e == MOVE_N 
+                        or e == MOVE_S 
+                        or e == MOVE_W 
+                        or e == MOVE_E
+                        or e == MOVE_NE
+                        or e == MOVE_NW
+                        or e == MOVE_SW
+                        or e -- MOVE_SE]
         return keys_pressed
 
 
