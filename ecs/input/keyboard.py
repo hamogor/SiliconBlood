@@ -1,3 +1,4 @@
+import pysnooper
 import pygame
 from ecs.input.keyboard_input_component import KeyboardInputComponent
 
