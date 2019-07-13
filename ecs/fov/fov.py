@@ -19,7 +19,7 @@ class FovSystem:
     def update(self, entities):
         for e in entities:
             if e.get(FovComponent).fov_recalculate:
-                e.get(FovComponent).fov_recalculate = False
+
                 tcod.map_compute_fov(
                     self.fov_map,
                     int(e.get(DisplayComponent).x / TILESIZE),
