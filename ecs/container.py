@@ -4,15 +4,15 @@ class Container:
 
     def __init__(self):
         Container.instance = self
-        self._systems = []
-        self._entities = []
+        self.systems = []
+        self.entities = []
 
     def add_system(self, system):
-        self._systems.append(system)
+        self.systems.append(system)
 
     def add_entity(self, entity):
-        self._entities.append(entity)
+        self.entities.append(entity)
 
     def update(self):
-        for s in self._systems:
-            s.update(self._entities)
+        for s in self.systems:
+            s.update(self.entities)

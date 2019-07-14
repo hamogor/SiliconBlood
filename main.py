@@ -38,23 +38,18 @@ class Main:
 
             if time_passed:
                 self.container.update()
-            else:
-                self.display_system.update(self.container._entities)
-                self.fov_system.update(self.container._entities)
-                self.keyboard_input_system.update(self.container._entities)
-                self.movement_system.update(self.container._entities)
+                print("update")
 
     def check_for_game_over(self):
-        keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]
-        if keys_pressed:
-            self.game_over = True
+        if self.keyboard_input_system.get_all_keys_pressed():
+            keys_pressed = [e for e in self.keyboard_input_system.get_all_keys_pressed() if e == QUIT]
+            if keys_pressed:
+                self.game_over = True
 
     def check_if_time_passed(self):
-        all_keys_pressed = self.keyboard_input_system.get_all_keys_pressed()
+        key_pressed = self.keyboard_input_system.get_all_keys_pressed()
 
-        keys_pressed = [e for e in all_keys_pressed
-                        if e == MOVE_N or e == MOVE_S or e == MOVE_W or e == MOVE_E]
-        return keys_pressed
+        return key_pressed
 
 
 if __name__ == '__main__':

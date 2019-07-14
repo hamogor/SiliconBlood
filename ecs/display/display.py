@@ -34,4 +34,5 @@ class DisplaySystem:
                             else:
                                 self._root_display.blit(S_DFLOOR, (x * TILESIZE, y * TILESIZE))
                 self._root_display.blit(S_PLAYER, (dc.x, dc.y))
+                #print("blit")
         pygame.display.flip()
