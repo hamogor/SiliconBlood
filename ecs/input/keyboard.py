@@ -9,7 +9,7 @@ class KeyboardInputSystem:
 
     def update(self, entities):
         current_keys_pressed = []
-
+        self.keys_pressed = []
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 current_keys_pressed.append(event.key)
@@ -22,17 +22,13 @@ class KeyboardInputSystem:
                             ki = e.get(KeyboardInputComponent)
                             ki.on_keydown_callback(self.keys_pressed)
 
-                            return True
-
-                return False
-
     @staticmethod
     def time_passed():
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 print(event.key)
-                return True
-            return False
+                return event.key
+        return False
 
     def get_all_keys_pressed(self):
         return self.keys_pressed

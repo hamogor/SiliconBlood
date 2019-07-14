@@ -15,6 +15,7 @@ class DisplaySystem:
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
 
     def update(self, entities):
+
         for e in entities:
             if e.get(FovComponent).fov_recalculate:
                 dc = e.get(DisplayComponent)
@@ -34,5 +35,4 @@ class DisplaySystem:
                             else:
                                 self._root_display.blit(S_DFLOOR, (x * TILESIZE, y * TILESIZE))
                 self._root_display.blit(S_PLAYER, (dc.x, dc.y))
-                #print("blit")
         pygame.display.flip()

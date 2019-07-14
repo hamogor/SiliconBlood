@@ -34,11 +34,11 @@ class Main:
 
         while not self.game_over:
             self.check_for_game_over()
-            time_passed = self.check_if_time_passed()
-
-            if time_passed:
-                self.container.update()
-                print("update")
+            self.keyboard_input_system.update(self.container.entities)
+            if self.keyboard_input_system.keys_pressed:
+                self.movement_system.update(self.container.entities)
+                self.fov_system.update(self.container.entities)
+                self.display_system.update(self.container.entities)
 
     def check_for_game_over(self):
         if self.keyboard_input_system.get_all_keys_pressed():
