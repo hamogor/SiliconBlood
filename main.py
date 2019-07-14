@@ -4,6 +4,7 @@ from ecs.human.player import Player
 from ecs.input.keyboard import KeyboardInputSystem
 from ecs.movement.movement import MovementSystem
 from ecs.fov.fov import FovSystem
+
 from ecs.container import Container
 import pygame
 import pysnooper
@@ -21,6 +22,7 @@ class Main:
         self.fov_system = FovSystem(self.display_system.map.tiles)
         self.keyboard_input_system = KeyboardInputSystem()
         self.movement_system = MovementSystem(self.display_system.map.tiles)
+
 
         self.container = Container()
         self.container.add_system(self.keyboard_input_system)

@@ -1,16 +1,15 @@
 import pygame
 
 # game settings
-WIDTH = 1920   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 1080  # 16 * 48 or 32 * 24 or 64 * 12
+WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
+HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 60
 TITLE = "Silicon Blood"
 
 TILESIZE = 32
-#GRIDWIDTH = int(WIDTH / TILESIZE)
-#GRIDHEIGHT = int(HEIGHT / TILESIZE)
-GRIDWIDTH = 50
-GRIDHEIGHT = 50
+
+GRIDWIDTH = 100
+GRIDHEIGHT = 100
 
 MOVE_N = (pygame.K_KP8, pygame.K_k, pygame.K_UP)
 MOVE_S = (pygame.K_KP2, pygame.K_j, pygame.K_DOWN)

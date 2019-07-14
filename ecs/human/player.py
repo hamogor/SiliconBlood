@@ -13,6 +13,8 @@ class Player(Entity):
                          MovementComponent(0, 0),
                          FovComponent())
         self.set(KeyboardInputComponent(self._process_input))
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
 
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:
