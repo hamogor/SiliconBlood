@@ -15,28 +15,40 @@ class DisplaySystem:
         self.map = GameMap()
         self.camera = Camera(WIDTH, HEIGHT)
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
+        self.width = WIDTH
+        self.height = HEIGHT
 
     def update(self, entities):
         for e in entities:
             if e.get(FovComponent).fov_recalculate:
                 dc = e.get(DisplayComponent)
-                for x in range(0, GRIDWIDTH):
-                    for y in range(0, GRIDHEIGHT):
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
-                        self._root_display.blit(S_FOG, (x * TILESIZE, y * TILESIZE))
-                        if visible:
-                            if self.map.tiles[x][y].block_path:
-                                self._root_display.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
-                            else:
-                                self._root_display.blit(S_FLOOR, (x * TILESIZE, y * TILESIZE))
-                            self.map.tiles[x][y].explored = True
-                        elif self.map.tiles[x][y].explored:
-                            if self.map.tiles[x][y].block_path:
-                                self._root_display.blit(S_DWALL, (x * TILESIZE, y * TILESIZE))
-                            else:
-                                self._root_display.blit(S_DFLOOR, (x * TILESIZE, y * TILESIZE))
-                self._root_display.blit(S_PLAYER, (dc.x, dc.y))
-        pygame.display.flip()
+                for x in range(e.get(MovementComponent).x - int(GRIDWIDTH / 2), e.get(MovementComponent).x + int(GRIDWIDTH / 2)):
+                    for y in range(e.get(MovementComponent).y - int(GRIDHEIGHT / 2), e.get(MovementComponent).y + int(GRIDHEIGHT / 2)):
+                        self._root_display.blit(S_PLAYER, self.camera.apply())
+
+
+
+    #def update(self, entities):
+    #    for e in entities:
+    #        if e.get(FovComponent).fov_recalculate:
+    #            dc = e.get(DisplayComponent)
+    #            for x in range(e.get(MovementComponent).x - int(GRIDWIDTH / 2), e.get(MovementComponent).x + int(GRIDWIDTH / 2)):
+    #                for y in range(e.get(MovementComponent).y - int(GRIDHEIGHT / 2), e.get(MovementComponent).y + int(GRIDHEIGHT / 2)):
+    #                    visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
+    #                    self._root_display.blit(S_FOG, (x * TILESIZE, y * TILESIZE))
+    #                    if visible:
+    #                        if self.map.tiles[x][y].block_path:
+    #                            self._root_display.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
+    #                        else:
+    #                            self._root_display.blit(S_FLOOR, (x * TILESIZE, y * TILESIZE))
+    #                        self.map.tiles[x][y].explored = True
+    #                    elif self.map.tiles[x][y].explored:
+    #                        if self.map.tiles[x][y].block_path:
+    #                            self._root_display.blit(S_DWALL, (x * TILESIZE, y * TILESIZE))
+    #                        else:
+    #                            self._root_display.blit(S_DFLOOR, (x * TILESIZE, y * TILESIZE))
+    #            self._root_display.blit(S_PLAYER, (dc.x, dc.y))
+    #    pygame.display.flip()
 
 
 class Camera:

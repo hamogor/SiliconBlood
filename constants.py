@@ -28,7 +28,7 @@ S_DWALL = pygame.image.load("assets/dark_wall.png")
 S_DFLOOR = pygame.image.load("assets/dark_floor.png")
 S_ENEMY = pygame.image.load("assets/Enemy.png")
 S_FOG = pygame.image.load("assets/fow.png")
-
+LIGHTGREY = (100, 100, 100)
 
 FOV_RADIUS = 10
 FOV_LIGHT_WALLS = True
