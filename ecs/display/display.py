@@ -41,7 +41,44 @@ class DisplaySystem:
                 self._root_display.blit(S_PLAYER, self.camera.apply(e))
         pygame.display.flip()
 
+    def update(self, entities):
+        for e in entities:
+            map_x, map_y = self.get_map_offset(e)
+            for con_y in range(min(HEIGHT, self.map.height)):  # Probably doesn't have these attributes
+                for con_x in range(min(WIDTH, self.map.width)): #probably just use len
+                    x = con_x + map_x
+                    y = con_y + map_y
+                    visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, x)
+                    wall = self.map[x][y].block_path
+                    if visible:
+                        if wall:
+                            self._root_display.blit(S_WALL, con_x, con_y)
+                        else:
+                            self._root_display.blit(S_FLOOR, con_x, con_y)
+                        self.map.tiles[x][y].explored = True
+                    elif self.map.tiles[x][y].explored:
+                        if wall:
+                            self._root_display.blit(S_DWALL, con_x, con_y)
+                        else:
+                            self._root_display.blit(S_DFLOOR, con_x, con_y)
+                    else:
+                        self._root_display.blit(S_FOG, con_x, con_y)
+        pygame.display.flip()
 
+    def get_map_offset(e):
+        map_x = int(e.get(DisplayComponent).x - WIDTH / 2)
+        if map_x < 0:
+            map_x = 0
+        elif map_x + WIDTH > self.world_map.width:
+            map_x = self.world_map.width - WIDTH
+        
+        map_y = int(e.get(DisplayComponent).y - HEIGHT / 2)
+        if map_y > 0:
+            map_y = 0
+        elif map_y + HEIGHT > self.world_map.height:
+            map_y = self.world_map.height - HEIGHT
+
+        return (map_x, map_y)
 
     #def update(self, entities):
     #    for e in entities:
@@ -64,25 +101,3 @@ class DisplaySystem:
     #                            self._root_display.blit(S_DFLOOR, (x * TILESIZE, y * TILESIZE))
     #            self._root_display.blit(S_PLAYER, (dc.x, dc.y))
     #    pygame.display.flip()
-
-
-class Camera:
-    def __init__(self, width, height):
-        self.camera = pygame.Rect(0, 0, width, height)
-        self.width = width
-        self.height = height
-
-    def apply(self, entity):
-        return entity.rect.move(self.camera.topleft)
-
-    def update(self, target):
-        x = -target.rect.x + int(WIDTH / 2)
-        y = -target.rect.y + int(HEIGHT / 2)
-
-        # limit scrolling to map size
-        x = min(0, x)  # left
-        y = min(0, y)  # top
-        x = max(-(self.width - WIDTH), x)  # right
-        y = max(-(self.height - HEIGHT), y)  # bottom
-        self.camera = pygame.Rect(x, y, self.width, self.height)
-
