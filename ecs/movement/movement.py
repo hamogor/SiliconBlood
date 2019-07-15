@@ -18,8 +18,6 @@ class MovementSystem:
             d_x = e.get(MovementComponent).x
             d_y = e.get(MovementComponent).y
             if not self.game_map[d_x][d_y].block_path:
-                print(d_x)
-                print(d_y)
                 e.get(DisplayComponent).x = d_x * TILESIZE
                 e.get(DisplayComponent).y = d_y * TILESIZE
                 e.get(FovComponent).fov_recalculate = True
