@@ -10,8 +10,8 @@ class GameMap:
         self.width = GRIDWIDTH
         self.height = GRIDHEIGHT
         self.tiles = self.generate_map()
-        self.w_width = self.width * TILESIZE
-        self.w_height = self.height * TILESIZE
+        self.w_width = WIDTH
+        self.w_height = HEIGHT
 
     def is_blocked(self, x, y):
         if self.tiles[x][y].block_path:
