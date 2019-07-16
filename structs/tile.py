@@ -4,3 +4,4 @@ class StrucTile:
         self.block_sight = block_path
         self.explored = False
 
+
