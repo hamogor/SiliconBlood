@@ -21,32 +21,32 @@ class DisplaySystem:
     def update(self, entities):
         for e in entities:
             # get map top left corner offset from the game map
-            map_off_x, map_off_y = get_map_offset(e)
+            map_off_x, map_off_y = self.get_map_offset(e)
 
             # get our map display offset from the console top left corner
-            con_off_x, con_off_y = get_console_offset(e)
+            cam_off_x, cam_off_y = self.get_camera_offset(e)
 
             for y in range(min(self.camera.height, self.map.height)):
-                for x in range(min(self.camera.width, self.map.width))
-                map_x = x + map_off_x
-                map_y = y + map_off_y
-                cam_x = x + cam_off_x * TILESIZE
-                cam_y = y + cam_off_y * TILESIZE
-                visible = tcod.map_is_in_fov(e.get(FovComponent), map_x, map_y)
-                wall = self.map.tiles[map_x][map_y].block_sight
-                if visible:
-                    if wall:
-                        self._root_display.blit(S_WALL, (cam_x, cam_y))
+                for x in range(min(self.camera.width, self.map.width)):
+                    map_x = x + map_off_x
+                    map_y = y + map_off_y
+                    cam_x = x + cam_off_x * TILESIZE
+                    cam_y = y + cam_off_y * TILESIZE
+                    visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, map_x, map_y)
+                    wall = self.camera.tiles[map_x][map_y].block_sight
+                    if visible:
+                        if wall:
+                            self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
+                        else:
+                            self._root_display.blit(S_FLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
+                        self.map.tiles[map_x][map_y].explored = True
+                    elif self.map.tiles[map_x][map_y].explored:
+                        if wall:
+                            self._root_display.blit(S_DWALL, (cam_x * TILESIZE, cam_y * TILESIZE))
+                        else:
+                            self._root_display.blit(S_DFLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
                     else:
-                        self._root_display.blit(S_FLOOR, (cam_x, cam_y))
-                    self.map.tiles[map_x][map_y].explored = True
-                elif self.map.tiles[map_x][map_y].explored:
-                    if wall:
-                        self._root_display.blit(S_DWALL, (cam_x, cam_y))
-                    else:
-                        self._root_display.blit(S_DFLOOR, (cam_x, cam_y))
-                else:
-                    self._root_display.blit(LIGHT_GREY, (cam_x, cam_y))
+                        self._root_display.blit(S_FOG, (cam_x * TILESIZE, cam_y * TILESIZE))
             self._root_display.blit(S_PLAYER, (1024, 1024))
 
         pygame.display.flip()
@@ -69,7 +69,7 @@ class DisplaySystem:
 
         return map_x, map_y
 
-    def get_camera_offset(e):
+    def get_camera_offset(self, e):
         cam_x = int((self.camera.width - self.map.width) / 2)
         cam_y = int((self.camera.height - self.map.height) / 2)
         if cam_x < 0:
