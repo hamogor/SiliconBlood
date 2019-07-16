@@ -49,6 +49,8 @@ class DisplaySystem:
                     self._root_display.blit(LIGHT_GREY, (cam_x, cam_y))
             self._root_display.blit(S_PLAYER, (1024, 1024))
 
+        pygame.display.flip()
+
     def get_map_offset(self, e):
         player_x = int(e.get(DisplayComponent).x / TILESIZE)
         player_y = int(e.get(DisplayComponent).y / TILESIZE)
