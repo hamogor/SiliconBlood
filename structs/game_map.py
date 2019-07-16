@@ -1,17 +1,17 @@
 from structs.tile import StrucTile
 from constants import *
 from random import uniform
-import tcod
 import pysnooper
 
 
 class GameMap:
-    def __init__(self):
+    def __init__(self, generate=True):
         self.width = GRIDWIDTH
         self.height = GRIDHEIGHT
-        self.tiles = self.generate_map()
-        self.w_width = WIDTH
-        self.w_height = HEIGHT
+        if generate:
+            self.tiles = self.generate_map()
+        else:
+            self.tiles = [[StrucTile(False) for y in range(self.height)] for x in range(self.width)]
 
     def is_blocked(self, x, y):
         if self.tiles[x][y].block_path:
