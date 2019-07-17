@@ -14,9 +14,6 @@ GRIDHEIGHT = 100
 CAM_WIDTH = 32
 CAM_HEIGHT = 32
 
-CAM_WIDTH = 32
-CAM_HEIGHT = 32
-
 MOVE_N = (pygame.K_KP8, pygame.K_k, pygame.K_UP)
 MOVE_S = (pygame.K_KP2, pygame.K_j, pygame.K_DOWN)
 MOVE_W = (pygame.K_KP4, pygame.K_h, pygame.K_LEFT)
