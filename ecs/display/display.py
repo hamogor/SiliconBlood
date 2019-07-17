@@ -1,7 +1,7 @@
 from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
-from constants import *
 from structs.game_map import GameMap
+from constants import *
 import pygame
 import tcod
 import pysnooper
@@ -12,11 +12,8 @@ class DisplaySystem:
     def __init__(self):
         self._root_display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.map = GameMap(generate=True)
-        self.camera = GameMap()
-        self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
-        self.width = WIDTH
-        self.height = HEIGHT
 
+    @pysnooper.snoop()
     def update(self, entities):
         for e in entities:
             map_off_x, map_off_y = self.get_map_offset(e)
@@ -28,7 +25,7 @@ class DisplaySystem:
                         map_y = y + map_off_y
                         cam_x = x + cam_off_x
                         cam_y = y + cam_off_y
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, map_x, map_y)
+                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, cam_x, cam_y)
                         if visible:
                             if self.map.tiles[map_x][map_y].block_path:
                                 self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
