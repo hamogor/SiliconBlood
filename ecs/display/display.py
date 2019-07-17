@@ -14,6 +14,7 @@ class DisplaySystem:
         self._root_display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.map = GameMap(generate=True)
 
+    @pysnooper.snoop()
     def update(self, entities):
         for e in entities:
             map_off_x, map_off_y = self.get_map_offset(e)
@@ -25,7 +26,7 @@ class DisplaySystem:
                         map_y = y + map_off_y
                         cam_x = x + cam_off_x
                         cam_y = y + cam_off_y
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
+                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, cam_x, cam_y)
                         if visible:
                             if self.map.tiles[map_x][map_y].block_path:
                                 self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
@@ -37,27 +38,30 @@ class DisplaySystem:
                                 self._root_display.blit(S_DWALL, (cam_x * TILESIZE, cam_y * TILESIZE))
                             else:
                                 self._root_display.blit(S_DFLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
-                self._root_display.blit(S_PLAYER, (14 * TILESIZE, 10 * TILESIZE))
-            print(e.get(MovementComponent).x)
-            print(e.get(MovementComponent).y)
+                self._root_display.blit(S_PLAYER, (15 * TILESIZE, 10 * TILESIZE))
         pygame.display.flip()
 
-    @pysnooper.snoop()
     def get_map_offset(self, entity):
         # get our map panel's top left corner offset from the actual game map
         map_x = int(entity.get(MovementComponent).x - self.map.width / 2)
-        if map_x + CAM_WIDTH > self.map.width:
+        if map_x < 0:
+            map_x = 0
+        elif map_x + CAM_WIDTH > self.map.width:
             map_x = self.map.width - CAM_WIDTH
-        map_y = int(entity.get(MovementComponent).y - CAM_HEIGHT / 2)
+        map_y = int(entity.get(MovementComponent).y - self.map.height / 2)
+        if map_y < 0:
+            map_y = 0
         if map_y + CAM_HEIGHT > self.map.height:
             map_y = self.map.height - CAM_HEIGHT
 
         return map_x, map_y
 
-    @pysnooper.snoop()
     def get_console_offset(self, entity):
         # get our map's display offset from the top left corner of the console
         con_x = int((CAM_WIDTH - self.map.width) / 2)
         con_y = int((CAM_HEIGHT - self.map.height) / 2)
-
+        if con_x < 0:
+            con_x = 0
+        if con_y < 0:
+            con_y = 0
         return con_x, con_y
