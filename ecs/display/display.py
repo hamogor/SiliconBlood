@@ -1,4 +1,3 @@
-from ecs.display.display_component import DisplayComponent
 from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
 from constants import *
@@ -20,50 +19,51 @@ class DisplaySystem:
 
     def update(self, entities):
         for e in entities:
+            map_off_x, map_off_y = self.get_map_offset(e)
+            cam_off_x, cam_off_y = self.get_console_offset(e)
             if e.get(FovComponent).fov_recalculate:
-                dc = e.get(DisplayComponent)
-                for x in range(0, GRIDWIDTH):
-                    for y in range(0, GRIDHEIGHT):
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
-                        self._root_display.blit(S_FOG, (x * TILESIZE, y * TILESIZE))
+                for y in range(min(CAM_HEIGHT, self.map.height)):
+                    for x in range(min(CAM_WIDTH, self.map.width)):
+                        map_x = x + map_off_x
+                        map_y = y + map_off_y
+                        cam_x = x + cam_off_x
+                        cam_y = y + cam_off_y
+                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, map_x, map_y)
                         if visible:
-                            if self.map.tiles[x][y].block_path:
-                                self._root_display.blit(S_WALL, (x * TILESIZE, y * TILESIZE))
+                            if self.map.tiles[map_x][map_y].block_path:
+                                self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
                             else:
-                                self._root_display.blit(S_FLOOR, (x * TILESIZE, y * TILESIZE))
-                            self.map.tiles[x][y].explored = True
-                        elif self.map.tiles[x][y].explored:
-                            if self.map.tiles[x][y].block_path:
-                                self._root_display.blit(S_DWALL, (x * TILESIZE, y * TILESIZE))
+                                self._root_display.blit(S_FLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
+                            self.map.tiles[cam_x][cam_y].explored = True
+                        elif self.map.tiles[map_x][map_y].explored:
+                            if self.map.tiles[cam_x][cam_y].block_path:
+                                self._root_display.blit(S_DWALL, (cam_x * TILESIZE, cam_y * TILESIZE))
                             else:
-                                self._root_display.blit(S_DFLOOR, (x * TILESIZE, y * TILESIZE))
-                self._root_display.blit(S_PLAYER, (dc.x, dc.y))
+                                self._root_display.blit(S_DFLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
+                self._root_display.blit(S_PLAYER, (15 * TILESIZE, 10 * TILESIZE))
         pygame.display.flip()
 
-    def get_map_offset(self, e):
-        player_x = int(e.get(DisplayComponent).x / TILESIZE)
-        player_y = int(e.get(DisplayComponent).y / TILESIZE)
-
-        map_x = int(player_x - self.camera.width / 2)
+    def get_map_offset(self, entity):
+        # get our map panel's top left corner offset from the actual game map
+        map_x = int(entity.get(MovementComponent).x - self.map.width / 2)
         if map_x < 0:
             map_x = 0
-        elif map_x + self.camera.width > self.map.width:
-            map_x = self.map.width - self.camera.width
-        
-        map_y = int(player_y - self.camera.height / 2)
+        elif map_x + CAM_WIDTH > self.map.width:
+            map_x = self.map.width - CAM_WIDTH
+        map_y = int(entity.get(MovementComponent).y - self.map.height / 2)
         if map_y < 0:
             map_y = 0
-        elif map_y + self.camera.height > self.map.height:
-            map_y = self.map.height - self.camera.height
+        if map_y + CAM_HEIGHT > self.map.height:
+            map_y = self.map.height - CAM_HEIGHT
 
         return map_x, map_y
 
-    def get_camera_offset(self, e):
-        cam_x = int((self.camera.width - self.map.width) / 2)
-        cam_y = int((self.camera.height - self.map.height) / 2)
-        if cam_x < 0:
-            cam_x = 0
-        if cam_y < 0:
-            cam_y = 0
-
-        return cam_x, cam_y
+    def get_console_offset(self, entity):
+        # get our map's display offset from the top left corner of the console
+        con_x = int((CAM_WIDTH - self.map.width) / 2)
+        con_y = int((CAM_HEIGHT - self.map.height) / 2)
+        if con_x < 0:
+            con_x = 0
+        if con_y < 0:
+            con_y = 0
+        return con_x, con_y
