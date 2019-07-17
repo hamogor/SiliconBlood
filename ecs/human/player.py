@@ -9,7 +9,7 @@ import pysnooper
 
 class Player(Entity):
     def __init__(self):
-        super().__init__(DisplayComponent(S_PLAYER, 14 * TILESIZE, 10 * TILESIZE),
+        super().__init__(DisplayComponent(S_PLAYER, 15 * TILESIZE, 10 * TILESIZE),
                          MovementComponent(0, 0),
                          FovComponent())
         self.set(KeyboardInputComponent(self._process_input))
