@@ -30,9 +30,9 @@ class DisplaySystem:
                                 print("KJ {} {}".format(k, j))
                             else:
                                 self._root_display.blit(S_FLOOR, (k * TILESIZE, j * TILESIZE))
-                            self.map.tiles[x][y].explored = True
-                        elif self.map.tiles[k][j].explored:
-                            if self.map.tiles[k][j].block_path:
+                            self.map.tiles[k][j].explored = True
+                        elif self.map.tiles[x][y].explored:
+                            if self.map.tiles[x][y].block_path:
                                 self._root_display.blit(S_DWALL, (k * TILESIZE, j * TILESIZE))
                             else:
                                 self._root_display.blit(S_DFLOOR, (k * TILESIZE, j * TILESIZE))
