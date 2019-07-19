@@ -26,7 +26,7 @@ class DisplaySystem:
 
                         if visible:
                             if wall:
-                                self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_x * TILESIZE))
+                                self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
                             else:
                                 self._root_display.blit(S_FLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
 
