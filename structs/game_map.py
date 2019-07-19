@@ -21,7 +21,7 @@ class GameMap:
 
     @staticmethod
     def cellular_automaton(tiles):
-        chance_to_live = float(0.68)
+        chance_to_live = float(0.72)
         for x in range(GRIDHEIGHT):
             for y in range(GRIDWIDTH):
                 if uniform(0, 1) > chance_to_live:

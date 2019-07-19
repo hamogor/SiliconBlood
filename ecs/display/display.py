@@ -1,5 +1,6 @@
 from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
+from ecs.display.display_component import DisplayComponent
 from structs.game_map import GameMap
 from constants import *
 import pygame
@@ -22,8 +23,7 @@ class DisplaySystem:
                     for x in range(0, CAM_WIDTH):
                         cam_x, cam_y = self.camera.apply(x, y)
                         wall = self.map.tiles[x][y].block_path
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
-
+                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, cam_x, cam_y)
                         if visible:
                             if wall:
                                 self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
@@ -37,8 +37,9 @@ class DisplaySystem:
                                 self._root_display.blit(S_DWALL, (cam_x * TILESIZE, cam_y * TILESIZE))
                             else:
                                 self._root_display.blit(S_DFLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
-
-            self._root_display.blit(S_PLAYER, (15 * TILESIZE, 10 * TILESIZE))
+                        else:
+                            self._root_display.blit(S_FOG, (cam_x * TILESIZE, cam_y * TILESIZE))
+        self._root_display.blit(S_PLAYER, (15 * TILESIZE, 10 * TILESIZE))
         pygame.display.flip()
 
 
@@ -59,4 +60,12 @@ class Camera:
     def update(self, player):
         x = - player.get(MovementComponent).x + int(self.width / 2)
         y = - player.get(MovementComponent).y + int(self.height / 2)
+        player.get(CameraComponent).cam_x = x
+        player.get(CameraComponent).cam_y = y
         self.x, self.y = x, y
+
+
+class CameraComponent:
+    def __init__(self, cam_x, cam_y):
+        self.cam_x = cam_x
+        self.cam_y = cam_y

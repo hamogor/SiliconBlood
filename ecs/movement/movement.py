@@ -11,13 +11,19 @@ class MovementSystem:
 
     def update(self, entities):
         for e in entities:
-            cur_x = int(e.get(DisplayComponent).x / TILESIZE)
-            cur_y = int(e.get(DisplayComponent).y / TILESIZE)
+            cur_x = int(e.get(MovementComponent).cur_x)
+            cur_y = int(e.get(MovementComponent).cur_y)
 
             d_x = e.get(MovementComponent).x
             d_y = e.get(MovementComponent).y
             if not self.game_map[d_x][d_y].block_path:
                 e.get(FovComponent).fov_recalculate = True
+                e.get(MovementComponent).x = d_x
+                e.get(MovementComponent).y = d_y
+                e.get(MovementComponent).cur_x = e.get(MovementComponent).x
+                e.get(MovementComponent).cur_y = e.get(MovementComponent).y
+
+
             else:
                 e.get(MovementComponent).x = cur_x
                 e.get(MovementComponent).y = cur_y

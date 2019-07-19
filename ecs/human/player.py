@@ -1,6 +1,7 @@
 from ecs.display.display_component import DisplayComponent
 from ecs.input.keyboard_input_component import KeyboardInputComponent
 from ecs.movement.movement_component import MovementComponent
+from ecs.display.display import CameraComponent
 from ecs.fov.fov_component import FovComponent
 from ecs.entity import Entity
 from constants import *
@@ -10,15 +11,15 @@ import pysnooper
 class Player(Entity):
     def __init__(self):
         super().__init__(DisplayComponent(S_PLAYER, 15 * TILESIZE, 10 * TILESIZE),
-                         MovementComponent(0, 0),
-                         FovComponent())
+                         MovementComponent(15, 10, 0, 0),
+                         FovComponent(),
+                         CameraComponent(0, 0))
         self.set(KeyboardInputComponent(self._process_input))
-        self.image = pygame.Surface((TILESIZE, TILESIZE))
-        self.rect = self.image.get_rect()
-        self.player = True
 
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:
+            self.get(MovementComponent).cur_x = self.get(MovementComponent).x
+            self.get(MovementComponent).cur_y = self.get(MovementComponent).y
             if key_pressed in MOVE_N:
                 self.get(MovementComponent).y -= 1
             elif key_pressed in MOVE_S:
