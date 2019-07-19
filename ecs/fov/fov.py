@@ -1,6 +1,6 @@
 from constants import *
 from ecs.fov.fov_component import FovComponent
-from ecs.display.display_component import DisplayComponent
+from ecs.display.display import CameraComponent
 from ecs.movement.movement_component import MovementComponent
 import tcod
 import pysnooper

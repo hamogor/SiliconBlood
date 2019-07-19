@@ -23,7 +23,7 @@ class DisplaySystem:
                     for x in range(0, CAM_WIDTH):
                         cam_x, cam_y = self.camera.apply(x, y)
                         wall = self.map.tiles[x][y].block_path
-                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, cam_x, cam_y)
+                        visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                         if visible:
                             if wall:
                                 self._root_display.blit(S_WALL, (cam_x * TILESIZE, cam_y * TILESIZE))
@@ -60,8 +60,6 @@ class Camera:
     def update(self, player):
         x = - player.get(MovementComponent).x + int(self.width / 2)
         y = - player.get(MovementComponent).y + int(self.height / 2)
-        player.get(CameraComponent).cam_x = x
-        player.get(CameraComponent).cam_y = y
         self.x, self.y = x, y
 
 

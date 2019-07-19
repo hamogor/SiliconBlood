@@ -20,6 +20,8 @@ class Player(Entity):
         for key_pressed in keys_pressed:
             self.get(MovementComponent).cur_x = self.get(MovementComponent).x
             self.get(MovementComponent).cur_y = self.get(MovementComponent).y
+            print("Movement: {} {}".format(self.get(MovementComponent).cur_x, self.get(MovementComponent).cur_y))
+            print("Fov: {} {}".format(self.get(CameraComponent).cam_x, self.get(CameraComponent).cam_y))
             if key_pressed in MOVE_N:
                 self.get(MovementComponent).y -= 1
             elif key_pressed in MOVE_S:

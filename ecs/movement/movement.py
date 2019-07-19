@@ -20,10 +20,8 @@ class MovementSystem:
                 e.get(FovComponent).fov_recalculate = True
                 e.get(MovementComponent).x = d_x
                 e.get(MovementComponent).y = d_y
-                e.get(MovementComponent).cur_x = e.get(MovementComponent).x
-                e.get(MovementComponent).cur_y = e.get(MovementComponent).y
-
-
+                e.get(MovementComponent).cur_x = d_x
+                e.get(MovementComponent).cur_y = d_y
             else:
                 e.get(MovementComponent).x = cur_x
                 e.get(MovementComponent).y = cur_y
