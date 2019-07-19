@@ -18,8 +18,8 @@ class DisplaySystem:
         for e in entities:
             self.camera.update(e)
             if e.get(FovComponent).fov_recalculate:
-                for x in range(0, CAM_WIDTH):
-                    for y in range(0, CAM_HEIGHT):
+                for y in range(0, CAM_HEIGHT):
+                    for x in range(0, CAM_WIDTH):
                         cam_x, cam_y = self.camera.apply(x, y)
                         wall = self.map.tiles[x][y].block_path
                         visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
@@ -57,6 +57,6 @@ class Camera:
         return x, y
 
     def update(self, player):
-        x = player.get(MovementComponent).x - int(self.width / 2)
-        y = player.get(MovementComponent).y - int(self.height / 2)
+        x = - player.get(MovementComponent).x + int(self.width / 2)
+        y = - player.get(MovementComponent).y + int(self.height / 2)
         self.x, self.y = x, y
