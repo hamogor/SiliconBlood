@@ -1,31 +1,25 @@
 from ecs.movement.movement_component import MovementComponent
 from ecs.fov.fov_component import FovComponent
-from constants import *
-import pysnooper
-
+from ecs.level.level_component import LevelComponent
 
 class MovementSystem:
-    def __init__(self, game_map):
-        self.game_map = game_map
+    def __init__(self, level):
+        self.game_map = level.level_map
 
     def update(self, entities):
         for e in entities:
             self.move(e)
 
-    def move(self, e):
-        try:
-            wall = self.game_map[e.get(MovementComponent).x][e.get(MovementComponent).y].block_path
-            if e.get(MovementComponent).y < 0:
-                wall = True
-            if e.get(MovementComponent).x < 0:
-                wall = True
-        except IndexError:
-            wall = True
+    def move(self, entity):
+        current_x, current_y = entity.get(MovementComponent).x, entity.get(MovementComponent).y
+        direction_x, direction_y = entity.get(MovementComponent).d_x, entity.get(MovementComponent).d_y
+        wall = self.game_map.tiles[direction_x][direction_y].block_path
+
         if not wall:
-            e.get(FovComponent).fov_recalculate = True
-            e.get(MovementComponent).cur_x = e.get(MovementComponent).x
-            e.get(MovementComponent).cur_y = e.get(MovementComponent).y
+            entity.get(FovComponent).fov_recalculate = True
+            entity.get(MovementComponent).x = direction_x
+            entity.get(MovementComponent).y = direction_y
         else:
-            e.get(MovementComponent).x = e.get(MovementComponent).cur_x
-            e.get(MovementComponent).y = e.get(MovementComponent).cur_y
+            entity.get(MovementComponent).x = current_x
+            entity.get(MovementComponent).y = current_y
 

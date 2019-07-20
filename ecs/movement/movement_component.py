@@ -1,6 +1,7 @@
 class MovementComponent:
-    def __init__(self, dx, dy, cur_x, cur_y):
-        self.cur_x = cur_x
-        self.cur_y = cur_y
-        self.x = dx
-        self.y = dy
+    def __init__(self, d_x, d_y, x, y):
+        self.d_x = d_x
+        self.d_y = d_y
+        self.x = x
+        self.y = y
+
