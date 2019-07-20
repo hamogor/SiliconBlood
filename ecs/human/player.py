@@ -1,7 +1,7 @@
 from ecs.display.display_component import DisplayComponent
 from ecs.input.keyboard_input_component import KeyboardInputComponent
 from ecs.movement.movement_component import MovementComponent
-from ecs.display.display import CameraComponent
+from ecs.camera.camera_component import CameraComponent
 from ecs.fov.fov_component import FovComponent
 from ecs.entity import Entity
 from constants import *
@@ -15,6 +15,7 @@ class Player(Entity):
                          FovComponent(),
                          CameraComponent(0, 0))
         self.set(KeyboardInputComponent(self._process_input))
+        self.name = 'player'
 
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:

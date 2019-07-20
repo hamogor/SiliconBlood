@@ -1,5 +1,4 @@
 from ecs.movement.movement_component import MovementComponent
-from ecs.display.display import CameraComponent
 from ecs.fov.fov_component import FovComponent
 from constants import *
 import pysnooper
