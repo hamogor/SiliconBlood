@@ -21,11 +21,6 @@ class GameMap:
             for y in range(self.height):
                 if uniform(0, 1) > chance_to_live:
                     tiles[x][y].block_path, tiles[x][y].block_sight = True, True
-                    tiles[x][y].sprite = S_WALL
-                    tiles[x][y].dark_sprite = S_DWALL
-                else:
-                    tiles[x][y].sprite = S_FLOOR
-                    tiles[x][y].dark_sprite = S_DFLOOR
         return tiles
 
     def count_alive_neighbours(self, tiles, x, y):
@@ -50,9 +45,13 @@ class GameMap:
                 neighbours = self.count_alive_neighbours(old_map, x, y)
                 if old_map[x][y].block_path:
                     new_map[x][y].block_path = neighbours >= 3
+                    new_map[x][y].sprite = S_WALL
+                    new_map[x][y].dark_sprite = S_DWALL
+
                 else:
                     new_map[x][y].block_path = neighbours > 4
-
+                    new_map[x][y].sprite = S_FLOOR
+                    new_map[x][y].dark_sprite = S_DFLOOR
         return new_map
 
     def generate_level(self):

@@ -23,18 +23,18 @@ class SiliconBlood:
 
         self.player = Player()
         self.keyboard_system = KeyboardSystem()
-        self.display_system = DisplaySystem(self.level_system)
         self.camera_system = CameraSystem(self.level_system)
+        self.display_system = DisplaySystem(self.level_system, self.camera_system)
         self.fov_system = FovSystem(self.level_system)
         self.movement_system = MovementSystem(self.level_system)
 
         self.container = Container()
         self.container.add_system(self.keyboard_system)
         self.container.add_system(self.level_system)
-        self.container.add_system(self.display_system)
-        self.container.add_system(self.camera_system)
         self.container.add_system(self.fov_system)
+        self.container.add_system(self.display_system)
         self.container.add_system(self.movement_system)
+        self.container.add_entity(self.player)
 
     def game_loop(self):
         self.container.update()
@@ -53,10 +53,10 @@ class SiliconBlood:
             if keys_pressed:
                 self.game_over = True
 
-        def check_if_time_passed(self):
-            key_pressed = self.keyboard_input_system.get_all_keys_pressed()
+    def check_if_time_passed(self):
+        key_pressed = self.keyboard_system.get_keys()
+        return key_pressed
 
-            return key_pressed
 
 if __name__ == '__main__':
     SiliconBlood().game_loop()

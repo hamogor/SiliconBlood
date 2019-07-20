@@ -7,10 +7,13 @@ class KeyboardSystem:
         self.keys_pressed = []
 
     def update(self, entities):
+        current_keys_pressed = []
         self.keys_pressed = []
         for event in pygame.event.get():
-            if event.type == pygame.key.get_pressed():
-                self.keys_pressed.append(event.key)
+            if event.type == pygame.KEYDOWN:
+                current_keys_pressed.append(event.key)
+
+                self.keys_pressed = current_keys_pressed
 
                 if self.keys_pressed:
                     for e in entities:
