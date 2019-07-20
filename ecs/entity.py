@@ -13,8 +13,8 @@ class Entity:
         key = type(component)
         self.components[key] = component
 
-    def get(self, clazz):
-        return self.components[clazz]
+    def get(self, component):
+        return self.components[component]
 
-    def has(self, clazz):
-        return self.get(clazz) is not None
+    def has(self, component):
+        return self.get(component) is not None
