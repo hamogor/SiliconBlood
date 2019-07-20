@@ -10,8 +10,8 @@ class FovSystem:
     def __init__(self, game_map=None):
         self.game_map = game_map
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
-        for y in range(CAM_WIDTH):
-            for x in range(CAM_HEIGHT):
+        for y in range(GRIDWIDTH):
+            for x in range(GRIDHEIGHT):
                 tcod.map_set_properties(self.fov_map, x, y,
                                         not game_map[x][y].block_path,
                                         not game_map[x][y].block_path)

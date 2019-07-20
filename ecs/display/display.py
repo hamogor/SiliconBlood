@@ -65,10 +65,10 @@ class Camera:
             x = 0
         if y < 0:
             y = 0
-        if x > CAM_WIDTH:
-            x = int((WIDTH / TILESIZE) - CAM_WIDTH)
-        if y > CAM_HEIGHT:
-            y = (int(HEIGHT / TILESIZE) - CAM_HEIGHT)
+        if x > GRIDWIDTH - CAM_WIDTH:
+            x = CAM_WIDTH
+        if y > GRIDHEIGHT - CAM_HEIGHT:
+            y = CAM_HEIGHT
         self.x, self.y = x, y
         player.get(CameraComponent).cam_x = player.get(MovementComponent).x - self.x
         player.get(CameraComponent).cam_y = player.get(MovementComponent).y - self.y
