@@ -3,4 +3,3 @@ class DisplayComponent:
         self.sprite = sprite
         self.x = x
         self.y = y
-
