@@ -1,7 +1,3 @@
-from constants import *
-import tcod
-
-
 class FovComponent:
     def __init__(self, fov_map=None):
         self.fov_map = fov_map
