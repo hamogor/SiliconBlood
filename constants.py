@@ -34,7 +34,7 @@ S_ENEMY = pygame.image.load("assets/Enemy.png")
 S_FOG = pygame.image.load("assets/fow.png")
 LIGHTGREY = (100, 100, 100)
 
-FOV_RADIUS = 10
+FOV_RADIUS = 7
 FOV_LIGHT_WALLS = True
 FOV_ALGORITHM = 0
 
