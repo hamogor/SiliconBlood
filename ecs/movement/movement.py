@@ -22,3 +22,5 @@ class MovementSystem:
         else:
             entity.get(MovementComponent).x = current_x
             entity.get(MovementComponent).y = current_y
+            entity.get(MovementComponent).d_x = current_x
+            entity.get(MovementComponent).d_y = current_y
