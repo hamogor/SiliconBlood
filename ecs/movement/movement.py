@@ -1,6 +1,6 @@
 from ecs.movement.movement_component import MovementComponent
 from ecs.fov.fov_component import FovComponent
-from ecs.level.level_component import LevelComponent
+
 
 class MovementSystem:
     def __init__(self, level):
@@ -22,4 +22,3 @@ class MovementSystem:
         else:
             entity.get(MovementComponent).x = current_x
             entity.get(MovementComponent).y = current_y
-

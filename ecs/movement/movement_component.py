@@ -4,4 +4,3 @@ class MovementComponent:
         self.d_y = d_y
         self.x = x
         self.y = y
-
