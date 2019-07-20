@@ -16,8 +16,8 @@ class MovementSystem:
     def move(self, e):
         if not self.game_map[e.get(MovementComponent).x][e.get(MovementComponent).y].block_path:
             e.get(FovComponent).fov_recalculate = True
-            e.get(MovementComponent).x = e.get(MovementComponent).x
-            e.get(MovementComponent).y = e.get(MovementComponent).y
+            e.get(MovementComponent).cur_x = e.get(MovementComponent).x
+            e.get(MovementComponent).cur_y = e.get(MovementComponent).y
         else:
             e.get(MovementComponent).x = e.get(MovementComponent).cur_x
             e.get(MovementComponent).y = e.get(MovementComponent).cur_y

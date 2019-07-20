@@ -39,8 +39,8 @@ class DisplaySystem:
                                 self._root_display.blit(S_DFLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
                         else:
                             self._root_display.blit(S_FOG, (cam_x * TILESIZE, cam_y * TILESIZE))
-        self._root_display.blit(S_PLAYER, ((e.get(MovementComponent).x - self.camera.x) * TILESIZE,
-                                           (e.get(MovementComponent).y - self.camera.y) * TILESIZE))
+        self._root_display.blit(S_PLAYER, ((e.get(MovementComponent).cur_x - self.camera.x) * TILESIZE,
+                                           (e.get(MovementComponent).cur_y - self.camera.y) * TILESIZE))
         pygame.display.flip()
 
 

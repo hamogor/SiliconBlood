@@ -36,10 +36,10 @@ class Main:
             self.check_for_game_over()
             self.keyboard_input_system.update(self.container.entities)
             if self.keyboard_input_system.keys_pressed:
+                self.movement_system.update(self.container.entities)
                 self.fov_system.update(self.container.entities)
                 self.display_system.update(self.container.entities)
 
-                self.movement_system.update(self.container.entities)
 
 
     def check_for_game_over(self):

@@ -18,8 +18,6 @@ class Player(Entity):
 
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:
-            self.get(MovementComponent).cur_x = self.get(MovementComponent).x
-            self.get(MovementComponent).cur_y = self.get(MovementComponent).y
             if key_pressed in MOVE_N:
                 self.get(MovementComponent).y -= 1
             elif key_pressed in MOVE_S:
