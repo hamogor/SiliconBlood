@@ -11,7 +11,7 @@ import pysnooper
 class Player(Entity):
     def __init__(self):
         super().__init__(DisplayComponent(S_PLAYER, 15 * TILESIZE, 10 * TILESIZE),
-                         MovementComponent(15, 10, 0, 0),
+                         MovementComponent(5,5,5,5),
                          FovComponent(),
                          CameraComponent(0, 0))
         self.set(KeyboardInputComponent(self._process_input))
@@ -20,8 +20,6 @@ class Player(Entity):
         for key_pressed in keys_pressed:
             self.get(MovementComponent).cur_x = self.get(MovementComponent).x
             self.get(MovementComponent).cur_y = self.get(MovementComponent).y
-            print("Movement: {} {}".format(self.get(MovementComponent).cur_x, self.get(MovementComponent).cur_y))
-            print("Fov: {} {}".format(self.get(CameraComponent).cam_x, self.get(CameraComponent).cam_y))
             if key_pressed in MOVE_N:
                 self.get(MovementComponent).y -= 1
             elif key_pressed in MOVE_S:

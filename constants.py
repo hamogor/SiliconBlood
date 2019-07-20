@@ -2,14 +2,15 @@ import pygame
 
 # game settings
 WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
+HEIGHT = 1024  # 16 * 48 or 32 * 24 or 64 * 12
+
 FPS = 60
 TITLE = "Silicon Blood"
 
 TILESIZE = 32
 
-GRIDWIDTH = 64
-GRIDHEIGHT = 64
+GRIDWIDTH = 256
+GRIDHEIGHT = 256
 
 CAM_WIDTH = 32
 CAM_HEIGHT = 32

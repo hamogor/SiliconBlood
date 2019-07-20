@@ -19,9 +19,9 @@ class DisplaySystem:
         for e in entities:
             self.camera.update(e)
             if e.get(FovComponent).fov_recalculate:
-                for y in range(0, CAM_HEIGHT):
-                    for x in range(0, CAM_WIDTH):
-                        cam_x, cam_y = self.camera.apply(x, y)
+                for cam_y in range(0, CAM_WIDTH):
+                    for cam_x in range(0, CAM_HEIGHT):
+                        x, y = self.camera.apply(cam_x, cam_y)
                         wall = self.map.tiles[x][y].block_path
                         visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                         if visible:
@@ -39,7 +39,8 @@ class DisplaySystem:
                                 self._root_display.blit(S_DFLOOR, (cam_x * TILESIZE, cam_y * TILESIZE))
                         else:
                             self._root_display.blit(S_FOG, (cam_x * TILESIZE, cam_y * TILESIZE))
-        self._root_display.blit(S_PLAYER, (15 * TILESIZE, 10 * TILESIZE))
+        self._root_display.blit(S_PLAYER, ((e.get(MovementComponent).x - self.camera.x) * TILESIZE,
+                                           (e.get(MovementComponent).y - self.camera.y) * TILESIZE))
         pygame.display.flip()
 
 
@@ -58,9 +59,19 @@ class Camera:
         return x, y
 
     def update(self, player):
-        x = - player.get(MovementComponent).x + int(self.width / 2)
-        y = - player.get(MovementComponent).y + int(self.height / 2)
+        x = player.get(MovementComponent).x - int(self.width / 2)
+        y = player.get(MovementComponent).y - int(self.height / 2)
+        if x < 0:
+            x = 0
+        if y < 0:
+            y = 0
+        if x > CAM_WIDTH:
+            x = int((WIDTH / TILESIZE) - CAM_WIDTH)
+        if y > CAM_HEIGHT:
+            y = (int(HEIGHT / TILESIZE) - CAM_HEIGHT)
         self.x, self.y = x, y
+        player.get(CameraComponent).cam_x = player.get(MovementComponent).x - self.x
+        player.get(CameraComponent).cam_y = player.get(MovementComponent).y - self.y
 
 
 class CameraComponent:
