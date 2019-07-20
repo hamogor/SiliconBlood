@@ -17,19 +17,17 @@ class CameraSystem:
         y = y + self.y
         return x, y
 
-    def update(self, entities):
-        for e in entities:
-            if e.name == "player":
-                x = e.get(MovementComponent).x - int(self.width / 2)
-                y = e.get(MovementComponent).y - int(self.height / 2)
-                if x < 0:
-                    x = 0
-                if y < 0:
-                    y = 0
-                if x > GRIDWIDTH - CAM_WIDTH:
-                    x = CAM_WIDTH
-                if y > GRIDHEIGHT - CAM_HEIGHT:
-                    y = CAM_HEIGHT
-                self.x, self.y = x, y
-                e.get(CameraComponent).cam_x = e.get(MovementComponent).x - self.x
-                e.get(CameraComponent).cam_y = e.get(MovementComponent).y - self.y
+    def update(self, player):
+        x = player.get(MovementComponent).x - int(self.width / 2)
+        y = player.get(MovementComponent).y - int(self.height / 2)
+        if x < 0:
+            x = 0
+        if y < 0:
+            y = 0
+        if x > GRIDWIDTH - CAM_WIDTH:
+            x = CAM_WIDTH
+        if y > GRIDHEIGHT - CAM_HEIGHT:
+            y = CAM_HEIGHT
+        self.x, self.y = x, y
+        player.get(CameraComponent).cam_x = player.get(MovementComponent).x - self.x
+        player.get(CameraComponent).cam_y = player.get(MovementComponent).y - self.y
