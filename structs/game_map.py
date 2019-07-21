@@ -31,7 +31,7 @@ class GameMap:
         return False
 
     def cellular_gen(self, tiles):
-        chance_to_live = float(0.72)
+        chance_to_live = float(0.68)
         for x in range(self.width):
             for y in range(self.height):
                 if random.uniform(0, 1) > chance_to_live:

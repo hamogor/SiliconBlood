@@ -3,8 +3,8 @@ import pygame
 TITLE = "Silicon Blood"
 
 # game settings
-WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 1024  # 16 * 48 or 32 * 24 or 64 * 12
+WIDTH = 512  # 16 * 64 or 32 * 32 or 64 * 16
+HEIGHT = 512  # 16 * 48 or 32 * 24 or 64 * 12
 
 FPS = 60
 
@@ -16,8 +16,8 @@ GRIDWIDTH = int(WIDTH / TILESIZE * 2)
 GRIDHEIGHT = int(HEIGHT / TILESIZE * 2)
 
 # Camera size
-CAM_WIDTH = 32
-CAM_HEIGHT = 32
+CAM_WIDTH = 16
+CAM_HEIGHT = 16
 
 # Keybinds
 MOVE_N = (pygame.K_KP8, pygame.K_k, pygame.K_UP)
@@ -41,6 +41,6 @@ S_FOG = pygame.image.load("assets/fow.png")
 LIGHTGREY = (100, 100, 100)
 
 # Fov settings
-FOV_RADIUS = 7
+FOV_RADIUS = 12
 FOV_LIGHT_WALLS = True
 FOV_ALGORITHM = 0
