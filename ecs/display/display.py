@@ -3,6 +3,7 @@ from ecs.movement.movement_component import MovementComponent
 from ecs.display.display_component import DisplayComponent
 import pygame
 import tcod
+import sys
 
 from settings import WIDTH, HEIGHT, CAM_WIDTH, CAM_HEIGHT, TILESIZE, S_FOG
 
@@ -11,7 +12,7 @@ class DisplaySystem:
     def __init__(self, level, camera):
 
         self.map = level.level_map
-        self._root_display = pygame.display.set_mode((WIDTH, HEIGHT))
+        self._root_display = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.camera = camera
 
     def update(self, entities):
