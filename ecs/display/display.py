@@ -3,6 +3,7 @@ from ecs.movement.movement_component import MovementComponent
 from ecs.display.display_component import DisplayComponent
 import pygame
 import tcod
+from settings import S_STAIRS
 import sys
 
 from settings import WIDTH, HEIGHT, CAM_WIDTH, CAM_HEIGHT, TILESIZE, S_FOG
@@ -23,6 +24,8 @@ class DisplaySystem:
                     for cam_x in range(0, CAM_HEIGHT):
                         x, y = self.camera.apply(cam_x, cam_y)
                         block_path = self.map.tiles[x][y].block_path
+                        if self.map.tiles[x][y].sprite == S_STAIRS:
+                            print(x, y)
                         visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                         put_x, put_y = cam_x * TILESIZE, cam_y * TILESIZE
                         sprite = self.map.tiles[x][y].sprite

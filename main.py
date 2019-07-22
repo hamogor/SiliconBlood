@@ -19,7 +19,7 @@ class SiliconBlood:
         pygame.display.set_icon(S_ENEMY)
         self.game_over = False
 
-        self.level_system = LevelSystem()
+        self.level_system = LevelSystem(1)  # First level
 
         self.player = Player()
         self.keyboard_system = KeyboardSystem()
