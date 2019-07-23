@@ -1,5 +1,5 @@
 import pygame
-from settings import *
+from settings import TITLE, QUIT, S_ENEMY
 
 from ecs.container import Container
 from ecs.display.display import DisplaySystem
