@@ -1,6 +1,6 @@
 from settings import FOV_LIGHT_WALLS, FOV_RADIUS, FOV_ALGORITHM, GRIDWIDTH, GRIDHEIGHT
-from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
+from ecs.fov.fov_component import FovComponent
 import tcod
 
 

@@ -1,5 +1,5 @@
-import pygame
 from ecs.keyboard.keyboard_component import KeyboardComponent
+import pygame
 
 
 class KeyboardSystem:
