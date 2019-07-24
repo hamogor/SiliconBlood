@@ -1,12 +1,10 @@
+from settings import WIDTH, HEIGHT, CAM_WIDTH, CAM_HEIGHT, TILESIZE, S_FOG, S_STAIRS
 from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
 from ecs.display.display_component import DisplayComponent
 import pygame
 import tcod
-from settings import S_STAIRS
-import sys
 
-from settings import WIDTH, HEIGHT, CAM_WIDTH, CAM_HEIGHT, TILESIZE, S_FOG
 
 
 class DisplaySystem:

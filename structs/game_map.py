@@ -86,71 +86,6 @@ class GameMap:
             cell_map = self.do_gen_step(cell_map)
         return cell_map
 
-    # Normal generation #
-    def create_room(self, room):
-        for x in range(room.x1 + 1, room.x2):
-            for y in range(room.y1 + 1, room.y2):
-                self.tiles[x][y].block_path = False
-                self.tiles[x][y].block_sight = False
-                self.tiles[x][y].sprite = S_FLOOR
-                self.tiles[x][y].dark_sprite = S_DFLOOR
-
-    def create_h_tunnel(self, x1, x2, y):
-        for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.tiles[x][y].block_path = False
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].sprite = S_FLOOR
-            self.tiles[x][y].dark_sprite = S_DFLOOR
-
-    def create_v_tunnel(self, y1, y2, x):
-        for y in range(min(y1, y2), max(y1, y2) + 1):
-            self.tiles[x][y].block_path = False
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].sprite = S_FLOOR
-            self.tiles[x][y].dark_sprite = S_DFLOOR
-
-    def make_map(self):
-        rooms = []
-        room_max_size = 10
-        room_min_size = 6
-        max_rooms = 30
-        num_rooms = 0
-
-        for r in range(max_rooms):
-            w = random.randint(room_min_size, room_max_size)
-            h = random.randint(room_min_size, room_max_size)
-
-            x = random.randint(0, self.width - w - 1)
-            y = random.randint(0, self.height - h - 1)
-
-            new_room = Rect(x, y, w, h)
-
-            for other_room in rooms:
-                if new_room.intersect(other_room):
-                    break
-                else:
-                    self.create_room(new_room)
-
-                    new_x, new_y = new_room.center()
-
-                    # TODO - Create player spawn room
-                    if num_rooms == 0:
-                        #player.x = new_x
-                        #plyer.y = new_y
-                        pass
-                    else:
-                        prev_x, prev_y = rooms[num_rooms - 1].center()
-
-                        if random.randint(0, 1) == 1:
-                            self.create_h_tunnel(prev_x, new_x, prev_y)
-                            self.create_v_tunnel(prev_y, new_y, new_x)
-                        else:
-                            self.create_h_tunnel(prev_x, new_x, prev_y)
-                            self.create_v_tunnel(prev_x, new_x, new_y)
-
-                    rooms.append(new_room)
-                    num_rooms += 1
-
 
 class BspTree:
     def __init__(self):
@@ -287,6 +222,7 @@ class Leaf:  # used for the BSP tree algorithm
                                      self.child_2.maxget_room())
         else:
             # Create rooms in the end branches of the bsp tree
+            # TODO - Fill the map with more rooms so there's less hallways
             w = random.randint(bsp_tree.ROOM_MIN_SIZE, min(bsp_tree.ROOM_MAX_SIZE, self.width - 1))
             h = random.randint(bsp_tree.ROOM_MIN_SIZE, min(bsp_tree.ROOM_MAX_SIZE, self.height - 1))
             x = random.randint(self.x, self.x + (self.width - 1) - w)
