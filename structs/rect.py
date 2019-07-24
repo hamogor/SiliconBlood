@@ -1,4 +1,6 @@
 class Rect:
+    __slots__ = ['x1', 'y1', 'x2', 'y2']
+
     def __init__(self, x, y, w, h):
         self.x1 = x
         self.y1 = y

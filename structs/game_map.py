@@ -8,6 +8,8 @@ import pysnooper
 
 
 class GameMap:
+    __slots__ = ['width', 'height', 'tiles', 'list_rooms', 'list_regions', 'list_objects']
+
     def __init__(self):
         self.width = GRIDWIDTH
         self.height = GRIDHEIGHT
