@@ -8,7 +8,7 @@ import tcod
 
 
 class DisplaySystem:
-    __slots__ = ['level', 'camera']
+    __slots__ = ['level', 'camera', 'map', '_root_display']
 
     def __init__(self, level, camera):
 
