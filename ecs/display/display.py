@@ -10,6 +10,8 @@ from settings import WIDTH, HEIGHT, CAM_WIDTH, CAM_HEIGHT, TILESIZE, S_FOG
 
 
 class DisplaySystem:
+    __slots__ = ['level', 'camera']
+
     def __init__(self, level, camera):
 
         self.map = level.level_map
