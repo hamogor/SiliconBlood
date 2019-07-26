@@ -13,6 +13,7 @@ class Player(Entity):
         # Add components to player
         self.name = 'player'
         self.sprite = S_PLAYER
+        self.vx, self.vy = 0, 0
         super().__init__(DisplayComponent(self.sprite, 0, 0),
                          MovementComponent(spawn_x, spawn_y, spawn_x, spawn_y),
                          FovComponent(),

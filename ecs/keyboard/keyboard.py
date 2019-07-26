@@ -12,9 +12,7 @@ class KeyboardSystem:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 current_keys_pressed.append(event.key)
-
                 self.keys_pressed = current_keys_pressed
-
                 if self.keys_pressed:
                     for e in entities:
                         if e.has(KeyboardComponent):
@@ -29,3 +27,4 @@ class KeyboardSystem:
 
     def get_keys(self):
         return self.keys_pressed
+
