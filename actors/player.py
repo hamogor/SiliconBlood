@@ -16,7 +16,7 @@ class Player(Entity):
         super().__init__(DisplayComponent(self.sprite, 0, 0),
                          MovementComponent(spawn_x, spawn_y, spawn_x, spawn_y),
                          FovComponent(),
-                         CameraComponent(0, 0),)
+                         CameraComponent(0, 0))
         self.set(KeyboardComponent(self._process_input))
 
     def _process_input(self, keys_pressed):

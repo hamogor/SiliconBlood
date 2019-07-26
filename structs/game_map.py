@@ -2,9 +2,8 @@ from structs.tile import StrucTile
 from structs.rect import Rect
 from settings import *
 import random
-from pprint import pprint as pp
-import tcod
-import pysnooper
+import tcod as libtcod
+
 
 
 class GameMap:
