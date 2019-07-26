@@ -3,19 +3,20 @@ from ecs.keyboard.keyboard_component import KeyboardComponent
 from ecs.movement.movement_component import MovementComponent
 from ecs.camera.camera_component import CameraComponent
 from ecs.fov.fov_component import FovComponent
+from ecs.level.level import LevelSystem
 from ecs.entity import Entity
 from settings import *
 
 
 class Player(Entity):
-    def __init__(self):
+    def __init__(self, spawn_x, spawn_y):
         # Add components to player
         self.name = 'player'
         self.sprite = S_PLAYER
         super().__init__(DisplayComponent(self.sprite, 0, 0),
-                         MovementComponent(3,3,3,3),
+                         MovementComponent(spawn_x, spawn_y, spawn_x, spawn_y),
                          FovComponent(),
-                         CameraComponent(0, 0))
+                         CameraComponent(0, 0),)
         self.set(KeyboardComponent(self._process_input))
 
     def _process_input(self, keys_pressed):
