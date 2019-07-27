@@ -6,6 +6,9 @@ class MovementSystem:
     def __init__(self, level):
         self.game_map = level.level_map
 
+    def reset(self, level):
+        self.__init__(level)
+
     def update(self, entities):
         for e in entities:
             self.move(e)

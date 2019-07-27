@@ -12,6 +12,9 @@ class CameraSystem:
         self.map_width = level.level_map.width
         self.map_height = level.level_map.height
 
+    def reset(self, level):
+        self.__init__(level)
+
     def apply(self, x, y):
         x = x + self.x
         y = y + self.y

@@ -19,10 +19,10 @@ class SiliconBlood:
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_ENEMY)
         self.game_over = False
-
-        self.level_system = LevelSystem(1)  # First level
-        self.player = Player(self.level_system.spawn_pos[0][0],
-                             self.level_system.spawn_pos[0][1])
+        self.level = 1
+        self.level_system = LevelSystem(self.level)  # First level
+        self.player = Player(self.level_system.spawn_pos[0],
+                             self.level_system.spawn_pos[1])
         self.keyboard_system = KeyboardSystem()
         self.action_system = ActionSystem(self.level_system)
         self.camera_system = CameraSystem(self.level_system)
@@ -39,10 +39,18 @@ class SiliconBlood:
         self.container.add_system(self.action_system)
         self.container.add_entity(self.player)
 
+    def new_level(self):
+        print("reset")
+        for system in self.container.systems:
+            if getattr(system, "reset", None):
+                system.reset(self.level_system)
+                self.container.update()
+
     def game_loop(self):
         self.container.update()
 
         while not self.game_over:
+
             self.check_for_game_over()
             self.keyboard_system.update(self.container.entities)
             if self.keyboard_system.keys_pressed:
@@ -50,6 +58,9 @@ class SiliconBlood:
                 self.fov_system.update(self.container.entities)
                 self.display_system.update(self.container.entities)
                 self.action_system.update(self.container.entities)
+                if self.level_system.dungeon_level != self.level:
+                    self.new_level()
+                    self.level = self.level_system.dungeon_level
 
     def check_for_game_over(self):
         if self.keyboard_system.get_keys():

@@ -14,6 +14,9 @@ class FovSystem:
                                         not self.game_map[x][y].block_sight,
                                         not self.game_map[x][y].block_path)
 
+    def reset(self, level):
+        self.__init__(level)
+
     def update(self, entities):
         for e in entities:
             if e.has(FovComponent) and e.get(FovComponent).fov_recalculate:

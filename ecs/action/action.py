@@ -11,7 +11,8 @@ class ActionSystem:
             "take_stairs": self.take_stairs
         }
 
-
+    def reset(self, level):
+        self.__init__(level)
 
     def update(self, entities):
         for e in entities:
@@ -26,5 +27,9 @@ class ActionSystem:
         if entity.has(MovementComponent):
             entity_x = entity.get(MovementComponent).x
             entity_y = entity.get(MovementComponent).y
-        if self.level.level_map.tiles[entity_x][entity_y].name == "stairs":
-            print("on stairs")
+            if self.level.level_map.tiles[entity_x][entity_y].name == "stairs":
+                self.level.next_level()
+                entity.get(MovementComponent).x, \
+                entity.get(MovementComponent).y = self.level.spawn_pos
+                entity.get(MovementComponent).d_x, \
+                entity.get(MovementComponent).d_y = self.level.spawn_pos

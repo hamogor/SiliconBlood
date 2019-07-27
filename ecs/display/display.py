@@ -10,10 +10,12 @@ class DisplaySystem:
     __slots__ = ['level', 'camera', 'map', '_root_display']
 
     def __init__(self, level, camera):
-
         self.map = level.level_map
         self._root_display = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.camera = camera
+
+    def reset(self, level):
+        self.__init__(level, self.camera)
 
     def update(self, entities):
         for e in entities:
