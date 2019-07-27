@@ -50,12 +50,12 @@ class GameMap:
 
     def place_stairs(self):
         last_room = self._leafs[-1]
-        #self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].sprite = S_STAIRS
-        #self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].dark_sprite = S_DSTAIRS
-        #self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].name = "stairs"
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].sprite = S_STAIRS
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].dark_sprite = S_DSTAIRS
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].name = "stairs"
         # Spawn stairs next to player for testing
-        self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
-        self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"
+        #self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
+        #self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"
 
     def create_room(self, room):
         # set all tiles within a rectangle to 0
