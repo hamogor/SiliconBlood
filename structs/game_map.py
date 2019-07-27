@@ -50,9 +50,13 @@ class GameMap:
 
     def place_stairs(self):
         last_room = self._leafs[-1]
-        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].sprite = S_STAIRS
-        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].dark_sprite = S_DSTAIRS
-        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].name = "stairs"
+        stair_pos = self.tiles[last_room.room.center()[0]][last_room.room.center()[1]]
+        stair_pos.sprite = S_STAIRS
+        stair_pos.dark_sprite = S_DSTAIRS
+        stair_pos.name = "stairs"
+        stair_pos.sheet = S_TELEPORTER
+        stair_pos.cols = 32
+        stair_pos.rows = 32
         # Spawn stairs next to player for testing
         #self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
         #self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"

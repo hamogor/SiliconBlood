@@ -42,6 +42,7 @@ S_ENEMY = pygame.image.load("assets/Enemy.png")
 S_FOG = pygame.image.load("assets/fow.png")
 S_STAIRS = pygame.image.load("assets/stairs.png")
 S_DSTAIRS = pygame.image.load("assets/dark_stairs.png")
+S_TELEPORTER = pygame.image.load("assets/teleporter_spritesheet.png")
 LIGHTGREY = (100, 100, 100)
 
 # Fov settings
