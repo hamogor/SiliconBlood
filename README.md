@@ -1,1 +1,1 @@
-![title-splash](assets/BannerUpscale.png)
+![title-splash](assets/blue.png)
