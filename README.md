@@ -1,4 +1,4 @@
-![title-splash](assets/blue.png)
+![title-splash](assets/DraftSplash_transparent.png)
 
 **Development Log**:
 - Initial Commit: 19th June 2019

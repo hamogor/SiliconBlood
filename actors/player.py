@@ -14,6 +14,8 @@ class Player(Entity):
         self.name = 'player'
         self.sprite = S_PLAYER
         self.action_to_perform = {"no_action": ""}
+
+        # Pass components
         super().__init__(DisplayComponent(self.sprite, 0, 0),
                          MovementComponent(spawn_x, spawn_y, spawn_x, spawn_y),
                          FovComponent(),
@@ -21,6 +23,7 @@ class Player(Entity):
                          ActionComponent("take_stairs"))
         self.set(KeyboardComponent(self._process_input))
 
+    # Key-binds for player
     def _process_input(self, keys_pressed):
         for key_pressed in keys_pressed:
             if key_pressed in MOVE_N:

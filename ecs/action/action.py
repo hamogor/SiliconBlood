@@ -3,7 +3,6 @@ from ecs.movement.movement_component import MovementComponent
 
 
 class ActionSystem:
-    actions = {}
 
     def __init__(self, level):
         self.level = level
@@ -11,6 +10,7 @@ class ActionSystem:
             "take_stairs": self.take_stairs
         }
 
+    # Function to reinitialise system for next level
     def reset(self, level):
         self.__init__(level)
 
