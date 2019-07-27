@@ -23,6 +23,7 @@ class GameMap:
         self.level = []
         self.first_room = False
         self.tiles = self.generate_level()
+        self.place_stairs()
 
     def generate_level(self):
         # Creates an empty 2D array or clears existing array
@@ -46,6 +47,12 @@ class GameMap:
         root_leaf.create_rooms(self)
         self.fill_map()
         return self.level
+
+    def place_stairs(self):
+        last_room = self._leafs[-1]
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].sprite = S_STAIRS
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].dark_sprite = S_DSTAIRS
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]].name = "stairs"
 
     def create_room(self, room):
         # set all tiles within a rectangle to 0

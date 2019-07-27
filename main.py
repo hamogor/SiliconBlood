@@ -8,6 +8,7 @@ from ecs.fov.fov import FovSystem
 from ecs.keyboard.keyboard import KeyboardSystem
 from ecs.movement.movement import MovementSystem
 from ecs.level.level import LevelSystem
+from ecs.action.action import ActionSystem
 
 from actors.player import Player
 
@@ -23,6 +24,7 @@ class SiliconBlood:
         self.player = Player(self.level_system.spawn_pos[0][0],
                              self.level_system.spawn_pos[0][1])
         self.keyboard_system = KeyboardSystem()
+        self.action_system = ActionSystem(self.level_system)
         self.camera_system = CameraSystem(self.level_system)
         self.display_system = DisplaySystem(self.level_system, self.camera_system)
         self.fov_system = FovSystem(self.level_system)
@@ -34,6 +36,7 @@ class SiliconBlood:
         self.container.add_system(self.fov_system)
         self.container.add_system(self.display_system)
         self.container.add_system(self.movement_system)
+        self.container.add_system(self.action_system)
         self.container.add_entity(self.player)
 
     def game_loop(self):
@@ -46,6 +49,7 @@ class SiliconBlood:
                 self.movement_system.update(self.container.entities)
                 self.fov_system.update(self.container.entities)
                 self.display_system.update(self.container.entities)
+                self.action_system.update(self.container.entities)
 
     def check_for_game_over(self):
         if self.keyboard_system.get_keys():
