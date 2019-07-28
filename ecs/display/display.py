@@ -6,14 +6,14 @@ import pygame
 import tcod
 
 
-
 class DisplaySystem:
-    __slots__ = ['level', 'camera', 'map', '_root_display']
+    __slots__ = ['level', 'camera', 'map', '_root_display', 'display']
 
-    def __init__(self, level, camera):
+    def __init__(self, level, camera, display):
         self.map = level.level_map
-        self._root_display = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+        self.display = display
         self.camera = camera
+        self._root_display = pygame.Surface((WIDTH, HEIGHT))
 
     def reset(self, level):
         self.__init__(level, self.camera)
@@ -48,4 +48,5 @@ class DisplaySystem:
             self._root_display.blit(e.get(DisplayComponent).sprite,
                                     ((e.get(MovementComponent).x - self.camera.x) * TILESIZE,
                                     (e.get(MovementComponent).y - self.camera.y) * TILESIZE))
+            self.display.blit(self._root_display, (0, 0))
             pygame.display.flip()

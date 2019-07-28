@@ -1,5 +1,5 @@
 import pygame
-from settings import TITLE, QUIT, S_ENEMY
+from settings import TITLE, QUIT, S_ENEMY, WIDTH, HEIGHT
 
 from ecs.container import Container
 from ecs.display.display import DisplaySystem
@@ -9,8 +9,8 @@ from ecs.keyboard.keyboard import KeyboardSystem
 from ecs.movement.movement import MovementSystem
 from ecs.level.level import LevelSystem
 from ecs.action.action import ActionSystem
-
 from actors.player import Player
+import os
 
 
 class SiliconBlood:
@@ -18,6 +18,8 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_ENEMY)
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+        self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.game_over = False
         self.level = 1
         self.level_system = LevelSystem(self.level)  # First level
@@ -26,7 +28,7 @@ class SiliconBlood:
         self.keyboard_system = KeyboardSystem()
         self.action_system = ActionSystem(self.level_system)
         self.camera_system = CameraSystem(self.level_system)
-        self.display_system = DisplaySystem(self.level_system, self.camera_system)
+        self.display_system = DisplaySystem(self.level_system, self.camera_system, self.display)
         self.fov_system = FovSystem(self.level_system)
         self.movement_system = MovementSystem(self.level_system)
 

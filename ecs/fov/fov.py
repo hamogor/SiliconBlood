@@ -10,6 +10,7 @@ class FovSystem:
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
         for y in range(GRIDWIDTH):
             for x in range(GRIDHEIGHT):
+                print(x, y)
                 tcod.map_set_properties(self.fov_map, x, y,
                                         not self.game_map[x][y].block_sight,
                                         not self.game_map[x][y].block_path)
