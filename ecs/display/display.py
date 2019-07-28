@@ -6,6 +6,7 @@ import pygame
 import tcod
 
 
+
 class DisplaySystem:
     __slots__ = ['level', 'camera', 'map', '_root_display']
 
