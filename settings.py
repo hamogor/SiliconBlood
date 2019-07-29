@@ -45,6 +45,17 @@ S_FOG = pygame.image.load("assets/fow.png")
 S_STAIRS = pygame.image.load("assets/stairs.png")
 S_DSTAIRS = pygame.image.load("assets/dark_stairs.png")
 S_TELEPORTER = pygame.image.load("assets/teleporter_spritesheet.png")
+
+S_DUNGEON_FLOOR = {"floor": pygame.image.load("assets/dungeon_floor/floor.png"),
+                   "floor_bottom": pygame.image.load("assets/dungeon_floor/floor_bottom.png"),
+                   "floor_bottom_left": pygame.image.load("assets/dungeon_floor/floor_bottom_left.png"),
+                   "floor_bottom_right": pygame.image.load("assets/dungeon_floor/floor_bottom_right.png"),
+                   "floor_left": pygame.image.load("assets/dungeon_floor/floor_left.png"),
+                   "floor_right": pygame.image.load("assets/dungeon_floor/floor_right.png"),
+                   "floor_top": pygame.image.load("assets/dungeon_floor/floor_top.png"),
+                   "floor_top_left": pygame.image.load("assets/dungeon_floor/floor_top_left.png"),
+                   "floor_top_right": pygame.image.load("assets/dungeon_floor/floor_top_right.png")}
+
 LIGHTGREY = (100, 100, 100)
 
 # Fov settings

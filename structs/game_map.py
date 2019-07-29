@@ -2,6 +2,7 @@ from structs.tile import StrucTile
 from structs.rect import Rect
 from settings import *
 import random
+import pygame
 import tcod as libtcod
 
 
@@ -58,19 +59,23 @@ class GameMap:
         stair_pos.cols = 32
         stair_pos.rows = 32
         # Spawn stairs next to player for testing
-        #self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
-        #self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"
+        self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
+        self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"
 
     def create_room(self, room):
         # set all tiles within a rectangle to 0
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
+                test_room = pygame.Rect((room.x1, room.x2), (room.y1, room.y2))
+                self.level[x][y].sprite = S_FLOOR
                 self.level[x][y].block_path = False
                 self.level[x][y].block_sight = False
-                self.level[x][y].sprite = S_FLOOR
                 self.level[x][y].dark_sprite = S_DFLOOR
                 if not self.first_room:
                     self.first_room = room.center()
+                # Calculate corners and wall sides to place floor tiles
+                self.level[test_room.topleft[0]][test_room.topright[1]].sprite = S_DUNGEON_FLOOR["floor_top_right"]
+        print(test_room.topright, test_room)
 
     def create_hall(self, room1, room2):
         # connect two rooms by hallways

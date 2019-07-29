@@ -18,7 +18,7 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_ENEMY)
-        os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+        #os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
         self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.game_over = False
         self.level = 1

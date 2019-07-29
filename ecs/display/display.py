@@ -16,7 +16,7 @@ class DisplaySystem:
         self._root_display = pygame.Surface((WIDTH, HEIGHT))
 
     def reset(self, level):
-        self.__init__(level, self.camera)
+        self.__init__(level, self.camera, self.display)
 
     def update(self, entities):
         for e in entities:
