@@ -15,7 +15,7 @@ FPS = 60
 TILESIZE = 32
 
 # Full map size
-GRIDWIDTH, GRIDHEIGHT = 64, 64
+GRIDWIDTH, GRIDHEIGHT = 64,64
 
 
 # Camera size

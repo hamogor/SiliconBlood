@@ -1804,8 +1804,8 @@ class MessyBSPTree:
             if (0 < drunkardX + dx < self.mapWidth - 1) and (0 < drunkardY + dy < self.mapHeight - 1):
                 drunkardX += dx
                 drunkardY += dy
-                if self.level[drunkardX][drunkardY] == 1:
-                    self.level[drunkardX][drunkardY] = 0
+                if self.level[int(drunkardX)][int(drunkardY)] == 1:
+                    self.level[int(drunkardX)][int(drunkardY)] = 0
 
     def cleanUpMap(self, mapWidth, mapHeight):
         if (self.smoothEdges):
