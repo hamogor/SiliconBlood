@@ -42,7 +42,7 @@ class SiliconBlood:
         self.container.add_entity(self.player)
 
     def new_level(self):
-        print("reset")
+        print("new_level")
         for system in self.container.systems:
             if getattr(system, "reset", None):
                 system.reset(self.level_system)

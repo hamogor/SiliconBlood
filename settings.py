@@ -15,7 +15,7 @@ FPS = 60
 TILESIZE = 32
 
 # Full map size
-GRIDWIDTH, GRIDHEIGHT = 64,64
+GRIDWIDTH, GRIDHEIGHT = 64, 64
 
 
 # Camera size
@@ -31,7 +31,7 @@ MOVE_NW = (pygame.K_KP7, pygame.K_y)
 MOVE_NE = (pygame.K_KP9, pygame.K_u)
 MOVE_SW = (pygame.K_KP1, pygame.K_b)
 MOVE_SE = (pygame.K_KP3, pygame.K_n)
-TAKE_STAIRS = (pygame.K_COMMA)
+TAKE_STAIRS = pygame.K_COMMA
 QUIT = pygame.K_ESCAPE
 
 # Load assets

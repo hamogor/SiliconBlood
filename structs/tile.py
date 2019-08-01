@@ -1,11 +1,10 @@
-from ecs.animation.animation_component import AnimationComponent
 from ecs.entity import Entity
 import pygame
 
 
 class StrucTile(pygame.Surface, Entity):
-    def __init__(self, block_path, block_sight, sprite=None, dark_sprite=None, sheet=None, cols=None, rows=None):
-        self.name = ""
+    def __init__(self, block_path, block_sight, sprite=None, dark_sprite=None, name=""):
+        self.name = name
         self.block_path = block_path
         self.block_sight = block_sight
         self.sprite = sprite

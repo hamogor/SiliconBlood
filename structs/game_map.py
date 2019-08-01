@@ -72,8 +72,8 @@ class GameMap:
 
     def place_stairs(self):
         last_room = self._leafs[-1]
-        print(last_room.room.center())
-        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]] = StrucTile(False, False, S_TELEPORTER, S_DSTAIRS)
+        x, y = (last_room.room.center()[0], last_room.room.center()[1])
+        self.tiles[x][y] = StrucTile(False, False, S_TELEPORTER, S_DSTAIRS, "stairs")
 
     def create_hall(self, room1, room2):
         # run a heavily weighted random Walk

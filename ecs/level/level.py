@@ -21,4 +21,5 @@ class LevelSystem:
 
     def set_spawn(self):
         self.spawn_pos = self.level_map.first_room
+        print(self.spawn_pos)
 
