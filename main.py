@@ -18,8 +18,9 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_ENEMY)
-        #os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
         self.display = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.clock = pygame.time.Clock()
         self.game_over = False
         self.level = 1
         self.level_system = LevelSystem(self.level)  # First level
@@ -42,7 +43,6 @@ class SiliconBlood:
         self.container.add_entity(self.player)
 
     def new_level(self):
-        print("new_level")
         for system in self.container.systems:
             if getattr(system, "reset", None):
                 system.reset(self.level_system)

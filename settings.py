@@ -1,28 +1,29 @@
 import pygame
 pygame.init()
-
+print(pygame.display.Info())
 TITLE = "Silicon Blood"
 
 # game settings
 #WIDTH = pygame.display.Info().current_w # 16 * 64 or 32 * 32 or 64 * 16
 #HEIGHT = pygame.display.Info().current_h  # 16 * 48 or 32 * 24 or 64 * 12
 
-WIDTH, HEIGHT = 1920, 1080
-
 FPS = 60
 
 # Sprite size
 TILESIZE = 32
 
-# Full map size
-GRIDWIDTH, GRIDHEIGHT = 64, 64
+WIDTH, HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h
 
+# Full map size
 
 # Camera size
-CAM_WIDTH = 32
-CAM_HEIGHT = 32
+CAM_WIDTH = int(WIDTH / TILESIZE)
+CAM_HEIGHT = int(HEIGHT / TILESIZE)
 
-# Keybinds
+GRIDWIDTH = 64
+GRIDHEIGHT = 64
+
+# Key-binds
 MOVE_N = (pygame.K_KP8, pygame.K_k, pygame.K_UP)
 MOVE_S = (pygame.K_KP2, pygame.K_j, pygame.K_DOWN)
 MOVE_W = (pygame.K_KP4, pygame.K_h, pygame.K_LEFT)

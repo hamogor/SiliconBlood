@@ -22,13 +22,16 @@ class DisplaySystem:
         for e in entities:
             self.camera.update(e)
             if e.get(FovComponent).fov_recalculate:
-                for cam_y in range(0, CAM_WIDTH):
-                    for cam_x in range(0, CAM_HEIGHT):
+                for cam_y in range(0, 128):
+                    for cam_x in range(0, 128):
                         x, y = self.camera.apply(cam_x, cam_y)
-                        block_path = self.map.tiles[x][y].block_path
+                        try:
+                            block_path = self.map.tiles[x][y].block_path
+                            sprite = self.map.tiles[x][y].sprite
+                        except IndexError as exception:
+                            continue
                         visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                         put_x, put_y = cam_x * TILESIZE, cam_y * TILESIZE
-                        sprite = self.map.tiles[x][y].sprite
                         if visible:
                             if block_path:
                                 self._root_display.blit(sprite, (put_x, put_y))
