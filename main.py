@@ -23,9 +23,8 @@ class SiliconBlood:
         self.game_over = False
         self.level = 1
         self.level_system = LevelSystem(self.level)  # First level
-        #self.player = Player(self.level_system.spawn_pos[0],
-        #                     self.level_system.spawn_pos[1])
-        self.player = Player(10, 10)
+        self.player = Player(self.level_system.spawn_pos[0],
+                             self.level_system.spawn_pos[1])
         self.keyboard_system = KeyboardSystem()
         self.action_system = ActionSystem(self.level_system)
         self.camera_system = CameraSystem(self.level_system)

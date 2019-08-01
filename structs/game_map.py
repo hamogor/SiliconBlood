@@ -6,40 +6,45 @@ import pygame
 import tcod as libtcod
 
 
-
 class GameMap:
+    '''
+    A Binary Space Partition connected by a severely weighted
+    drunkards walk algorithm.
+    Requires Leaf and Rect classes.
+    '''
+
     def __init__(self):
-        self.width = GRIDWIDTH
-        self.height = GRIDHEIGHT
-        self.list_rooms = []
-        self.list_regions = []
-        self.list_objects = []
+        self.level = []
         self.room = None
+        self.MAX_LEAF_SIZE = 24
+        self.ROOM_MAX_SIZE = 15
+        self.ROOM_MIN_SIZE = 6
+        self.smooth_edges = True
+        self.smoothing = 1
+        self.filling = 3
         self.width = GRIDWIDTH
         self.height = GRIDHEIGHT
         self._leafs = []
-        self.MAX_LEAF_SIZE = 35
-        self.ROOM_MAX_SIZE = 25
-        self.ROOM_MIN_SIZE = 8
-        self.level = []
         self.first_room = False
-        #self.tiles = self.generate_level()
-        self.messyBSPTree = MessyBSPTree()
-        self.tiles = self.messyBSPTree.generate_level(GRIDWIDTH, GRIDHEIGHT)
-        #self.place_stairs()
+        self.tiles = self.generate_level()
+        self.place_stairs()
 
     def generate_level(self):
         # Creates an empty 2D array or clears existing array
-        self.level = [[StrucTile(True, True) for y in range(self.height)] for x in range(self.width)]
-        root_leaf = Leaf(0, 0, self.width, self.height)
+        
+        self.level = [[StrucTile(True, True)
+                       for _ in range(self.width)]
+                      for _ in range(self.height)]
 
+        root_leaf = Leaf(0, 0, self.width, self.height)
         self._leafs.append(root_leaf)
+
         split_successfully = True
         # loop through all leaves until they can no longer split successfully
         while split_successfully:
             split_successfully = False
             for l in self._leafs:
-                if (l.child_1 is None) and (l.child_2 is None):
+                if l.child_1 is None and l.child_2 is None:
                     if ((l.width > self.MAX_LEAF_SIZE) or
                             (l.height > self.MAX_LEAF_SIZE) or
                             (random.random() > 0.8)):
@@ -47,87 +52,108 @@ class GameMap:
                             self._leafs.append(l.child_1)
                             self._leafs.append(l.child_2)
                             split_successfully = True
-        root_leaf.create_rooms(self)
-        self.fill_map()
-        return self.level
 
-    def place_stairs(self):
-        last_room = self._leafs[-1]
-        stair_pos = self.tiles[last_room.room.center()[0]][last_room.room.center()[1]]
-        stair_pos.sprite = S_STAIRS
-        stair_pos.dark_sprite = S_DSTAIRS
-        stair_pos.name = "stairs"
-        stair_pos.sheet = S_TELEPORTER
-        stair_pos.cols = 32
-        stair_pos.rows = 32
-        # Spawn stairs next to player for testing
-        self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
-        self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"
+        root_leaf.create_rooms(self)
+        self.clean_up_map(self.width, self.height)
+        for x in range(GRIDWIDTH):
+            for y in range(GRIDHEIGHT):
+                if self.level[x][y].sprite is None:
+                    self.level[x][y].sprite = S_WALL
+                    self.level[x][y].dark_sprite = S_DWALL
+        return self.level
 
     def create_room(self, room):
         # set all tiles within a rectangle to 0
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
-                test_room = pygame.Rect((room.x1, room.x2), (room.y1, room.y2))
-                self.level[x][y].sprite = S_FLOOR
-                self.level[x][y].block_path = False
-                self.level[x][y].block_sight = False
-                self.level[x][y].dark_sprite = S_DFLOOR
+                self.level[x][y] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
                 if not self.first_room:
                     self.first_room = room.center()
-                # Calculate corners and wall sides to place floor tiles
+
+    def place_stairs(self):
+        last_room = self._leafs[-1]
+        print(last_room.room.center())
+        self.tiles[last_room.room.center()[0]][last_room.room.center()[1]] = StrucTile(False, False, S_TELEPORTER, S_DSTAIRS)
 
     def create_hall(self, room1, room2):
-        # connect two rooms by hallways
-        x1, y1 = room1.center()
-        x2, y2 = room2.center()
-        # 50% chance that a tunnel will start horizontally
-        if random.randint(0, 1) == 1:
-            self.create_h_tunnel(x1, x2, y1)
-            self.create_v_tunnel(y1, y2, x2)
-        else:  # else it starts vertically
-            self.create_v_tunnel(y1, y2, x1)
-            self.create_h_tunnel(x1, x2, y2)
+        # run a heavily weighted random Walk
+        # from point2 to point1
+        drunkard_x, drunkard_y = room2.center()
+        goal_x, goal_y = room1.center()
+        while not (room1.x1 <= drunkard_x <= room1.x2) or not (room1.y1 < drunkard_y < room1.y2):  #
+            # ==== Choose Direction ====
+            north = 1.0
+            south = 1.0
+            east = 1.0
+            west = 1.0
 
-    def create_h_tunnel(self, x1, x2, y):
-        for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.level[x][y].block_path = False
-            self.level[x][y].block_sight = False
-            self.level[x][y].sprite = S_FLOOR
-            self.level[x][y].dark_sprite = S_DFLOOR
+            weight = 1
 
-    def create_v_tunnel(self, y1, y2, x):
-        for y in range(min(y1, y2), max(y1, y2) + 1):
-            self.level[x][y].block_path = False
-            self.level[x][y].block_sight = False
-            self.level[x][y].sprite = S_FLOOR
-            self.level[x][y].dark_sprite = S_DFLOOR
+            # weight the random walk against edges
+            if drunkard_x < goal_x:  # drunkard is left of point1
+                east += weight
+            elif drunkard_x > goal_x:  # drunkard is right of point1
+                west += weight
+            if drunkard_y < goal_y:  # drunkard is above point1
+                south += weight
+            elif drunkard_y > goal_y:  # drunkard is below point1
+                north += weight
 
-    def fill_map(self):
-        for x in range(self.width):
-            for y in range(self.height):
-                if self.level[x][y].sprite is None:
-                    self.level[x][y].sprite = S_WALL
-                    self.level[x][y].dark_sprite = S_DWALL
+            # normalize probabilities so they form a range from 0 to 1
+            total = north + south + east + west
+            north /= total
+            south /= total
+            east /= total
+            west /= total
 
+            # choose the direction
+            choice = random.random()
+            if 0 <= choice < north:
+                dx = 0
+                dy = -1
+            elif north <= choice < (north + south):
+                dx = 0
+                dy = 1
+            elif (north + south) <= choice < (north + south + east):
+                dx = 1
+                dy = 0
+            else:
+                dx = -1
+                dy = 0
 
+            # ==== Walk ====
+            # check collision at edges
+            if (0 < drunkard_x + dx < self.width - 1) and (0 < drunkard_y + dy < self.height - 1):
+                drunkard_x += dx
+                drunkard_y += dy
+                if self.level[int(drunkard_x)][int(drunkard_y)].block_path:
+                    self.level[int(drunkard_x)][int(drunkard_y)] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
 
-class Rect:  # used for the tunneling algorithm
-    def __init__(self, x, y, w, h):
-        self.x1 = x
-        self.y1 = y
-        self.x2 = x + w
-        self.y2 = y + h
+    def clean_up_map(self, width, height):
+        if self.smooth_edges:
+            for i in range(3):
+                # Look at each cell individually and check for smoothness
+                for x in range(1, width - 1):
+                    for y in range(1, height - 1):
+                        if (self.level[x][y].block_path) and (self.get_adjacent_walls_simple(x, y) <= self.smoothing):
+                            self.level[x][y] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
 
-    def center(self):
-        centerX = (self.x1 + self.x2) / 2
-        centerY = (self.y1 + self.y2) / 2
-        return (centerX, centerY)
+                        if (not self.level[x][y].block_path) and (self.get_adjacent_walls_simple(x, y) >= self.filling):
+                            self.level[x][y] = StrucTile(True, True, S_WALL, S_DWALL)
 
-    def intersect(self, other):
-        # returns true if this rectangle intersects with another one
-        return (self.x1 <= other.x2 and self.x2 >= other.x1 and
-                self.y1 <= other.y2 and self.y2 >= other.y1)
+    def get_adjacent_walls_simple(self, x, y):  # finds the walls in four directions
+        wall_counter = 0
+        # print("(",x,",",y,") = ",self.level[x][y])
+        if self.level[x][y - 1].block_path:  # Check north
+            wall_counter += 1
+        if self.level[x][y + 1].block_path:  # Check south
+            wall_counter += 1
+        if self.level[x - 1][y].block_path:  # Check west
+            wall_counter += 1
+        if self.level[x + 1][y].block_path:  # Check east
+            wall_counter += 1
+
+        return wall_counter
 
 
 class Leaf:  # used for the BSP tree algorithm
@@ -194,7 +220,7 @@ class Leaf:  # used for the BSP tree algorithm
             y = random.randint(self.y, self.y + (self.height - 1) - h)
             self.room = Rect(x, y, w, h)
             bsp_tree.create_room(self.room)
-            
+
     def maxget_room(self):
         if self.room:
             return self.room
@@ -217,143 +243,3 @@ class Leaf:  # used for the BSP tree algorithm
                 return self.room_1
             else:
                 return self.room_2
-            
-            
-class MessyBSPTree:
-    '''
-    A Binary Space Partition connected by a severely weighted
-    drunkards walk algorithm.
-    Requires Leaf and Rect classes.
-    '''
-
-    def __init__(self):
-        self.level = []
-        self.room = None
-        self.MAX_LEAF_SIZE = 24
-        self.ROOM_MAX_SIZE = 15
-        self.ROOM_MIN_SIZE = 6
-        self.smooth_edges = True
-        self.smoothing = 1
-        self.filling = 3
-        self.map_width = GRIDWIDTH
-        self.map_height = GRIDHEIGHT
-        self._leafs = []
-
-    def generate_level(self, map_width, map_height):
-        # Creates an empty 2D array or clears existing array
-        
-        self.level = [[StrucTile(True, True)
-                       for _ in range(map_height)]
-                      for _ in range(map_width)]
-
-        root_leaf = Leaf(0, 0, map_width, map_height)
-        self._leafs.append(root_leaf)
-
-        split_successfully = True
-        # loop through all leaves until they can no longer split successfully
-        while split_successfully:
-            split_successfully = False
-            for l in self._leafs:
-                if l.child_1 is None and l.child_2 is None:
-                    if ((l.width > self.MAX_LEAF_SIZE) or
-                            (l.height > self.MAX_LEAF_SIZE) or
-                            (random.random() > 0.8)):
-                        if l.split_leaf():  # try to split the leaf
-                            self._leafs.append(l.child_1)
-                            self._leafs.append(l.child_2)
-                            split_successfully = True
-
-        root_leaf.create_rooms(self)
-        self.clean_up_map(map_width, map_height)
-        for x in range(GRIDWIDTH):
-            for y in range(GRIDHEIGHT):
-                if self.level[x][y].sprite is None:
-                    self.level[x][y].sprite = S_WALL
-                    self.level[x][y].dark_sprite = S_DWALL
-        return self.level
-
-    def create_room(self, room):
-        # set all tiles within a rectangle to 0
-        for x in range(room.x1 + 1, room.x2):
-            for y in range(room.y1 + 1, room.y2):
-                self.level[x][y] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
-
-    def create_hall(self, room1, room2):
-        # run a heavily weighted random Walk
-        # from point2 to point1
-        drunkard_x, drunkard_y = room2.center()
-        goal_x, goal_y = room1.center()
-        while not (room1.x1 <= drunkard_x <= room1.x2) or not (room1.y1 < drunkard_y < room1.y2):  #
-            # ==== Choose Direction ====
-            north = 1.0
-            south = 1.0
-            east = 1.0
-            west = 1.0
-
-            weight = 1
-
-            # weight the random walk against edges
-            if drunkard_x < goal_x:  # drunkard is left of point1
-                east += weight
-            elif drunkard_x > goal_x:  # drunkard is right of point1
-                west += weight
-            if drunkard_y < goal_y:  # drunkard is above point1
-                south += weight
-            elif drunkard_y > goal_y:  # drunkard is below point1
-                north += weight
-
-            # normalize probabilities so they form a range from 0 to 1
-            total = north + south + east + west
-            north /= total
-            south /= total
-            east /= total
-            west /= total
-
-            # choose the direction
-            choice = random.random()
-            if 0 <= choice < north:
-                dx = 0
-                dy = -1
-            elif north <= choice < (north + south):
-                dx = 0
-                dy = 1
-            elif (north + south) <= choice < (north + south + east):
-                dx = 1
-                dy = 0
-            else:
-                dx = -1
-                dy = 0
-
-            # ==== Walk ====
-            # check collision at edges
-            if (0 < drunkard_x + dx < self.map_width - 1) and (0 < drunkard_y + dy < self.map_height - 1):
-                drunkard_x += dx
-                drunkard_y += dy
-                if self.level[int(drunkard_x)][int(drunkard_y)].block_path:
-                    self.level[int(drunkard_x)][int(drunkard_y)] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
-
-    def clean_up_map(self, map_width, map_height):
-        if self.smooth_edges:
-            for i in range(3):
-                # Look at each cell individually and check for smoothness
-                for x in range(1, map_width - 1):
-                    for y in range(1, map_height - 1):
-                        if (self.level[x][y].block_path) and (self.get_adjacent_walls_simple(x, y) <= self.smoothing):
-                            self.level[x][y] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
-
-                        if (not self.level[x][y].block_path) and (self.get_adjacent_walls_simple(x, y) >= self.filling):
-                            self.level[x][y] = StrucTile(True, True, S_WALL, S_DWALL)
-
-    def get_adjacent_walls_simple(self, x, y):  # finds the walls in four directions
-        wall_counter = 0
-        # print("(",x,",",y,") = ",self.level[x][y])
-        if self.level[x][y - 1].block_path:  # Check north
-            wall_counter += 1
-        if self.level[x][y + 1].block_path:  # Check south
-            wall_counter += 1
-        if self.level[x - 1][y].block_path:  # Check west
-            wall_counter += 1
-        if self.level[x + 1][y].block_path:  # Check east
-            wall_counter += 1
-
-        return wall_counter

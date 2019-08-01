@@ -23,10 +23,7 @@ class MovementSystem:
             entity.get(MovementComponent).x = direction_x
             entity.get(MovementComponent).y = direction_y
         else:
-            entity.get(FovComponent).fov_recalculate = True
-            entity.get(MovementComponent).x = direction_x
-            entity.get(MovementComponent).y = direction_y
-            #entity.get(MovementComponent).x = current_x
-            #entity.get(MovementComponent).y = current_y
-            #entity.get(MovementComponent).d_x = current_x
-            #entity.get(MovementComponent).d_y = current_y
+            entity.get(MovementComponent).x = current_x
+            entity.get(MovementComponent).y = current_y
+            entity.get(MovementComponent).d_x = current_x
+            entity.get(MovementComponent).d_y = current_y

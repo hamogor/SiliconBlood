@@ -531,3 +531,105 @@ class RoomAddition:
             self.tiles[int(x)][int(y)].sprite = S_FLOOR
             self.tiles[int(x)][int(y)].dark_sprite = S_DFLOOR
 
+class GameMap:
+    def __init__(self):
+        self.width = GRIDWIDTH
+        self.height = GRIDHEIGHT
+        self.list_rooms = []
+        self.list_regions = []
+        self.list_objects = []
+        self.room = None
+        self.width = GRIDWIDTH
+        self.height = GRIDHEIGHT
+        self._leafs = []
+        self.MAX_LEAF_SIZE = 35
+        self.ROOM_MAX_SIZE = 25
+        self.ROOM_MIN_SIZE = 8
+        self.level = []
+        self.first_room = False
+        #self.tiles = self.generate_level()
+        self.messyBSPTree = MessyBSPTree()
+        self.tiles = self.messyBSPTree.generate_level(GRIDWIDTH, GRIDHEIGHT)
+        #self.place_stairs()
+
+    def generate_level(self):
+        # Creates an empty 2D array or clears existing array
+        self.level = [[StrucTile(True, True) for y in range(self.height)] for x in range(self.width)]
+        root_leaf = Leaf(0, 0, self.width, self.height)
+
+        self._leafs.append(root_leaf)
+        split_successfully = True
+        # loop through all leaves until they can no longer split successfully
+        while split_successfully:
+            split_successfully = False
+            for l in self._leafs:
+                if (l.child_1 is None) and (l.child_2 is None):
+                    if ((l.width > self.MAX_LEAF_SIZE) or
+                            (l.height > self.MAX_LEAF_SIZE) or
+                            (random.random() > 0.8)):
+                        if l.split_leaf():  # try to split the leaf
+                            self._leafs.append(l.child_1)
+                            self._leafs.append(l.child_2)
+                            split_successfully = True
+        root_leaf.create_rooms(self)
+        self.fill_map()
+        return self.level
+
+    def place_stairs(self):
+        last_room = self._leafs[-1]
+        stair_pos = self.tiles[last_room.room.center()[0]][last_room.room.center()[1]]
+        stair_pos.sprite = S_STAIRS
+        stair_pos.dark_sprite = S_DSTAIRS
+        stair_pos.name = "stairs"
+        stair_pos.sheet = S_TELEPORTER
+        stair_pos.cols = 32
+        stair_pos.rows = 32
+        # Spawn stairs next to player for testing
+        self.tiles[self.first_room[0]][self.first_room[1]].sprite = S_STAIRS
+        self.tiles[self.first_room[0]][self.first_room[1]].name = "stairs"
+
+    def create_room(self, room):
+        # set all tiles within a rectangle to 0
+        for x in range(room.x1 + 1, room.x2):
+            for y in range(room.y1 + 1, room.y2):
+                test_room = pygame.Rect((room.x1, room.x2), (room.y1, room.y2))
+                self.level[x][y].sprite = S_FLOOR
+                self.level[x][y].block_path = False
+                self.level[x][y].block_sight = False
+                self.level[x][y].dark_sprite = S_DFLOOR
+                if not self.first_room:
+                    self.first_room = room.center()
+                # Calculate corners and wall sides to place floor tiles
+
+    def create_hall(self, room1, room2):
+        # connect two rooms by hallways
+        x1, y1 = room1.center()
+        x2, y2 = room2.center()
+        # 50% chance that a tunnel will start horizontally
+        if random.randint(0, 1) == 1:
+            self.create_h_tunnel(x1, x2, y1)
+            self.create_v_tunnel(y1, y2, x2)
+        else:  # else it starts vertically
+            self.create_v_tunnel(y1, y2, x1)
+            self.create_h_tunnel(x1, x2, y2)
+
+    def create_h_tunnel(self, x1, x2, y):
+        for x in range(min(x1, x2), max(x1, x2) + 1):
+            self.level[x][y].block_path = False
+            self.level[x][y].block_sight = False
+            self.level[x][y].sprite = S_FLOOR
+            self.level[x][y].dark_sprite = S_DFLOOR
+
+    def create_v_tunnel(self, y1, y2, x):
+        for y in range(min(y1, y2), max(y1, y2) + 1):
+            self.level[x][y].block_path = False
+            self.level[x][y].block_sight = False
+            self.level[x][y].sprite = S_FLOOR
+            self.level[x][y].dark_sprite = S_DFLOOR
+
+    def fill_map(self):
+        for x in range(self.width):
+            for y in range(self.height):
+                if self.level[x][y].sprite is None:
+                    self.level[x][y].sprite = S_WALL
+                    self.level[x][y].dark_sprite = S_DWALL
