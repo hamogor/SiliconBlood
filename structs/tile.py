@@ -10,6 +10,7 @@ class StrucTile(pygame.Surface, Entity):
         self.sprite = sprite
         self.dark_sprite = dark_sprite
         self.explored = False
+        self.assignment = 0
         #self.rect = sheet.get_rect()
 
         # Give the tile an animation component

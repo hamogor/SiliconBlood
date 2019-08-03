@@ -37,16 +37,15 @@ QUIT = pygame.K_ESCAPE
 # Load assets
 S_PLAYER = pygame.image.load("assets/player.png")
 S_WALL = pygame.image.load("assets/wall.png")
-#S_FLOOR = pygame.image.load("assets/floor.png")
 S_DWALL = pygame.image.load("assets/dark_wall.png")
 S_FLOOR = pygame.image.load("assets/new_floor.png")
 S_DFLOOR = pygame.image.load("assets/new_floor_dark.png")
-#S_DFLOOR = pygame.image.load("assets/dark_floor.png")
 S_ENEMY = pygame.image.load("assets/Enemy.png")
 S_FOG = pygame.image.load("assets/fow.png")
 S_STAIRS = pygame.image.load("assets/stairs.png")
 S_DSTAIRS = pygame.image.load("assets/dark_stairs.png")
 S_TELEPORTER = pygame.image.load("assets/teleporter_spritesheet.png")
+S_WALL_BITMASK = pygame.image.load("assets/wall_bitmask.png")
 
 S_DUNGEON_FLOOR = {"floor": pygame.image.load("assets/dungeon_floor/floor.png"),
                    "floor_bottom": pygame.image.load("assets/dungeon_floor/floor_bottom.png"),

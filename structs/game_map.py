@@ -1,3 +1,4 @@
+from structs.assets import Tileset, Assets
 from structs.tile import StrucTile
 from structs.rect import Rect
 from settings import *
@@ -27,7 +28,9 @@ class GameMap:
         self._leafs = []
         self.first_room = False
         self.tiles = self.generate_level()
+        self.assign_tiles()
         self.place_stairs()
+        #self.load_tileset()
 
     def generate_level(self):
         # Creates an empty 2D array or clears existing array
@@ -61,6 +64,42 @@ class GameMap:
                     self.level[x][y].sprite = S_WALL
                     self.level[x][y].dark_sprite = S_DWALL
         return self.level
+
+    def assign_tiles(self):
+        # loop through map looking for the walls, then assign bitoperator
+        assets = Assets()
+        for x in range(len(self.tiles)):
+            for y in range(len(self.tiles[0])):
+
+                # check tile for wall status
+                tile_is_wall = self.check_for_wall(x, y)
+
+                if tile_is_wall:
+                    # create tile var
+                    tile_assignment = 0
+                    # add bitmask value
+                    if self.check_for_wall(x, y - 1):
+                        tile_assignment += 1
+                    if self.check_for_wall(x + 1, y):
+                        tile_assignment += 2
+                    if self.check_for_wall(x, y + 1):
+                        tile_assignment += 4
+                    if self.check_for_wall(x - 1, y):
+                        tile_assignment += 8
+                    self.tiles[x][y].sprite = assets.wall_dict[tile_assignment]
+                    self.tiles[x][y].assignment = tile_assignment
+
+
+    def check_for_wall(self, x, y):
+
+        if (x < 0 or
+                y < 0 or
+                x >= GRIDWIDTH or
+                y >= GRIDHEIGHT):
+            return False
+
+        else:
+            return self.tiles[x][y].block_path
 
     def create_room(self, room):
         # set all tiles within a rectangle to 0
@@ -140,6 +179,7 @@ class GameMap:
 
                         if (not self.level[x][y].block_path) and (self.get_adjacent_walls_simple(x, y) >= self.filling):
                             self.level[x][y] = StrucTile(True, True, S_WALL, S_DWALL)
+
 
     def get_adjacent_walls_simple(self, x, y):  # finds the walls in four directions
         wall_counter = 0
@@ -243,3 +283,5 @@ class Leaf:  # used for the BSP tree algorithm
                 return self.room_1
             else:
                 return self.room_2
+
+
