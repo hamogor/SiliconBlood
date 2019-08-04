@@ -28,7 +28,7 @@ class DisplaySystem:
                         try:
                             block_path = self.map.tiles[x][y].block_path
                             sprite = self.map.tiles[x][y].sprite
-                        except IndexError as exception:
+                        except IndexError:
                             continue
                         visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                         put_x, put_y = cam_x * TILESIZE, cam_y * TILESIZE

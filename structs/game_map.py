@@ -1,18 +1,11 @@
-from structs.assets import Tileset, Assets
+from structs.assets import Assets
 from structs.tile import StrucTile
 from structs.rect import Rect
 from settings import *
 import random
-import pygame
-import tcod as libtcod
 
 
 class GameMap:
-    '''
-    A Binary Space Partition connected by a severely weighted
-    drunkards walk algorithm.
-    Requires Leaf and Rect classes.
-    '''
 
     def __init__(self):
         self.level = []
@@ -29,9 +22,7 @@ class GameMap:
         self.first_room = False
         self.tiles = self.generate_level()
         self.assign_tiles()
-        self.assign_tiles()
         self.place_stairs()
-        #self.load_tileset()
 
     def generate_level(self):
         # Creates an empty 2D array or clears existing array

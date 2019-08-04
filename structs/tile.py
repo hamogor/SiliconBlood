@@ -1,8 +1,7 @@
 from ecs.entity import Entity
-import pygame
 
 
-class StrucTile(pygame.Surface, Entity):
+class StrucTile(Entity):
     def __init__(self, block_path, block_sight, sprite=None, dark_sprite=None, name=""):
         self.name = name
         self.block_path = block_path
@@ -11,8 +10,3 @@ class StrucTile(pygame.Surface, Entity):
         self.dark_sprite = dark_sprite
         self.explored = False
         self.assignment = 0
-        #self.rect = sheet.get_rect()
-
-        # Give the tile an animation component
-        #if self.rect:
-        #    super().__init__(AnimationComponent(sheet, cols, rows))

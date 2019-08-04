@@ -1,7 +1,5 @@
 from ecs.action.action_component import ActionComponent
 from ecs.movement.movement_component import MovementComponent
-from settings import WIDTH, HEIGHT
-import pygame
 
 
 class ActionSystem:

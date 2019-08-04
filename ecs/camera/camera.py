@@ -1,7 +1,6 @@
 from settings import CAM_WIDTH, CAM_HEIGHT, GRIDWIDTH, GRIDHEIGHT
 from ecs.movement.movement_component import MovementComponent
 from ecs.camera.camera_component import CameraComponent
-import pygame
 
 
 class CameraSystem():

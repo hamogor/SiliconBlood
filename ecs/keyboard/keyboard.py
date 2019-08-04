@@ -19,7 +19,8 @@ class KeyboardSystem:
                             ki = e.get(KeyboardComponent)
                             ki.on_keydown_callback(self.keys_pressed)
 
-    def time_passed(self):
+    @staticmethod
+    def time_passed():
         for event in pygame.event.get():
             if event.type == pygame.key.get_pressed():
                 return event.key
