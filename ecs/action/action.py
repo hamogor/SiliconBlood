@@ -1,5 +1,7 @@
 from ecs.action.action_component import ActionComponent
 from ecs.movement.movement_component import MovementComponent
+from settings import WIDTH, HEIGHT
+import pygame
 
 
 class ActionSystem:
@@ -20,18 +22,15 @@ class ActionSystem:
                 if e.get(ActionComponent).action_to_perform:
                     action = getattr(e.get(ActionComponent), "action_to_perform")
                     if self.actions[action]:
-                        print(self.actions[action])
                         self.actions[action](e)
                         e.get(ActionComponent).action_to_perform = None
 
     def take_stairs(self, entity):
-        print("called")
         if entity.has(MovementComponent):
             entity_x = entity.get(MovementComponent).x
             entity_y = entity.get(MovementComponent).y
             if self.level.level_map.tiles[entity_x][entity_y].name == "stairs":
                 self.level.next_level()
-                # entity.get(MovementComponent).x, \
-                # entity.get(MovementComponent).y = self.level.spawn_pos
-                # entity.get(MovementComponent).d_x, \
-                # entity.get(MovementComponent).d_y = self.level.spawn_pos
+
+
+

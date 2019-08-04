@@ -1,10 +1,12 @@
 from ecs.movement.movement_component import MovementComponent
 from ecs.fov.fov_component import FovComponent
+import pygame
 
 
 class MovementSystem:
     def __init__(self, level):
         self.game_map = level.level_map
+        self.clock = pygame.time.Clock()
 
     def reset(self, level):
         self.__init__(level)
@@ -27,6 +29,7 @@ class MovementSystem:
             entity.get(MovementComponent).y = current_y
             entity.get(MovementComponent).d_x = current_x
             entity.get(MovementComponent).d_y = current_y
+
 
 
 

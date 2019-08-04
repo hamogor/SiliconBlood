@@ -22,6 +22,7 @@ class Player(Entity):
                          CameraComponent(0, 0),
                          ActionComponent("take_stairs"))
         self.set(KeyboardComponent(self._process_input))
+        self.rect = pygame.Rect(spawn_x * TILESIZE, spawn_y * TILESIZE, TILESIZE, TILESIZE)
 
     # Key-binds for player
     def _process_input(self, keys_pressed):

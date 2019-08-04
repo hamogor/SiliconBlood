@@ -1,5 +1,5 @@
 import pygame
-from settings import TITLE, QUIT, S_ENEMY, WIDTH, HEIGHT
+from settings import TITLE, QUIT, S_ENEMY, WIDTH, HEIGHT, FPS
 
 from ecs.container import Container
 from ecs.display.display import DisplaySystem
@@ -18,7 +18,9 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_ENEMY)
-        #os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+        self.clock = pygame.time.Clock()
+        self.dt = self.clock.tick(FPS) / 1000
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
         self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.game_over = False
@@ -63,6 +65,7 @@ class SiliconBlood:
                 if self.level_system.dungeon_level != self.level:
                     self.new_level()
                     self.level = self.level_system.dungeon_level
+            self.clock.tick()
 
     def check_for_game_over(self):
         if self.keyboard_system.get_keys():
