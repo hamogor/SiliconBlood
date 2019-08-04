@@ -30,14 +30,11 @@ class Tileset:
 
 class Assets:
     def __init__(self):
-
-        # complete sound list
-        self.snd_list = []
-
         self.load_assets()
 
     def load_assets(self):
-        self.wall = Tileset("assets/wall_test.png")
+        self.wall = Tileset("assets/wall_bitmask.png")
+        self.dark_wall = Tileset("assets/wall_dark_bitmask.png")
 
         self.S_WALL_00 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0]
         self.S_WALL_01 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0]
@@ -46,7 +43,7 @@ class Assets:
         self.S_WALL_04 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0]
         self.S_WALL_05 = self.wall.get_image('c', 1, 16, 16, (32, 32))[0]
         self.S_WALL_06 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0]
-        self.S_WALL_07 = self.wall.get_image('c', 1, 16, 16, (32, 32))[0]
+        self.S_WALL_07 = self.wall.get_image('a', 1, 16, 16, (32, 32))[0]
         self.S_WALL_08 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0]
         self.S_WALL_09 = self.wall.get_image('c', 2, 16, 16, (32, 32))[0]
         self.S_WALL_10 = self.wall.get_image('b', 2, 16, 16, (32, 32))[0]
@@ -54,7 +51,24 @@ class Assets:
         self.S_WALL_12 = self.wall.get_image('c', 0, 16, 16, (32, 32))[0]
         self.S_WALL_13 = self.wall.get_image('c', 1, 16, 16, (32, 32))[0]
         self.S_WALL_14 = self.wall.get_image('b', 0, 16, 16, (32, 32))[0]
-        self.S_WALL_15 = self.wall.get_image('c', 3, 16, 16, (32, 32))[0]
+        self.S_WALL_15 = self.wall.get_image('a', 3, 16, 16, (32, 32))[0]
+
+        self.S_DWALL_00 = self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_01 = self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_02 = self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_03 = self.dark_wall.get_image('a', 2, 16, 16, (32, 32))[0]
+        self.S_DWALL_04 = self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_05 = self.dark_wall.get_image('c', 1, 16, 16, (32, 32))[0]
+        self.S_DWALL_06 = self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_07 = self.dark_wall.get_image('a', 1, 16, 16, (32, 32))[0]
+        self.S_DWALL_08 = self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_09 = self.dark_wall.get_image('c', 2, 16, 16, (32, 32))[0]
+        self.S_DWALL_10 = self.dark_wall.get_image('b', 2, 16, 16, (32, 32))[0]
+        self.S_DWALL_11 = self.dark_wall.get_image('b', 2, 16, 16, (32, 32))[0]
+        self.S_DWALL_12 = self.dark_wall.get_image('c', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_13 = self.dark_wall.get_image('c', 1, 16, 16, (32, 32))[0]
+        self.S_DWALL_14 = self.dark_wall.get_image('b', 0, 16, 16, (32, 32))[0]
+        self.S_DWALL_15 = self.dark_wall.get_image('a', 3, 16, 16, (32, 32))[0]
 
         self.wall_dict = {
 
@@ -74,6 +88,27 @@ class Assets:
             13: self.S_WALL_13,
             14: self.S_WALL_14,
             15: self.S_WALL_15
+
+        }
+
+        self.dark_wall_dict = {
+
+            0: self.S_DWALL_00,
+            1: self.S_DWALL_01,
+            2: self.S_DWALL_02,
+            3: self.S_DWALL_03,
+            4: self.S_DWALL_04,
+            5: self.S_DWALL_05,
+            6: self.S_DWALL_06,
+            7: self.S_DWALL_07,
+            8: self.S_DWALL_08,
+            9: self.S_DWALL_09,
+            10: self.S_DWALL_10,
+            11: self.S_DWALL_11,
+            12: self.S_DWALL_12,
+            13: self.S_DWALL_13,
+            14: self.S_DWALL_14,
+            15: self.S_DWALL_15
 
         }
 

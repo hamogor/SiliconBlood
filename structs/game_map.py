@@ -29,6 +29,7 @@ class GameMap:
         self.first_room = False
         self.tiles = self.generate_level()
         self.assign_tiles()
+        self.assign_tiles()
         self.place_stairs()
         #self.load_tileset()
 
@@ -58,11 +59,6 @@ class GameMap:
 
         root_leaf.create_rooms(self)
         self.clean_up_map(self.width, self.height)
-        for x in range(GRIDWIDTH):
-            for y in range(GRIDHEIGHT):
-                if self.level[x][y].sprite is None:
-                    self.level[x][y].sprite = S_WALL
-                    self.level[x][y].dark_sprite = S_DWALL
         return self.level
 
     def assign_tiles(self):
@@ -86,12 +82,12 @@ class GameMap:
                         tile_assignment += 4
                     if self.check_for_wall(x - 1, y):
                         tile_assignment += 8
-                    self.tiles[x][y].sprite = assets.wall_dict[tile_assignment]
+                    tile = StrucTile(True, True, assets.wall_dict[tile_assignment],
+                                     assets.dark_wall_dict[tile_assignment], name="wall")
+                    self.tiles[x][y] = tile
                     self.tiles[x][y].assignment = tile_assignment
 
-
     def check_for_wall(self, x, y):
-
         if (x < 0 or
                 y < 0 or
                 x >= GRIDWIDTH or
