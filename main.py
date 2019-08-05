@@ -20,7 +20,7 @@ class SiliconBlood:
         pygame.display.set_icon(S_ENEMY)
         self.clock = pygame.time.Clock()
         self.dt = self.clock.tick(FPS) / 1000
-        os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+        #os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
         self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.game_over = False
