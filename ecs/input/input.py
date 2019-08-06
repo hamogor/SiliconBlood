@@ -1,7 +1,6 @@
 from settings import *
 from ecs.input.input_component import InputComponent
 from ecs.action.action_component import ActionComponent
-from ecs.display.display_component import DisplayComponent
 import pygame
 
 
@@ -10,8 +9,10 @@ class InputSystem:
         self.keys_pressed = []
 
     def update(self, entities):
+
         for e in entities:
             if e.has(InputComponent):
+
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         e.get(ActionComponent).action = "quit"
@@ -35,6 +36,9 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (1, 1))
                         elif event.key == pygame.K_ESCAPE:
                             e.get(ActionComponent).action = "quit"
+                    elif event.type == pygame.KEYUP:
+                        e.get(InputComponent).input = False
+                        e.get(ActionComponent).action = "none"
 
 
 

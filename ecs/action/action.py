@@ -1,8 +1,8 @@
 from ecs.action.action_component import ActionComponent
 from ecs.display.display_component import DisplayComponent
 from ecs.input.input_component import InputComponent
-from settings import TILESIZE, PLAYER_SPEED
-import pygame
+from settings import TILESIZE
+import time
 
 
 class ActionSystem:
@@ -27,7 +27,7 @@ class ActionSystem:
         if entity.get(InputComponent).input:
             entity.get(DisplayComponent).x += params[0] * TILESIZE
             entity.get(DisplayComponent).y += params[1] * TILESIZE
-            entity.get(InputComponent).input = False
+            entity.get(ActionComponent).action = "none"
 
     def quit(self, entity):
         entity.get(InputComponent).input = False

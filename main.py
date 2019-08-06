@@ -15,6 +15,7 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
+        pygame.key.set_repeat(1, 100)
         self.clock = pygame.time.Clock()
         self.quit = False
 
@@ -43,6 +44,8 @@ class SiliconBlood:
 
             if self.player.get(ActionComponent).action == "quit":
                 self.quit = True
+
+            self.clock.tick(FPS)
 
 
 
