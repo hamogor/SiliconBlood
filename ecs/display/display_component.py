@@ -1,5 +1,5 @@
 class DisplayComponent:
-    def __init__(self, sprite, x, y):
-        self.sprite = sprite
+    def __init__(self, x, y, sprite):
         self.x = x
         self.y = y
+        self.sprite = sprite

@@ -14,7 +14,13 @@ class Entity:
         self.components[key] = component
 
     def get(self, component):
-        return self.components[component]
+        try:
+            return self.components[component]
+        except KeyError:
+            pass
 
     def has(self, component):
-        return self.get(component) is not None
+        try:
+            return self.get(component) is not None
+        except KeyError:
+            pass
