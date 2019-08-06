@@ -6,11 +6,16 @@ from ecs.fov.fov_component import FovComponent
 from ecs.action.action_component import ActionComponent
 from ecs.entity import Entity
 from settings import *
+import pygame
 
 
-class Player(Entity):
+class Player(Entity, pygame.sprite.Sprite):
     def __init__(self, spawn_x, spawn_y):
         # Add components to player
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
         self.name = 'player'
         self.sprite = S_PLAYER
         self.action_to_perform = {"no_action": ""}

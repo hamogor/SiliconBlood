@@ -1,4 +1,4 @@
-from settings import WIDTH, HEIGHT, CAM_WIDTH, CAM_HEIGHT, TILESIZE, S_FOG, S_STAIRS
+from settings import WIDTH, HEIGHT, TILESIZE, S_FOG
 from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
 from ecs.display.display_component import DisplayComponent

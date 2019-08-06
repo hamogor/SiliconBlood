@@ -12,7 +12,8 @@ FPS = 60
 TILESIZE = 32
 
 WIDTH, HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h
-
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
 # Full map size
 
 # Camera size
