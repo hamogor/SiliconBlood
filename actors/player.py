@@ -21,7 +21,7 @@ class Player(Entity, pygame.sprite.Sprite):
         self.action_to_perform = {"no_action": ""}
 
         # Pass components
-        super().__init__(DisplayComponent(self.sprite, 0, 0),
+        super().__init__(DisplayComponent(self.sprite, spawn_x, spawn_y),
                          MovementComponent(spawn_x, spawn_y, spawn_x, spawn_y),
                          FovComponent(),
                          CameraComponent(0, 0),

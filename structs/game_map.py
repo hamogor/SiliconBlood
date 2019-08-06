@@ -94,6 +94,7 @@ class GameMap:
             for y in range(room.y1 + 1, room.y2):
                 self.level[x][y] = StrucTile(False, False, S_FLOOR, S_DFLOOR)
                 if not self.first_room:
+                    print(room.center())
                     self.first_room = room.center()
 
     def place_stairs(self):

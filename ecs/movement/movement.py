@@ -1,5 +1,6 @@
 from ecs.movement.movement_component import MovementComponent
 from ecs.fov.fov_component import FovComponent
+from ecs.display.display_component import DisplayComponent
 from settings import TILESIZE
 import pygame
 
@@ -25,8 +26,9 @@ class MovementSystem:
             entity.get(FovComponent).fov_recalculate = True
             entity.get(MovementComponent).x = direction_x
             entity.get(MovementComponent).y = direction_y
-            entity.rect.x = direction_x * TILESIZE
-            entity.rect.y = direction_y * TILESIZE
+            entity.get(DisplayComponent).x = direction_x
+            entity.get(DisplayComponent).y = direction_y
+
         else:
             entity.get(MovementComponent).x = current_x
             entity.get(MovementComponent).y = current_y

@@ -1,4 +1,4 @@
-from settings import WIDTH, HEIGHT, TILESIZE, S_FOG
+from settings import WIDTH, HEIGHT, TILESIZE, S_FOG, GRIDWIDTH, GRIDHEIGHT
 from ecs.fov.fov_component import FovComponent
 from ecs.movement.movement_component import MovementComponent
 from ecs.display.display_component import DisplayComponent
@@ -22,8 +22,8 @@ class DisplaySystem:
         for e in entities:
             self.camera.update(e)
             if e.get(FovComponent).fov_recalculate:
-                for cam_y in range(0, 128):
-                    for cam_x in range(0, 128):
+                for cam_y in range(0, GRIDWIDTH):
+                    for cam_x in range(0, GRIDHEIGHT):
                         x, y = self.camera.apply(cam_x, cam_y)
                         try:
                             block_path = self.map.tiles[x][y].block_path
@@ -49,7 +49,7 @@ class DisplaySystem:
                         else:
                             self._root_display.blit(S_FOG, (put_x, put_y))
             self._root_display.blit(e.get(DisplayComponent).sprite,
-                                    ((e.get(MovementComponent).x - self.camera.x) * TILESIZE,
-                                    (e.get(MovementComponent).y - self.camera.y) * TILESIZE))
+                                    ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
+                                    (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
             self.display.blit(self._root_display, (0, 0))
             pygame.display.flip()

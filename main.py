@@ -1,5 +1,5 @@
 import pygame
-from settings import TITLE, QUIT, S_ENEMY, WIDTH, HEIGHT, FPS
+from settings import TITLE, QUIT, S_ENEMY, WIDTH, HEIGHT, FPS, S_PLAYER
 
 from ecs.container import Container
 from ecs.display.display import DisplaySystem
@@ -65,7 +65,6 @@ class SiliconBlood:
                 if self.level_system.dungeon_level != self.level:
                     self.new_level()
                     self.level = self.level_system.dungeon_level
-            self.clock.tick()
 
     def check_for_game_over(self):
         if self.keyboard_system.get_keys():
