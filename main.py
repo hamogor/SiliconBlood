@@ -4,6 +4,7 @@ from ecs.input.input import InputSystem
 from ecs.input.input_component import InputComponent
 from ecs.action.action import ActionSystem
 from ecs.action.action_component import ActionComponent
+from ecs.level.level import LevelSystem
 from ecs.container import Container
 from settings import *
 from structs.actor import Actor
@@ -19,6 +20,7 @@ class SiliconBlood:
         self.clock = pygame.time.Clock()
         self.quit = False
 
+        self.level_system = LevelSystem()
         self.display_system = DisplaySystem()
         self.input_system = InputSystem()
         self.action_system = ActionSystem()
@@ -27,7 +29,7 @@ class SiliconBlood:
                             ActionComponent())
 
         self.container = Container()
-
+        self.container.add_system(self.level_system)
         self.container.add_system(self.display_system)
         self.container.add_system(self.action_system)
         self.container.add_system(self.input_system)
@@ -41,6 +43,7 @@ class SiliconBlood:
             if self.player.get(InputComponent).input:
                 self.action_system.update(self.container.entities)
                 self.display_system.update(self.container.entities)
+                self.level_system.update(self.container.entities)
 
             if self.player.get(ActionComponent).action == "quit":
                 self.quit = True
