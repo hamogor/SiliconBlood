@@ -19,10 +19,7 @@ class ActionSystem:
                     try:
                         action = getattr(e.get(ActionComponent), "action")
                         if self.actions[action[0]]:
-                            if action[1]:
-                                self.actions[action[0]](e, action[1])
-                            else:
-                                self.actions[action[0]](e)
+                            self.actions[action[0]](e, action[1] if action[1] else None)
                     except KeyError:
                         pass
 
@@ -30,13 +27,10 @@ class ActionSystem:
         if entity.get(InputComponent).input:
             entity.get(DisplayComponent).x += params[0] * TILESIZE
             entity.get(DisplayComponent).y += params[1] * TILESIZE
-            print("action {} {}".format(entity.get(DisplayComponent).x, entity.get(DisplayComponent).y))
-
             entity.get(InputComponent).input = False
 
     def quit(self, entity):
-        print("call")
-        exit()
-        entity.get(ActionComponent).action = "none"
+        entity.get(InputComponent).input = False
+
 
 

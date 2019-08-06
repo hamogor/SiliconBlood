@@ -41,7 +41,8 @@ class SiliconBlood:
                 self.action_system.update(self.container.entities)
                 self.display_system.update(self.container.entities)
 
-            #if self.
+            if self.player.get(ActionComponent).action == "quit":
+                self.quit = True
 
 
 

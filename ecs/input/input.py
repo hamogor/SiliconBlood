@@ -13,6 +13,8 @@ class InputSystem:
         for e in entities:
             if e.has(InputComponent):
                 for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        e.get(ActionComponent).action = "quit"
                     if event.type == pygame.KEYDOWN:
                         e.get(InputComponent).input = True
                         if event.key in MOVE_W:
@@ -33,5 +35,6 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (1, 1))
                         elif event.key == pygame.K_ESCAPE:
                             e.get(ActionComponent).action = "quit"
+
 
 

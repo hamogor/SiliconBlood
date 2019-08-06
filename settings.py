@@ -6,6 +6,8 @@ WIDTH = 800
 HEIGHT = 600
 TILESIZE = 32
 
+MAPWIDTH, MAPHEIGHT = 64, 64
+
 # define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
