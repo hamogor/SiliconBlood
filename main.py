@@ -1,4 +1,9 @@
 from ecs.display.display import DisplaySystem
+from ecs.display.display_component import DisplayComponent
+from ecs.input.input import InputSystem
+from ecs.input.input_component import InputComponent
+from ecs.action.action import ActionSystem
+from ecs.action.action_component import ActionComponent
 from ecs.container import Container
 from settings import *
 from structs.actor import Actor
@@ -14,20 +19,30 @@ class SiliconBlood:
         self.quit = False
 
         self.display_system = DisplaySystem()
-        self.player = Actor(32, 32, S_PLAYER)
+        self.input_system = InputSystem()
+        self.action_system = ActionSystem()
+        self.player = Actor(DisplayComponent(5 * TILESIZE, 5 * TILESIZE, S_PLAYER),
+                            InputComponent(),
+                            ActionComponent())
 
         self.container = Container()
 
         self.container.add_system(self.display_system)
+        self.container.add_system(self.action_system)
+        self.container.add_system(self.input_system)
+
         self.container.add_entity(self.player)
 
     def game_loop(self):
+        self.container.update()
         while not self.quit:
-            self.clock.tick(FPS)
-            self.container.update()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.quit = True
+            self.input_system.update(self.container.entities)
+            if self.player.get(InputComponent).input:
+                self.action_system.update(self.container.entities)
+                self.display_system.update(self.container.entities)
+
+            #if self.
+
 
 
 if __name__ == '__main__':

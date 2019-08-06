@@ -3,3 +3,5 @@ class DisplayComponent:
         self.x = x
         self.y = y
         self.sprite = sprite
+        self.image = sprite.convert()
+        self.rect = self.image.get_rect()
