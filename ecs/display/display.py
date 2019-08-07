@@ -1,16 +1,17 @@
 from ecs.display.display_component import DisplayComponent
 from ecs.camera.camera_component import CameraComponent
+from ecs.camera.camera import CameraSystem
 from settings import *
 import pygame
 import time
 
 
 class DisplaySystem:
-    def __init__(self, map, camera):
+    def __init__(self, map):
         self.surface = pygame.Surface((WIDTH, HEIGHT))
         self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.map = map
-        self.camera = camera
+        self.camera = CameraSystem()
 
     def update(self, entities):
 
@@ -31,7 +32,6 @@ class DisplaySystem:
                         pass
                     if e.has(DisplayComponent):
                         # This is broken
-                        #print(e.get(CameraComponent).cam_x, e.get(CameraComponent).cam_y)
                         self.surface.blit(e.get(DisplayComponent).sprite,
                                                 ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
                                                  (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))

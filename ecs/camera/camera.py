@@ -4,7 +4,7 @@ from ecs.camera.camera_component import CameraComponent
 
 
 class CameraSystem():
-    def __init__(self, level):
+    def __init__(self):
         self.x = 0
         self.y = 0
         self.width = CAM_WIDTH

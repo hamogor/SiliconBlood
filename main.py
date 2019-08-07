@@ -23,8 +23,7 @@ class SiliconBlood:
         self.quit = False
 
         self.level_system = LevelSystem()
-        self.camera_system = CameraSystem(self.level_system.level)
-        self.display_system = DisplaySystem(self.level_system.level, self.camera_system)
+        self.display_system = DisplaySystem(self.level_system.level)
         self.input_system = InputSystem()
         self.action_system = ActionSystem()
         self.player = Actor(DisplayComponent(5, 5, S_PLAYER),
