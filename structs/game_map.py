@@ -3,7 +3,7 @@ from settings import MAPWIDTH, MAPHEIGHT
 import random
 from structs.tile import Tile
 
-
+# TODO - Formatting
 class GameMap:
     '''
     What I'm calling the Room Addition algorithm is an attempt to

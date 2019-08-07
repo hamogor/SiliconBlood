@@ -3,7 +3,7 @@ from ecs.display.display_component import DisplayComponent
 from ecs.camera.camera_component import CameraComponent
 
 
-class CameraSystem():
+class CameraSystem:
     def __init__(self):
         self.x = 0
         self.y = 0

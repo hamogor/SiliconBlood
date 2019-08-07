@@ -2,22 +2,30 @@ import pygame
 
 TITLE = "Silicon Blood"
 
-WIDTH = 1920
-HEIGHT = 1080
+MAPWIDTH, MAPHEIGHT = 48, 48
+CAM_HEIGHT, CAM_WIDTH = 24, 24
 TILESIZE = 32
+
+WIDTH = MAPWIDTH * TILESIZE
+HEIGHT = MAPHEIGHT * TILESIZE
+
+FOV_RADIUS = 10
+FOV_LIGHT_WALLS = True
+FOV_ALGORITHM = 0
 
 FPS = 60
 
 PLAYER_SPEED = 100
 
-MAPWIDTH, MAPHEIGHT = 64, 64
-CAM_HEIGHT, CAM_WIDTH = 32, 32
+MAPWIDTH, MAPHEIGHT = 48, 48
+CAM_HEIGHT, CAM_WIDTH = 24, 24
 
 # define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+GREY = (120, 120, 120)
 BLUE = (0, 0, 255)
 
 S_PLAYER = pygame.image.load("assets/player.png")
@@ -34,4 +42,7 @@ TAKE_STAIRS = pygame.K_COMMA
 QUIT = pygame.K_ESCAPE
 
 S_WALL = pygame.image.load("assets/wall.png")
+S_DWALL = pygame.image.load("assets/dark_wall.png")
 S_FLOOR = pygame.image.load("assets/new_floor.png")
+S_DFLOOR = pygame.image.load("assets/new_floor_dark.png")
+S_FOG = pygame.image.load("assets/fow.png")

@@ -4,6 +4,7 @@ from ecs.action.action_component import ActionComponent
 import pygame
 
 
+# TODO - Better keyup event handling and held input delay
 class InputSystem:
     def __init__(self):
         self.keys_pressed = []

@@ -1,10 +1,10 @@
 from ecs.action.action_component import ActionComponent
 from ecs.display.display_component import DisplayComponent
 from ecs.input.input_component import InputComponent
-from settings import TILESIZE
-import time
+from ecs.fov.fov_component import FovComponent
 
 
+# TODO - Collision, and keypress event delay for held movement.
 class ActionSystem:
     def __init__(self):
         self.actions = {
@@ -25,6 +25,7 @@ class ActionSystem:
 
     def move(self, entity, params):
         if entity.get(InputComponent).input:
+            entity.get(FovComponent).fov_recalculate = True
             entity.get(DisplayComponent).x += params[0]
             entity.get(DisplayComponent).y += params[1]
             entity.get(ActionComponent).action = "none"

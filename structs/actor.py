@@ -4,7 +4,7 @@ from ecs.entity import Entity
 from settings import *
 import pygame
 
-
+# TODO - Proper pygame spriting
 class Actor(Entity, pygame.sprite.Sprite):
     def __init__(self, *components):
         pygame.sprite.Sprite.__init__(self)
