@@ -27,7 +27,7 @@ class SiliconBlood:
         self.display_system = DisplaySystem(self.level_system.level, self.camera_system)
         self.input_system = InputSystem()
         self.action_system = ActionSystem()
-        self.player = Actor(DisplayComponent(5 * TILESIZE, 5 * TILESIZE, S_PLAYER),
+        self.player = Actor(DisplayComponent(5, 5, S_PLAYER),
                             InputComponent(),
                             ActionComponent(),
                             CameraComponent(0, 0))
@@ -37,7 +37,6 @@ class SiliconBlood:
         self.container.add_system(self.display_system)
         self.container.add_system(self.action_system)
         self.container.add_system(self.input_system)
-
         self.container.add_entity(self.player)
 
     def game_loop(self):

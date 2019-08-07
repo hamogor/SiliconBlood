@@ -25,8 +25,8 @@ class ActionSystem:
 
     def move(self, entity, params):
         if entity.get(InputComponent).input:
-            entity.get(DisplayComponent).x += params[0] * TILESIZE
-            entity.get(DisplayComponent).y += params[1] * TILESIZE
+            entity.get(DisplayComponent).x += params[0]
+            entity.get(DisplayComponent).y += params[1]
             entity.get(ActionComponent).action = "none"
 
     def quit(self, entity):

@@ -18,18 +18,18 @@ class CameraSystem():
         return int(x), int(y)
 
     def update(self, entity):
-        if entity.has(CameraComponent) and entity.has(DisplayComponent):
-            x = (entity.get(DisplayComponent).x / TILESIZE) - int(self.width / 2)
-            y = (entity.get(DisplayComponent).y / TILESIZE) - int(self.height / 2)
-            if x < 0:
-                x = 0
-            if y < 0:
-                y = 0
-            if x > MAPWIDTH - CAM_WIDTH:
-                x = MAPWIDTH - CAM_WIDTH
-            if y > MAPHEIGHT - CAM_HEIGHT:
-                y = MAPHEIGHT - CAM_HEIGHT
-            self.x, self.y = x, y
+        print(entity)
+        x = entity.get(DisplayComponent).x - int(self.width / 2)
+        y = entity.get(DisplayComponent).y - int(self.height / 2)
+        if x < 0:
+            x = 0
+        if y < 0:
+            y = 0
+        if x > MAPWIDTH - CAM_WIDTH:
+            x = MAPWIDTH - CAM_WIDTH
+        if y > MAPHEIGHT - CAM_HEIGHT:
+            y = MAPHEIGHT - CAM_HEIGHT
+        self.x, self.y = x, y
         if entity.has(CameraComponent):
-            entity.get(CameraComponent).cam_x = int(entity.get(DisplayComponent).x / TILESIZE) - self.x
-            entity.get(CameraComponent).cam_y = int(entity.get(DisplayComponent).y / TILESIZE) - self.y
+            entity.get(CameraComponent).cam_x = entity.get(DisplayComponent).x - self.x
+            entity.get(CameraComponent).cam_y = entity.get(DisplayComponent).y - self.y
