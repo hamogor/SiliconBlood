@@ -5,6 +5,8 @@ from ecs.input.input_component import InputComponent
 from ecs.action.action import ActionSystem
 from ecs.action.action_component import ActionComponent
 from ecs.level.level import LevelSystem
+from ecs.camera.camera import CameraSystem
+from ecs.camera.camera_component import CameraComponent
 from ecs.container import Container
 from settings import *
 from structs.actor import Actor
@@ -21,12 +23,14 @@ class SiliconBlood:
         self.quit = False
 
         self.level_system = LevelSystem()
-        self.display_system = DisplaySystem()
+        self.camera_system = CameraSystem(self.level_system.level)
+        self.display_system = DisplaySystem(self.level_system.level, self.camera_system)
         self.input_system = InputSystem()
         self.action_system = ActionSystem()
         self.player = Actor(DisplayComponent(5 * TILESIZE, 5 * TILESIZE, S_PLAYER),
                             InputComponent(),
-                            ActionComponent())
+                            ActionComponent(),
+                            CameraComponent(0, 0))
 
         self.container = Container()
         self.container.add_system(self.level_system)

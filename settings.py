@@ -2,8 +2,8 @@ import pygame
 
 TITLE = "Silicon Blood"
 
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1920
+HEIGHT = 1080
 TILESIZE = 32
 
 FPS = 60
@@ -11,6 +11,7 @@ FPS = 60
 PLAYER_SPEED = 100
 
 MAPWIDTH, MAPHEIGHT = 64, 64
+CAM_HEIGHT, CAM_WIDTH = 32, 32
 
 # define colors
 WHITE = (255, 255, 255)
@@ -31,3 +32,6 @@ MOVE_SW = (pygame.K_KP1, pygame.K_b)
 MOVE_SE = (pygame.K_KP3, pygame.K_n)
 TAKE_STAIRS = pygame.K_COMMA
 QUIT = pygame.K_ESCAPE
+
+S_WALL = pygame.image.load("assets/wall.png")
+S_FLOOR = pygame.image.load("assets/new_floor.png")
