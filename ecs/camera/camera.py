@@ -1,4 +1,4 @@
-from settings import CAM_WIDTH, CAM_HEIGHT, MAPWIDTH, MAPHEIGHT, TILESIZE
+from settings import CAM_WIDTH, CAM_HEIGHT, GRIDWIDTH, GRIDHEIGHT, TILESIZE
 from ecs.display.display_component import DisplayComponent
 from ecs.camera.camera_component import CameraComponent
 
@@ -9,8 +9,8 @@ class CameraSystem:
         self.y = 0
         self.width = CAM_WIDTH
         self.height = CAM_HEIGHT
-        self.map_width = MAPWIDTH
-        self.map_height = MAPHEIGHT
+        self.map_width = GRIDWIDTH
+        self.map_height = GRIDHEIGHT
 
     def apply(self, x, y):
         x = x + self.x
@@ -24,10 +24,10 @@ class CameraSystem:
             x = 0
         if y < 0:
             y = 0
-        if x > MAPWIDTH - CAM_WIDTH:
-            x = MAPWIDTH - CAM_WIDTH
-        if y > MAPHEIGHT - CAM_HEIGHT:
-            y = MAPHEIGHT - CAM_HEIGHT
+        if x > GRIDWIDTH - CAM_WIDTH:
+            x = GRIDWIDTH - CAM_WIDTH
+        if y > GRIDHEIGHT - CAM_HEIGHT:
+            y = GRIDHEIGHT - CAM_HEIGHT
         self.x, self.y = x, y
         if entity.has(CameraComponent):
             entity.get(CameraComponent).cam_x = entity.get(DisplayComponent).x - self.x

@@ -22,8 +22,8 @@ class DisplaySystem:
             if e.has(CameraComponent):
                 self.camera.update(e)
             self.surface.fill(BLACK)
-            for cam_x in range(MAPWIDTH):
-                for cam_y in range(MAPHEIGHT):
+            for cam_x in range(GRIDWIDTH):
+                for cam_y in range(GRIDHEIGHT):
                     x, y, = self.camera.apply(cam_x, cam_y)
                     visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                     put_x, put_y = cam_x * TILESIZE, cam_y * TILESIZE
