@@ -41,8 +41,6 @@ MOVE_SE = (pygame.K_KP3, pygame.K_n)
 TAKE_STAIRS = pygame.K_COMMA
 QUIT = pygame.K_ESCAPE
 
-S_WALL = pygame.image.load("assets/wall.png")
-S_DWALL = pygame.image.load("assets/dark_wall.png")
-S_FLOOR = pygame.image.load("assets/new_floor.png")
-S_DFLOOR = pygame.image.load("assets/new_floor_dark.png")
+S_WALL = pygame.image.load("assets/wall.png"), pygame.image.load("assets/dark_wall.png")
+S_FLOOR = pygame.image.load("assets/new_floor.png"),  pygame.image.load("assets/new_floor_dark.png")
 S_FOG = pygame.image.load("assets/fow.png")

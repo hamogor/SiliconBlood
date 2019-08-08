@@ -1,7 +1,8 @@
 import tcod as libtcod
-from settings import GRIDWIDTH, GRIDHEIGHT
+from settings import GRIDWIDTH, GRIDHEIGHT, S_WALL, S_FLOOR
 import random
 from structs.tile import Tile
+
 
 # TODO - Formatting
 class GameMap:
@@ -55,9 +56,9 @@ class GameMap:
         for x in range(GRIDWIDTH):
             for y in range(GRIDHEIGHT):
                 if self.map[x][y] == 1:
-                    self.tiles[x][y] = Tile(True, True)
+                    self.tiles[x][y] = Tile(True, True, S_WALL)
                 else:
-                    self.tiles[x][y] = Tile(False, False)
+                    self.tiles[x][y] = Tile(False, False, S_FLOOR)
 
     def generate_level(self):
         

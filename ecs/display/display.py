@@ -21,25 +21,26 @@ class DisplaySystem:
         for e in entities:
             if e.has(CameraComponent):
                 self.camera.update(e)
-            self.surface.fill(BLACK)
+            self.display.fill(BLACK)
             for cam_x in range(GRIDWIDTH):
                 for cam_y in range(GRIDHEIGHT):
                     x, y, = self.camera.apply(cam_x, cam_y)
                     visible = tcod.map_is_in_fov(e.get(FovComponent).fov_map, x, y)
                     put_x, put_y = cam_x * TILESIZE, cam_y * TILESIZE
                     try:
+                        sprite = self.map[x][y].sprite
                         if visible:
                             # Assign tiles correct sprite based on block_path value and just blit each tile
                             if self.map[x][y].block_path:
-                                self.surface.blit(S_WALL, (put_x, put_y))
+                                self.surface.blit(sprite[0], (put_x, put_y))
                             else:
-                                self.surface.blit(S_FLOOR, (put_x, put_y))
+                                self.surface.blit(sprite[0], (put_x, put_y))
                             self.map[x][y].explored = True
                         elif self.map[x][y].explored:
                             if self.map[x][y].block_path:
-                                self.surface.blit(S_DWALL, (put_x, put_y))
+                                self.surface.blit(sprite[1], (put_x, put_y))
                             else:
-                                self.surface.blit(S_DFLOOR, (put_x, put_y))
+                                self.surface.blit(sprite[1], (put_x, put_y))
                         else:
                             self.surface.blit(S_FOG, (put_x, put_y))
                     except IndexError:
