@@ -25,10 +25,11 @@ class SiliconBlood:
 
         self.level_system = LevelSystem()
 
+        self.input_system = InputSystem()
         self.display_system = DisplaySystem(self.level_system.level)
         self.fov_system = FovSystem(self.level_system.level)
-        self.input_system = InputSystem()
-        self.action_system = ActionSystem()
+
+        self.action_system = ActionSystem(self.level_system.level)
 
         self.player = Actor(DisplayComponent(5, 5, S_PLAYER),
                             InputComponent(),

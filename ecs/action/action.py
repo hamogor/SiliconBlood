@@ -6,11 +6,12 @@ from ecs.fov.fov_component import FovComponent
 
 # TODO - Collision, and keypress event delay for held movement.
 class ActionSystem:
-    def __init__(self):
+    def __init__(self, level):
         self.actions = {
             "move": self.move,
             "quit": self.quit
         }
+        self.map = level
 
     def update(self, entities):
         for e in entities:
@@ -25,10 +26,15 @@ class ActionSystem:
 
     def move(self, entity, params):
         if entity.get(InputComponent).input:
-            entity.get(FovComponent).fov_recalculate = True
-            entity.get(DisplayComponent).x += params[0]
-            entity.get(DisplayComponent).y += params[1]
-            entity.get(ActionComponent).action = "none"
+            current_x, current_y = entity.get(DisplayComponent).x, entity.get(DisplayComponent).y
+            direction_x, direction_y = current_x + params[0], current_y + params[1]
+            print(current_x, current_y)
+            print(direction_x, direction_y)
+            if not self.map[direction_x][direction_y].block_path:
+                entity.get(FovComponent).fov_recalculate = True
+                entity.get(DisplayComponent).x += params[0]
+                entity.get(DisplayComponent).y += params[1]
+                entity.get(ActionComponent).action = "none"
 
     def quit(self, entity):
         entity.get(InputComponent).input = False
