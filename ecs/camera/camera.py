@@ -18,7 +18,6 @@ class CameraSystem:
         return int(x), int(y)
 
     def update(self, entity):
-        print(entity)
         x = entity.get(DisplayComponent).x - int(self.width / 2)
         y = entity.get(DisplayComponent).y - int(self.height / 2)
         if x < 0:

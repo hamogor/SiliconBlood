@@ -19,7 +19,7 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
-        pygame.key.set_repeat(1, 100)
+        pygame.key.set_repeat(200, 100)
         self.clock = pygame.time.Clock()
         self.quit = False
 
