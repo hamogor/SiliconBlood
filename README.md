@@ -11,3 +11,4 @@
 - BSP Generation: 23rd July 2019
 - Actions and Stairs: 27th July 2019
 - Bitmask Autotiling: 4th August 2019
+- Engine Rewrite: 9th August 2019
