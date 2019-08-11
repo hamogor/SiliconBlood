@@ -9,7 +9,6 @@ class InputSystem:
         self.keys_pressed = []
 
     def update(self, entities):
-
         for e in entities:
             if e.has(InputComponent):
 

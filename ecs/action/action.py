@@ -4,7 +4,6 @@ from ecs.input.input_component import InputComponent
 from ecs.fov.fov_component import FovComponent
 
 
-# TODO - Collision, and keypress event delay for held movement.
 class ActionSystem:
     def __init__(self, level):
         self.actions = {
