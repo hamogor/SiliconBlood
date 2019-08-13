@@ -27,8 +27,6 @@ class ActionSystem:
         if entity.get(InputComponent).input:
             current_x, current_y = entity.get(DisplayComponent).x, entity.get(DisplayComponent).y
             direction_x, direction_y = current_x + params[0], current_y + params[1]
-            print(current_x, current_y)
-            print(direction_x, direction_y)
             if not self.map[direction_x][direction_y].block_path:
                 entity.get(FovComponent).fov_recalculate = True
                 entity.get(DisplayComponent).x += params[0]

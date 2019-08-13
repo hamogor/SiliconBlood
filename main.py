@@ -58,8 +58,7 @@ class SiliconBlood:
             if self.player.get(ActionComponent).action == "quit":
                 self.quit = True
 
-            self.clock.tick(FPS)
-
+            #self.clock.tick(FPS)
 
 
 if __name__ == '__main__':

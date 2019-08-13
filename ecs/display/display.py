@@ -17,7 +17,6 @@ class DisplaySystem:
         self.camera = CameraSystem()
 
     def update(self, entities):
-
         for e in entities:
             if e.has(CameraComponent):
                 self.camera.update(e)

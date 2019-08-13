@@ -13,7 +13,6 @@ class InputSystem:
             if e.has(InputComponent):
 
                 for event in pygame.event.get():
-                    print(event)
                     if event.type == pygame.QUIT:
                         e.get(ActionComponent).action = "quit"
                     if event.type == pygame.KEYDOWN:
