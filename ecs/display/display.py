@@ -51,6 +51,6 @@ class DisplaySystem:
                                                  (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
 
         self.display.blit(self.surface, (0, 0))
-        pygame.display.flip()
+        pygame.display.update()
 
 

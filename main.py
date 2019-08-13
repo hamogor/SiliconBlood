@@ -12,6 +12,7 @@ from ecs.container import Container
 from settings import *
 from structs.actor import Actor
 import pygame
+import tcod as libtcod
 
 
 class SiliconBlood:
@@ -19,7 +20,7 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
-        pygame.key.set_repeat(200, 100)
+        pygame.key.set_repeat(200, 85)
         self.clock = pygame.time.Clock()
         self.quit = False
 
@@ -31,7 +32,7 @@ class SiliconBlood:
 
         self.action_system = ActionSystem(self.level_system.level)
 
-        self.player = Actor(DisplayComponent(5, 5, S_PLAYER),
+        self.player = Actor(DisplayComponent(5, 5, S_PLAYER, alpha=True),
                             InputComponent(),
                             ActionComponent(),
                             CameraComponent(0, 0),

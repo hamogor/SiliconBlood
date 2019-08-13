@@ -1,17 +1,18 @@
 from settings import *
 from ecs.input.input_component import InputComponent
 from ecs.action.action_component import ActionComponent
+import tcod as libtcod
 import pygame
 
 
 class InputSystem:
     def __init__(self):
         self.keys_pressed = []
+        self.key = libtcod.Key()
 
     def update(self, entities):
         for e in entities:
             if e.has(InputComponent):
-
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         e.get(ActionComponent).action = "quit"
