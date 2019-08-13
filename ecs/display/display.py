@@ -9,10 +9,11 @@ import tcod
 
 # TODO - Proper tile blitting (from pygame)
 # TODO - only reblit tile if its moved
+# TODO - Look into camera move reblit furthest tiles offset bug
 class DisplaySystem:
-    def __init__(self, level_map):
+    def __init__(self, level_map, display):
         self.surface = pygame.Surface((WIDTH, HEIGHT))
-        self.display = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.display = display
         self.map = level_map
         self.camera = CameraSystem()
 

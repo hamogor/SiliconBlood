@@ -21,13 +21,14 @@ class SiliconBlood:
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
         pygame.key.set_repeat(200, 85)
+        display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.quit = False
 
         self.level_system = LevelSystem()
 
         self.input_system = InputSystem()
-        self.display_system = DisplaySystem(self.level_system.level)
+        self.display_system = DisplaySystem(self.level_system.level, display)
         self.fov_system = FovSystem(self.level_system.level)
 
         self.action_system = ActionSystem(self.level_system.level)

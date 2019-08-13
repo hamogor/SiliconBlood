@@ -2,6 +2,7 @@ import tcod as libtcod
 from settings import GRIDWIDTH, GRIDHEIGHT, S_WALL, S_FLOOR
 import random
 from structs.tile import Tile
+from structs.assets import Assets
 
 
 class GameMap:
@@ -31,7 +32,7 @@ class GameMap:
         self.CROSS_ROOM_MIN_SIZE = 6
 
         self.cavern_chance = 0.40  # probability that the first room will be a cavern
-        self.CAVERN_MAX_SIZE = 35  # max height an width
+        self.CAVERN_MAX_SIZE = 16  # max height an width
 
         self.wall_probability = 0.45
         self.neighbors = 4
@@ -58,6 +59,8 @@ class GameMap:
                     self.tiles[x][y] = Tile(True, True, S_WALL)
                 else:
                     self.tiles[x][y] = Tile(False, False, S_FLOOR)
+
+        self.assign_tiles()
 
     def generate_level(self):
         
@@ -90,6 +93,40 @@ class GameMap:
             self.add_shortcuts(GRIDWIDTH, GRIDHEIGHT)
 
         return self.level
+
+    def assign_tiles(self):
+        # loop through map looking for the walls, then assign bitoperator
+        assets = Assets()
+        for x in range(len(self.tiles)):
+            for y in range(len(self.tiles[0])):
+
+                # check tile for wall status
+                tile_is_wall = self.check_for_wall(x, y)
+
+                if tile_is_wall:
+                    # create tile var
+                    tile_assignment = 0
+                    # add bitmask value
+                    if self.check_for_wall(x, y - 1):
+                        tile_assignment += 1
+                    if self.check_for_wall(x + 1, y):
+                        tile_assignment += 2
+                    if self.check_for_wall(x, y + 1):
+                        tile_assignment += 4
+                    if self.check_for_wall(x - 1, y):
+                        tile_assignment += 8
+                    self.tiles[x][y].sprite = assets.wall_dict[tile_assignment]
+
+    def check_for_wall(self, x, y):
+
+        if (x < 0 or
+                y < 0 or
+                x >= GRIDWIDTH or
+                y >= GRIDHEIGHT):
+            return False
+
+        else:
+            return self.tiles[x][y].block_path
 
     def generate_room(self):
         # select a room type to generate
