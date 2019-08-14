@@ -116,6 +116,7 @@ class GameMap:
                     if self.check_for_wall(x - 1, y):
                         tile_assignment += 8
                     self.tiles[x][y].sprite = assets.wall_dict[tile_assignment]
+                    self.tiles[x][y].assignment = tile_assignment
 
     def check_for_wall(self, x, y):
 

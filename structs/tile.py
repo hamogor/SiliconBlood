@@ -5,3 +5,4 @@ class Tile:
         self.block_sight = block_sight
         self.sprite = sprite
         self.explored = False
+        self.assignment = None

@@ -36,17 +36,17 @@ class Assets:
         self.wall = Tileset("assets/wall_bitmask.png")
         self.dark_wall = Tileset("assets/wall_dark_bitmask.png")
 
-        self.S_WALL_00 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
-        self.S_WALL_01 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
-        self.S_WALL_02 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_WALL_00 = self.wall.get_image('b', 1, 16, 16, (32, 32))[0], self.dark_wall.get_image('b', 1, 16, 16, (32, 32))[0]
+        self.S_WALL_01 = self.wall.get_image('d', 2, 16, 16, (32, 32))[0], self.dark_wall.get_image('d', 2, 16, 16, (32, 32))[0]
+        self.S_WALL_02 = self.wall.get_image('c', 3, 16, 16, (32, 32))[0], self.dark_wall.get_image('c', 3, 16, 16, (32, 32))[0]
         self.S_WALL_03 = self.wall.get_image('a', 2, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 2, 16, 16, (32, 32))[0]
-        self.S_WALL_04 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 2, 16, 16, (32, 32))[0]
+        self.S_WALL_04 = self.wall.get_image('d', 1, 16, 16, (32, 32))[0], self.dark_wall.get_image('d', 1, 16, 16, (32, 32))[0]
         self.S_WALL_05 = self.wall.get_image('d', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('d', 0, 16, 16, (32, 32))[0]
         self.S_WALL_06 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
         self.S_WALL_07 = self.wall.get_image('a', 1, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 1, 16, 16, (32, 32))[0]
-        self.S_WALL_08 = self.wall.get_image('a', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('a', 0, 16, 16, (32, 32))[0]
+        self.S_WALL_08 = self.wall.get_image('d', 3, 16, 16, (32, 32))[0], self.dark_wall.get_image('d', 3, 16, 16, (32, 32))[0]
         self.S_WALL_09 = self.wall.get_image('c', 2, 16, 16, (32, 32))[0], self.dark_wall.get_image('c', 2, 16, 16, (32, 32))[0]
-        self.S_WALL_10 = self.wall.get_image('b', 2, 16, 16, (32, 32))[0], self.dark_wall.get_image('b', 2, 16, 16, (32, 32))[0]
+        self.S_WALL_10 = self.wall.get_image('b', 3, 16, 16, (32, 32))[0], self.dark_wall.get_image('b', 3, 16, 16, (32, 32))[0]
         self.S_WALL_11 = self.wall.get_image('b', 2, 16, 16, (32, 32))[0], self.dark_wall.get_image('b', 2, 16, 16, (32, 32))[0]
         self.S_WALL_12 = self.wall.get_image('c', 0, 16, 16, (32, 32))[0], self.dark_wall.get_image('c', 0, 16, 16, (32, 32))[0]
         self.S_WALL_13 = self.wall.get_image('c', 1, 16, 16, (32, 32))[0], self.dark_wall.get_image('c', 1, 16, 16, (32, 32))[0]

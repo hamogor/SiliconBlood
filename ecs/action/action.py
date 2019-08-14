@@ -32,6 +32,22 @@ class ActionSystem:
                 entity.get(DisplayComponent).x += params[0]
                 entity.get(DisplayComponent).y += params[1]
                 entity.get(ActionComponent).action = "none"
+                print("north: {}".format(self.map[entity.get(DisplayComponent).x][
+                                             entity.get(DisplayComponent).y - 1].assignment))
+                print("south: {}".format(self.map[entity.get(DisplayComponent).x][
+                                             entity.get(DisplayComponent).y + 1].assignment))
+                print("west: {}".format(self.map[entity.get(DisplayComponent).x - 1][
+                                            entity.get(DisplayComponent).y].assignment))
+                print("east: {}".format(self.map[entity.get(DisplayComponent).x + 1][
+                                            entity.get(DisplayComponent).y].assignment))
+                print("NE: {}".format(self.map[entity.get(DisplayComponent).x + 1][
+                                          entity.get(DisplayComponent).y - 1].assignment))
+                print("NW: {}".format(self.map[entity.get(DisplayComponent).x - 1][
+                                          entity.get(DisplayComponent).y - 1].assignment))
+                print("SE: {}".format(self.map[entity.get(DisplayComponent).x + 1][
+                                          entity.get(DisplayComponent).y + 1].assignment))
+                print("SW: {}".format(self.map[entity.get(DisplayComponent).x - 1][
+                                          entity.get(DisplayComponent).y + 1].assignment))
 
     def quit(self, entity):
         entity.get(InputComponent).input = False
