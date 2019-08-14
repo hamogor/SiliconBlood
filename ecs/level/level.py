@@ -8,7 +8,8 @@ class LevelSystem:
         self.dungeon_level = 1
 
     def generate_next_level(self):
-        pass
+        self.dungeon_level += 1
+        self.__init__()
 
     def update(self, entities):
         if self.next_level:

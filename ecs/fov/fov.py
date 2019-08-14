@@ -3,6 +3,7 @@ from ecs.display.display_component import DisplayComponent
 from ecs.fov.fov_component import FovComponent
 import tcod
 
+
 # TODO - Play with some fov algorithms
 class FovSystem:
     def __init__(self, level):
@@ -13,6 +14,9 @@ class FovSystem:
                 tcod.map_set_properties(self.fov_map, x, y,
                                         not self.game_map[x][y].block_sight,
                                         not self.game_map[x][y].block_path)
+
+    def reset(self, level):
+        self.__init__(level)
 
     def update(self, entities):
         for e in entities:

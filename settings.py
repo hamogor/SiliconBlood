@@ -34,7 +34,7 @@ MOVE_NW = (pygame.K_KP7, pygame.K_y)
 MOVE_NE = (pygame.K_KP9, pygame.K_u)
 MOVE_SW = (pygame.K_KP1, pygame.K_b)
 MOVE_SE = (pygame.K_KP3, pygame.K_n)
-TAKE_STAIRS = pygame.K_COMMA
+TAKE_STAIRS = pygame.K_LESS
 QUIT = pygame.K_ESCAPE
 
 S_WALL = pygame.image.load("assets/wall.png"), pygame.image.load("assets/dark_wall.png")

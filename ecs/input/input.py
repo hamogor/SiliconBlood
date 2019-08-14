@@ -8,11 +8,9 @@ import pygame
 class InputSystem:
     def __init__(self):
         self.keys_pressed = []
-        self.key = libtcod.Key()
-        # If southeast check tile to right
-        # If southwest check tile to left
-        # If north west check tile to left
-        # If north east check tile to right
+
+    def reset(self):
+        self.__init__()
 
     def update(self, entities):
         for e in entities:
@@ -30,7 +28,6 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (0, -1))
                         elif event.key in MOVE_S:
                             e.get(ActionComponent).action = ("move", (0, 1))
-
                         elif event.key in MOVE_NW:
                             e.get(ActionComponent).action = ("move", (-1, -1))
                         elif event.key in MOVE_NE:
@@ -39,7 +36,8 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (-1, 1))
                         elif event.key in MOVE_SE:
                             e.get(ActionComponent).action = ("move", (1, 1))
-
+                        elif event.key in TAKE_STAIRS:
+                            e.get(ActionComponent).action = ("take_stairs", )
                         elif event.key == pygame.K_ESCAPE:
                             e.get(ActionComponent).action = "quit"
                     elif event.type == pygame.KEYUP:

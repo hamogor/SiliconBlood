@@ -9,9 +9,13 @@ class ActionSystem:
     def __init__(self, level):
         self.actions = {
             "move": self.move,
-            "quit": self.quit
+            "quit": self.quit,
+            "take_stairs": self.take_stairs
         }
         self.map = level
+
+    def reset(self, level):
+        self.__init__(level)
 
     def update(self, entities):
         for e in entities:
@@ -40,6 +44,13 @@ class ActionSystem:
                 entity.get(DisplayComponent).x += params[0]
                 entity.get(DisplayComponent).y += params[1]
                 entity.get(ActionComponent).action = "none"
+
+    def take_stairs(self, entity, params):
+        if entity.has(DisplayComponent):
+            entity_x = entity.get(DisplayComponent).x
+            entity_y = entity.get(DisplayComponent).y
+            #if self.map[entity_x][entity_y].name == "stairs":
+            #    self.level
 
     def quit(self, entity):
         entity.get(InputComponent).input = False

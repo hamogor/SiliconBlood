@@ -20,7 +20,7 @@ class SiliconBlood:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
-        pygame.key.set_repeat(200, 85)
+        pygame.key.set_repeat(200, 40)
         display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.quit = False
@@ -47,15 +47,19 @@ class SiliconBlood:
         self.container.add_system(self.input_system)
         self.container.add_entity(self.player)
 
+    def new_level(self):
+        for system in self.container.systems:
+            if getattr(system, "reset", None):
+                system.reset(self.level_system)
+
     def game_loop(self):
         self.container.update()
         while not self.quit:
             self.input_system.update(self.container.entities)
-            if self.player.get(InputComponent).input:
-                self.action_system.update(self.container.entities)
-                self.fov_system.update(self.container.entities)
-                self.display_system.update(self.container.entities)
-                self.level_system.update(self.container.entities)
+            self.action_system.update(self.container.entities)
+            self.fov_system.update(self.container.entities)
+            self.display_system.update(self.container.entities)
+            self.level_system.update(self.container.entities)
 
             if self.player.get(ActionComponent).action == "quit":
                 self.quit = True

@@ -12,6 +12,9 @@ class CameraSystem:
         self.map_width = GRIDWIDTH
         self.map_height = GRIDHEIGHT
 
+    def reset(self):
+        self.__init__()
+
     def apply(self, x, y):
         x = x + self.x
         y = y + self.y
