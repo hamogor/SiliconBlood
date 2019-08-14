@@ -1,5 +1,5 @@
 import tcod as libtcod
-from settings import GRIDWIDTH, GRIDHEIGHT, S_WALL, S_FLOOR
+from settings import GRIDWIDTH, GRIDHEIGHT, S_WALL, S_FLOOR, S_STAIRS
 import random
 from utils.map_utils import check_for_wall
 from structs.tile import Tile
@@ -45,6 +45,7 @@ class GameMap:
         self.place_room_attempts = 20
         self.max_tunnel_length = 12
 
+
         self.include_shortcuts = True
         self.shortcut_attempts = 500
         self.shortcut_length = 5
@@ -62,6 +63,17 @@ class GameMap:
                     self.tiles[x][y] = Tile(False, False, S_FLOOR)
 
         self.assign_tiles()
+        self.place_stairs()
+        self.tiles[5][5] = Tile(False, False, S_STAIRS, "stairs")
+
+    def place_stairs(self):
+        x = random.randint(0, GRIDWIDTH - 1)
+        y = random.randint(0, GRIDHEIGHT - 1)
+
+        if not self.tiles[x][y].block_path:
+            self.tiles[x][y] = Tile(False, False, S_STAIRS, "stairs")
+        else:
+            self.place_stairs()
 
     def generate_level(self):
         
@@ -92,7 +104,6 @@ class GameMap:
 
         if self.include_shortcuts:
             self.add_shortcuts(GRIDWIDTH, GRIDHEIGHT)
-
         return self.level
 
     def assign_tiles(self):
@@ -118,8 +129,6 @@ class GameMap:
                         tile_assignment += 8
                     self.tiles[x][y].sprite = assets.wall_dict[tile_assignment]
                     self.tiles[x][y].assignment = tile_assignment
-
-
 
     def generate_room(self):
         # select a room type to generate

@@ -20,7 +20,6 @@ class DisplaySystem:
         self.__init__(level_map, self.display)
 
     def update(self, entities):
-        print("update")
         for e in entities:
             if e.has(CameraComponent):
                 self.camera.update(e)
@@ -53,8 +52,8 @@ class DisplaySystem:
                         if e.has(DisplayComponent):
                             # This is broken
                             self.surface.blit(e.get(DisplayComponent).sprite,
-                                              ((e.get(DisplayComponent).x - self.camera.x),
-                                               (e.get(DisplayComponent).y - self.camera.y)))
+                                              ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
+                                               (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
 
         self.display.blit(self.surface, (0, 0))
         pygame.display.update()

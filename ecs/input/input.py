@@ -36,13 +36,10 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (-1, 1))
                         elif event.key in MOVE_SE:
                             e.get(ActionComponent).action = ("move", (1, 1))
-                        elif event.key in TAKE_STAIRS:
-                            e.get(ActionComponent).action = ("take_stairs", )
+                        elif event.key == TAKE_STAIRS:
+                            e.get(ActionComponent).action = "stairs"
                         elif event.key == pygame.K_ESCAPE:
                             e.get(ActionComponent).action = "quit"
                     elif event.type == pygame.KEYUP:
                         e.get(InputComponent).input = False
-                        e.get(ActionComponent).action = "none"
-
-
-
+                        e.get(ActionComponent).action = None

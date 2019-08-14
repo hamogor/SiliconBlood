@@ -8,11 +8,11 @@ from ecs.fov.fov_component import FovComponent
 class ActionSystem:
     def __init__(self, level):
         self.actions = {
+            "stairs": self.take_stairs,
             "move": self.move,
             "quit": self.quit,
-            "take_stairs": self.take_stairs
         }
-        self.map = level
+        self.level = level
 
     def reset(self, level):
         self.__init__(level)
@@ -26,6 +26,7 @@ class ActionSystem:
                         if self.actions[action[0]]:
                             self.actions[action[0]](e, action[1] if action[1] else None)
                     except KeyError:
+                        print("keyerror")
                         pass
 
     def move(self, entity, params):
@@ -34,23 +35,24 @@ class ActionSystem:
             current_x, current_y = entity.get(DisplayComponent).x, entity.get(DisplayComponent).y
             direction_x, direction_y = current_x + params[0], current_y + params[1]
             if params[0] and params[1] != 0:
-                if check_for_corner_movement(current_x, current_y, params, self.map):
+                if check_for_corner_movement(current_x, current_y, params, self.level.tiles):
                     can_move = True
-            elif not self.map[direction_x][direction_y].block_path:
+            elif not self.level.tiles[direction_x][direction_y].block_path:
                 can_move = True
 
             if can_move:
                 entity.get(FovComponent).fov_recalculate = True
                 entity.get(DisplayComponent).x += params[0]
                 entity.get(DisplayComponent).y += params[1]
-                entity.get(ActionComponent).action = "none"
+                entity.get(ActionComponent).action = None
 
-    def take_stairs(self, entity, params):
+    def take_stairs(self, entity):
+        print("called")
         if entity.has(DisplayComponent):
             entity_x = entity.get(DisplayComponent).x
             entity_y = entity.get(DisplayComponent).y
-            #if self.map[entity_x][entity_y].name == "stairs":
-            #    self.level
+            if self.level.tiles[entity_x][entity_y].name == "stairs":
+                self.level.generate_next_level()
 
     def quit(self, entity):
         entity.get(InputComponent).input = False
