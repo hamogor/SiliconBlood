@@ -9,6 +9,10 @@ class InputSystem:
     def __init__(self):
         self.keys_pressed = []
         self.key = libtcod.Key()
+        # If southeast check tile to right
+        # If southwest check tile to left
+        # If north west check tile to left
+        # If north east check tile to right
 
     def update(self, entities):
         for e in entities:

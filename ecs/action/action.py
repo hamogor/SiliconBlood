@@ -27,27 +27,13 @@ class ActionSystem:
         if entity.get(InputComponent).input:
             current_x, current_y = entity.get(DisplayComponent).x, entity.get(DisplayComponent).y
             direction_x, direction_y = current_x + params[0], current_y + params[1]
-            if not self.map[direction_x][direction_y].block_path:
+            if not self.map[direction_x][direction_y].block_path and not \
+                    self.map[current_x + direction_x][current_x + direction_x].block_path:
                 entity.get(FovComponent).fov_recalculate = True
                 entity.get(DisplayComponent).x += params[0]
                 entity.get(DisplayComponent).y += params[1]
                 entity.get(ActionComponent).action = "none"
-                print("north: {}".format(self.map[entity.get(DisplayComponent).x][
-                                             entity.get(DisplayComponent).y - 1].assignment))
-                print("south: {}".format(self.map[entity.get(DisplayComponent).x][
-                                             entity.get(DisplayComponent).y + 1].assignment))
-                print("west: {}".format(self.map[entity.get(DisplayComponent).x - 1][
-                                            entity.get(DisplayComponent).y].assignment))
-                print("east: {}".format(self.map[entity.get(DisplayComponent).x + 1][
-                                            entity.get(DisplayComponent).y].assignment))
-                print("NE: {}".format(self.map[entity.get(DisplayComponent).x + 1][
-                                          entity.get(DisplayComponent).y - 1].assignment))
-                print("NW: {}".format(self.map[entity.get(DisplayComponent).x - 1][
-                                          entity.get(DisplayComponent).y - 1].assignment))
-                print("SE: {}".format(self.map[entity.get(DisplayComponent).x + 1][
-                                          entity.get(DisplayComponent).y + 1].assignment))
-                print("SW: {}".format(self.map[entity.get(DisplayComponent).x - 1][
-                                          entity.get(DisplayComponent).y + 1].assignment))
+
 
     def quit(self, entity):
         entity.get(InputComponent).input = False
