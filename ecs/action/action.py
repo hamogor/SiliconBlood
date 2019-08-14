@@ -18,6 +18,7 @@ class ActionSystem:
         self.__init__(level)
 
     def update(self, entities):
+        # Send actions as dictionaries instead
         for e in entities:
             if e.has(ActionComponent):
                 if e.get(ActionComponent).action:
@@ -27,7 +28,10 @@ class ActionSystem:
                             self.actions[action[0]](e, action[1] if action[1] else None)
                     except KeyError:
                         print("keyerror")
+                        print(self.actions[action])
+                        print(self.actions[action[0]])
                         pass
+
 
     def move(self, entity, params):
         can_move = False
@@ -53,6 +57,7 @@ class ActionSystem:
             entity_y = entity.get(DisplayComponent).y
             if self.level.tiles[entity_x][entity_y].name == "stairs":
                 self.level.generate_next_level()
+        entity.get(ActionComponent).action = None
 
     def quit(self, entity):
         entity.get(InputComponent).input = False
