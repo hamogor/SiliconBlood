@@ -1,6 +1,7 @@
 import tcod as libtcod
 from settings import GRIDWIDTH, GRIDHEIGHT, S_WALL, S_FLOOR
 import random
+from utils.map_utils import check_for_wall
 from structs.tile import Tile
 from structs.assets import Assets
 
@@ -101,33 +102,24 @@ class GameMap:
             for y in range(len(self.tiles[0])):
 
                 # check tile for wall status
-                tile_is_wall = self.check_for_wall(x, y)
+                tile_is_wall = check_for_wall(x, y, self.tiles)
 
                 if tile_is_wall:
                     # create tile var
                     tile_assignment = 0
                     # add bitmask value
-                    if self.check_for_wall(x, y - 1):
+                    if check_for_wall(x, y - 1, self.tiles):
                         tile_assignment += 1
-                    if self.check_for_wall(x + 1, y):
+                    if check_for_wall(x + 1, y, self.tiles):
                         tile_assignment += 2
-                    if self.check_for_wall(x, y + 1):
+                    if check_for_wall(x, y + 1, self.tiles):
                         tile_assignment += 4
-                    if self.check_for_wall(x - 1, y):
+                    if check_for_wall(x - 1, y, self.tiles):
                         tile_assignment += 8
                     self.tiles[x][y].sprite = assets.wall_dict[tile_assignment]
                     self.tiles[x][y].assignment = tile_assignment
 
-    def check_for_wall(self, x, y):
 
-        if (x < 0 or
-                y < 0 or
-                x >= GRIDWIDTH or
-                y >= GRIDHEIGHT):
-            return False
-
-        else:
-            return self.tiles[x][y].block_path
 
     def generate_room(self):
         # select a room type to generate

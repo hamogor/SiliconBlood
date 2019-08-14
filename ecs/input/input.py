@@ -30,6 +30,7 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (0, -1))
                         elif event.key in MOVE_S:
                             e.get(ActionComponent).action = ("move", (0, 1))
+
                         elif event.key in MOVE_NW:
                             e.get(ActionComponent).action = ("move", (-1, -1))
                         elif event.key in MOVE_NE:
@@ -38,6 +39,7 @@ class InputSystem:
                             e.get(ActionComponent).action = ("move", (-1, 1))
                         elif event.key in MOVE_SE:
                             e.get(ActionComponent).action = ("move", (1, 1))
+
                         elif event.key == pygame.K_ESCAPE:
                             e.get(ActionComponent).action = "quit"
                     elif event.type == pygame.KEYUP:
