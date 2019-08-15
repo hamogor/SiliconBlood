@@ -24,14 +24,13 @@ class ActionSystem:
                 if e.get(ActionComponent).action:
                     try:
                         action = getattr(e.get(ActionComponent), "action")
+                        print(action)
                         if self.actions[action[0]]:
                             self.actions[action[0]](e, action[1] if action[1] else None)
                     except KeyError:
                         print("keyerror")
-                        print(self.actions[action])
-                        print(self.actions[action[0]])
-                        pass
 
+                        pass
 
     def move(self, entity, params):
         can_move = False
@@ -40,7 +39,8 @@ class ActionSystem:
             direction_x, direction_y = current_x + params[0], current_y + params[1]
             if params[0] and params[1] != 0:
                 if check_for_corner_movement(current_x, current_y, params, self.level.tiles):
-                    can_move = True
+                    if not self.level.tiles[direction_x][direction_y].block_path:
+                        can_move = True
             elif not self.level.tiles[direction_x][direction_y].block_path:
                 can_move = True
 

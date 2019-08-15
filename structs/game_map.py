@@ -45,7 +45,6 @@ class GameMap:
         self.place_room_attempts = 20
         self.max_tunnel_length = 12
 
-
         self.include_shortcuts = True
         self.shortcut_attempts = 500
         self.shortcut_length = 5
