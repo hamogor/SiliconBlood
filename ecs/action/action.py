@@ -28,8 +28,6 @@ class ActionSystem:
                         if self.actions[action[0]]:
                             self.actions[action[0]](e, action[1] if action[1] else None)
                     except KeyError:
-                        print("keyerror")
-
                         pass
 
     def move(self, entity, params):
@@ -49,29 +47,8 @@ class ActionSystem:
                 entity.get(DisplayComponent).x += params[0]
                 entity.get(DisplayComponent).y += params[1]
                 entity.get(ActionComponent).action = None
-                print("north: {}".format(
-                    self.level.tiles[entity.get(DisplayComponent).x][
-                        entity.get(DisplayComponent).y - 1].assignment))
-                print("south: {}".format(
-                    self.level.tiles[entity.get(DisplayComponent).x][
-                        entity.get(DisplayComponent).y + 1].assignment))
-                print("west: {}".format(
-                    self.level.tiles[entity.get(DisplayComponent).x - 1][
-                        entity.get(DisplayComponent).y].assignment))
-                print("east: {}".format(
-                    self.level.tiles[entity.get(DisplayComponent).x + 1][
-                        entity.get(DisplayComponent).y].assignment))
-                print("NE: {}".format(self.level.tiles[entity.get(DisplayComponent).x + 1][
-                                          entity.get(DisplayComponent).y - 1].assignment))
-                print("NW: {}".format(self.level.tiles[entity.get(DisplayComponent).x - 1][
-                                          entity.get(DisplayComponent).y - 1].assignment))
-                print("SE: {}".format(self.level.tiles[entity.get(DisplayComponent).x + 1][
-                                          entity.get(DisplayComponent).y + 1].assignment))
-                print("SW: {}".format(self.level.tiles[entity.get(DisplayComponent).x - 1][
-                                          entity.get(DisplayComponent).y + 1].assignment))
 
-    def take_stairs(self, entity):
-        print("called")
+    def take_stairs(self, entity, params=None):
         if entity.has(DisplayComponent):
             entity_x = entity.get(DisplayComponent).x
             entity_y = entity.get(DisplayComponent).y
@@ -79,8 +56,32 @@ class ActionSystem:
                 self.level.generate_next_level()
         entity.get(ActionComponent).action = None
 
-    def quit(self, entity):
+    def quit(self, entity, params=None):
         entity.get(InputComponent).input = False
+
+
+
+                # print("north: {}".format(
+                #     self.level.tiles[entity.get(DisplayComponent).x][
+                #         entity.get(DisplayComponent).y - 1].assignment))
+                # print("south: {}".format(
+                #     self.level.tiles[entity.get(DisplayComponent).x][
+                #         entity.get(DisplayComponent).y + 1].assignment))
+                # print("west: {}".format(
+                #     self.level.tiles[entity.get(DisplayComponent).x - 1][
+                #         entity.get(DisplayComponent).y].assignment))
+                # print("east: {}".format(
+                #     self.level.tiles[entity.get(DisplayComponent).x + 1][
+                #         entity.get(DisplayComponent).y].assignment))
+                # print("NE: {}".format(self.level.tiles[entity.get(DisplayComponent).x + 1][
+                #                           entity.get(DisplayComponent).y - 1].assignment))
+                # print("NW: {}".format(self.level.tiles[entity.get(DisplayComponent).x - 1][
+                #                           entity.get(DisplayComponent).y - 1].assignment))
+                # print("SE: {}".format(self.level.tiles[entity.get(DisplayComponent).x + 1][
+                #                           entity.get(DisplayComponent).y + 1].assignment))
+                # print("SW: {}".format(self.level.tiles[entity.get(DisplayComponent).x - 1][
+                #                           entity.get(DisplayComponent).y + 1].assignment))
+
 
 
 

@@ -50,7 +50,7 @@ class GameMap:
         self.shortcut_length = 5
         self.min_pathfinding_distance = 50
         self.rooms = []
-        self.map = self.generate_level()
+        self.map = MessyBSPTree().generateLevel(GRIDWIDTH, GRIDHEIGHT)
         self.tiles = [[Tile(True, True)
                        for _ in range(GRIDHEIGHT)]
                       for _ in range(GRIDWIDTH)]
@@ -570,3 +570,266 @@ class GameMap:
                 if room[x][y] == 0:
                     return True
         return False
+
+
+class MessyBSPTree:
+    '''
+    A Binary Space Partition connected by a severely weighted
+    drunkards walk algorithm.
+    Requires Leaf and Rect classes.
+    '''
+
+    def __init__(self):
+        self.level = []
+        self.room = None
+        self.MAX_LEAF_SIZE = 24
+        self.ROOM_MAX_SIZE = 15
+        self.ROOM_MIN_SIZE = 6
+        self.smoothEdges = True
+        self.smoothing = 1
+        self.filling = 3
+
+    def generateLevel(self, mapWidth, mapHeight):
+        # Creates an empty 2D array or clears existing array
+        self.mapWidth = mapWidth
+        self.mapHeight = mapHeight
+        self.level = [[1
+                       for y in range(mapHeight)]
+                      for x in range(mapWidth)]
+
+        self._leafs = []
+
+        rootLeaf = Leaf(0, 0, mapWidth, mapHeight)
+        self._leafs.append(rootLeaf)
+
+        splitSuccessfully = True
+        # loop through all leaves until they can no longer split successfully
+        while splitSuccessfully:
+            splitSuccessfully = False
+            for l in self._leafs:
+                if l.child_1 == None and l.child_2 == None:
+                    if ((l.width > self.MAX_LEAF_SIZE) or
+                            (l.height > self.MAX_LEAF_SIZE) or
+                            (random.random() > 0.8)):
+                        if l.splitLeaf():  # try to split the leaf
+                            self._leafs.append(l.child_1)
+                            self._leafs.append(l.child_2)
+                            splitSuccessfully = True
+
+        rootLeaf.createRooms(self)
+        self.cleanUpMap(mapWidth, mapHeight)
+
+        return self.level
+
+    def createRoom(self, room):
+        # set all tiles within a rectangle to 0
+        for x in range(room.x1 + 1, room.x2):
+            for y in range(room.y1 + 1, room.y2):
+                self.level[x][y] = 0
+
+    def createHall(self, room1, room2):
+        # run a heavily weighted random Walk
+        # from point2 to point1
+        drunkardX, drunkardY = room2.center()
+        goalX, goalY = room1.center()
+        while not (room1.x1 <= drunkardX <= room1.x2) or not (room1.y1 < drunkardY < room1.y2):  #
+            # ==== Choose Direction ====
+            north = 1.0
+            south = 1.0
+            east = 1.0
+            west = 1.0
+
+            weight = 1
+
+            # weight the random walk against edges
+            if drunkardX < goalX:  # drunkard is left of point1
+                east += weight
+            elif drunkardX > goalX:  # drunkard is right of point1
+                west += weight
+            if drunkardY < goalY:  # drunkard is above point1
+                south += weight
+            elif drunkardY > goalY:  # drunkard is below point1
+                north += weight
+
+            # normalize probabilities so they form a range from 0 to 1
+            total = north + south + east + west
+            north /= total
+            south /= total
+            east /= total
+            west /= total
+
+            # choose the direction
+            choice = random.random()
+            if 0 <= choice < north:
+                dx = 0
+                dy = -1
+            elif north <= choice < (north + south):
+                dx = 0
+                dy = 1
+            elif (north + south) <= choice < (north + south + east):
+                dx = 1
+                dy = 0
+            else:
+                dx = -1
+                dy = 0
+
+            # ==== Walk ====
+            # check colision at edges
+            if (0 < drunkardX + dx < self.mapWidth - 1) and (0 < drunkardY + dy < self.mapHeight - 1):
+                drunkardX += dx
+                drunkardY += dy
+                if self.level[int(drunkardX)][int(drunkardY)] == 1:
+                    self.level[int(drunkardX)][int(drunkardY)] = 0
+
+    def cleanUpMap(self, mapWidth, mapHeight):
+        if (self.smoothEdges):
+            for i in range(3):
+                # Look at each cell individually and check for smoothness
+                for x in range(1, mapWidth - 1):
+                    for y in range(1, mapHeight - 1):
+                        if (self.level[x][y] == 1) and (self.getAdjacentWallsSimple(x, y) <= self.smoothing):
+                            self.level[x][y] = 0
+
+                        if (self.level[x][y] == 0) and (self.getAdjacentWallsSimple(x, y) >= self.filling):
+                            self.level[x][y] = 1
+
+    def getAdjacentWallsSimple(self, x, y):  # finds the walls in four directions
+        wallCounter = 0
+        # print("(",x,",",y,") = ",self.level[x][y])
+        if self.level[x][y - 1] == 1:  # Check north
+            wallCounter += 1
+        if self.level[x][y + 1] == 1:  # Check south
+            wallCounter += 1
+        if self.level[x - 1][y] == 1:  # Check west
+            wallCounter += 1
+        if self.level[x + 1][y] == 1:  # Check east
+            wallCounter += 1
+
+        return wallCounter
+
+
+# ==== TinyKeep ====
+'''
+https://www.reddit.com/r/gamedev/comments/1dlwc4/procedural_dungeon_generation_algorithm_explained/
+and
+http://www.gamasutra.com/blogs/AAdonaac/20150903/252889/Procedural_Dungeon_Generation_Algorithm.php
+'''
+
+
+# ==== Helper Classes ====
+class Rect:  # used for the tunneling algorithm
+    def __init__(self, x, y, w, h):
+        self.x1 = x
+        self.y1 = y
+        self.x2 = x + w
+        self.y2 = y + h
+
+    def center(self):
+        centerX = (self.x1 + self.x2) / 2
+        centerY = (self.y1 + self.y2) / 2
+        return centerX, centerY
+
+    def intersect(self, other):
+        # returns true if this rectangle intersects with another one
+        return (self.x1 <= other.x2 and self.x2 >= other.x1 and
+                self.y1 <= other.y2 and self.y2 >= other.y1)
+
+
+class Leaf:  # used for the BSP tree algorithm
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.MIN_LEAF_SIZE = 10
+        self.child_1 = None
+        self.child_2 = None
+        self.room = None
+        self.hall = None
+
+    def splitLeaf(self):
+        # begin splitting the leaf into two children
+        if self.child_1 != None or self.child_2 != None:
+            return False  # This leaf has already been split
+
+        '''
+        ==== Determine the direction of the split ====
+        If the width of the leaf is >25% larger than the height,
+        split the leaf vertically.
+        If the height of the leaf is >25 larger than the width,
+        split the leaf horizontally.
+        Otherwise, choose the direction at random.
+        '''
+        splitHorizontally = random.choice([True, False])
+        if self.width / self.height >= 1.25:
+            splitHorizontally = False
+        elif self.height / self.width >= 1.25:
+            splitHorizontally = True
+
+        if splitHorizontally:
+            max = self.height - self.MIN_LEAF_SIZE
+        else:
+            max = self.width - self.MIN_LEAF_SIZE
+
+        if max <= self.MIN_LEAF_SIZE:
+            return False  # the leaf is too small to split further
+
+        split = random.randint(self.MIN_LEAF_SIZE, max)  # determine where to split the leaf
+
+        if splitHorizontally:
+            self.child_1 = Leaf(self.x, self.y, self.width, split)
+            self.child_2 = Leaf(self.x, self.y + split, self.width, self.height - split)
+        else:
+            self.child_1 = Leaf(self.x, self.y, split, self.height)
+            self.child_2 = Leaf(self.x + split, self.y, self.width - split, self.height)
+
+        return True
+
+    def createRooms(self, bspTree):
+        if self.child_1 or self.child_2:
+            # recursively search for children until you hit the end of the branch
+            if self.child_1:
+                self.child_1.createRooms(bspTree)
+            if self.child_2:
+                self.child_2.createRooms(bspTree)
+
+            if self.child_1 and self.child_2:
+                bspTree.createHall(self.child_1.getRoom(),
+                                   self.child_2.getRoom())
+
+        else:
+            # Create rooms in the end branches of the bsp tree
+            w = random.randint(bspTree.ROOM_MIN_SIZE, min(bspTree.ROOM_MAX_SIZE, self.width - 1))
+            h = random.randint(bspTree.ROOM_MIN_SIZE, min(bspTree.ROOM_MAX_SIZE, self.height - 1))
+            x = random.randint(self.x, self.x + (self.width - 1) - w)
+            y = random.randint(self.y, self.y + (self.height - 1) - h)
+            self.room = Rect(x, y, w, h)
+            bspTree.createRoom(self.room)
+
+    def getRoom(self):
+        if self.room:
+            return self.room
+
+        else:
+            if self.child_1:
+                self.room_1 = self.child_1.getRoom()
+            if self.child_2:
+                self.room_2 = self.child_2.getRoom()
+
+            if not self.child_1 and not self.child_2:
+                # neither room_1 nor room_2
+                return None
+
+            elif not self.room_2:
+                # room_1 and !room_2
+                return self.room_1
+
+            elif not self.room_1:
+                # room_2 and !room_1
+                return self.room_2
+
+            # If both room_1 and room_2 exist, pick one
+            elif random.random() < 0.5:
+                return self.room_1
+            else:
+                return self.room_2

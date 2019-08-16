@@ -24,8 +24,9 @@ class SiliconBlood:
         display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.quit = False
+        self.dungeon_level = 1
 
-        self.level_system = LevelSystem()
+        self.level_system = LevelSystem(self.dungeon_level)
 
         self.input_system = InputSystem()
         self.display_system = DisplaySystem(self.level_system.tiles, display)
@@ -33,7 +34,9 @@ class SiliconBlood:
 
         self.action_system = ActionSystem(self.level_system)
 
-        self.player = Actor(DisplayComponent(5, 5, S_PLAYER, alpha=True),
+        self.player = Actor(DisplayComponent(self.level_system.map.spawn[0],
+                                             self.level_system.map.spawn[1],
+                                             S_PLAYER, alpha=True),
                             InputComponent(),
                             ActionComponent(),
                             CameraComponent(0, 0),
@@ -60,8 +63,11 @@ class SiliconBlood:
             self.fov_system.update(self.container.entities)
             self.display_system.update(self.container.entities)
             self.level_system.update(self.container.entities)
+            if self.level_system.dungeon_level != self.dungeon_level:
+                self.new_level()
+                self.dungeon_level = self.level_system.dungeon_level
 
-            if self.player.get(ActionComponent).action == "quit":
+            if self.player.get(ActionComponent).action == ("quit", ""):
                 self.quit = True
 
 
