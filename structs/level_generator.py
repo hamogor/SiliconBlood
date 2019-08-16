@@ -10,8 +10,8 @@ class GameMap:
     def __init__(self):
         self.map_width = GRIDWIDTH
         self.map_height = GRIDHEIGHT
-        self.MAX_LEAF_SIZE = 24
-        self.ROOM_MAX_SIZE = 15
+        self.MAX_LEAF_SIZE = 14
+        self.ROOM_MAX_SIZE = 10
         self.ROOM_MIN_SIZE = 6
         self.smoothEdges = True
         self.smoothing = 1
@@ -77,7 +77,7 @@ class GameMap:
             # weight the random walk against edges
             if drunkard_x < goal_x:  # drunkard is left of point1
                 east += weight
-            elif drunkardX > goal_x:  # drunkard is right of point1
+            elif drunkard_x > goal_x:  # drunkard is right of point1
                 west += weight
             if drunkard_y < goal_y:  # drunkard is above point1
                 south += weight
@@ -150,7 +150,7 @@ class GameMap:
                 if tile_is_wall:
                     # create tile var
                     tile_assignment = 0
-                    # add bitmask value
+                    # add bit-mask value
                     if check_for_wall(x, y - 1, self.level):
                         tile_assignment += 1
                     if check_for_wall(x + 1, y, self.level):
