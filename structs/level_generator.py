@@ -10,8 +10,8 @@ class GameMap:
     def __init__(self):
         self.map_width = GRIDWIDTH
         self.map_height = GRIDHEIGHT
-        self.MAX_LEAF_SIZE = 14
-        self.ROOM_MAX_SIZE = 10
+        self.MAX_LEAF_SIZE = 24
+        self.ROOM_MAX_SIZE = 15
         self.ROOM_MIN_SIZE = 6
         self.smoothEdges = True
         self.smoothing = 1
@@ -36,7 +36,7 @@ class GameMap:
         while split_successfully:
             split_successfully = False
             for leaf in self._leafs:
-                if not leaf.child_1 and not leaf.child_2:
+                if leaf.child_1 is None and leaf.child_2 is None:
                     if ((leaf.width > self.MAX_LEAF_SIZE) or
                             (leaf.height > self.MAX_LEAF_SIZE) or
                             (random.random() > 0.8)):
@@ -111,7 +111,7 @@ class GameMap:
                     drunkard_x += dx
                     drunkard_y += dy
                     if self.level[int(drunkard_x)][int(drunkard_y)].block_path:
-                        self.level[int(drunkard_y)][int(drunkard_y)] = Tile(False, False, S_FLOOR)
+                        self.level[int(drunkard_x)][int(drunkard_y)] = Tile(False, False, S_FLOOR)
 
     def clean_up_map(self):
         if self.smoothEdges:
@@ -161,12 +161,6 @@ class GameMap:
                         tile_assignment += 8
                     self.level[x][y].sprite = assets.wall_dict[tile_assignment]
                     self.level[x][y].assignment = tile_assignment
-
-    def fill_fog(self):
-        for x in range(GRIDWIDTH):
-            for y in range(GRIDHEIGHT):
-                if not self.level[x][y].sprite:
-                    self.level[x][y] = Tile(True, True, S_FOG)
 
 
 class Rect:  # used for the tunneling algorithm
