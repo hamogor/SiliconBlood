@@ -62,17 +62,14 @@ class GameMap:
                     self.tiles[x][y] = Tile(False, False, S_FLOOR)
 
         self.assign_tiles()
-        self.place_stairs()
         self.tiles[5][5] = Tile(False, False, S_STAIRS, "stairs")
+        self.spawn = 5, 5
 
-    def place_stairs(self):
-        x = random.randint(0, GRIDWIDTH - 1)
-        y = random.randint(0, GRIDHEIGHT - 1)
-
-        if not self.tiles[x][y].block_path:
-            self.tiles[x][y] = Tile(False, False, S_STAIRS, "stairs")
-        else:
-            self.place_stairs()
+    def place_entrance_exit(self):
+        stairs_x, stairs_y = self._leafs[-1].room.center()
+        spawn_x, spawn_y = self._leafs[0].room.center()
+        self.level[stairs_x][stairs_y] = Tile(False, False, S_STAIRS, "stairs")
+        return spawn_x, spawn_y
 
     def generate_level(self):
         

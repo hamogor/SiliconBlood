@@ -11,9 +11,12 @@ class FovSystem:
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
         for y in range(GRIDWIDTH):
             for x in range(GRIDHEIGHT):
-                tcod.map_set_properties(self.fov_map, x, y,
-                                        not self.game_map[x][y].block_sight,
-                                        not self.game_map[x][y].block_path)
+                try:
+                    tcod.map_set_properties(self.fov_map, x, y,
+                                            not self.game_map[x][y].block_sight,
+                                            not self.game_map[x][y].block_path)
+                except IndexError:
+                    print(x, y)
 
     def reset(self, level):
         self.__init__(level)

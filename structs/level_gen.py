@@ -1,31 +1,29 @@
-from settings import GRIDWIDTH, GRIDHEIGHT, S_WALL, S_FLOOR, S_STAIRS
 import random
+from structs.assets import Assets
 from utils.map_utils import check_for_wall
 from structs.tile import Tile
-from structs.assets import Assets
+from settings import GRIDWIDTH, GRIDHEIGHT, S_STAIRS, S_FOG, S_WALL, S_FLOOR
 
 
-class GameMap:
+class LevelGenerator:
     def __init__(self):
         self.map_width = GRIDWIDTH
         self.map_height = GRIDHEIGHT
         self.MAX_LEAF_SIZE = 24
         self.ROOM_MAX_SIZE = 15
         self.ROOM_MIN_SIZE = 6
-        self.smoothEdges = True
+        self.smooth_edges = True
         self.smoothing = 1
         self.filling = 3
         self._leafs = []
         self.level = self.generate_level()
+        self.assign_tiles()
         self.spawn = self.place_entrance_exit()
 
-    def initialize_tiles(self):
-        return [[Tile(True, True)
-                 for _ in range(self.map_width)]
-                for _ in range(self.map_width)]
-
     def generate_level(self):
-        self.level = self.initialize_tiles()
+        self.level = [[Tile(True, True)
+                       for _ in range(self.map_width)]
+                      for _ in range(self.map_height)]
 
         root_leaf = Leaf(0, 0, self.map_width, self.map_height)
         self._leafs.append(root_leaf)
@@ -33,33 +31,32 @@ class GameMap:
         split_successfully = True
         while split_successfully:
             split_successfully = False
-            for leaf in self._leafs:
-                if leaf.child_1 is None and leaf.child_2 is None:
-                    if ((leaf.width > self.MAX_LEAF_SIZE) or
-                            (leaf.height > self.MAX_LEAF_SIZE) or
+            for l in self._leafs:
+                if l.child_1 is None and l.child_2 is None:
+                    if ((l.width > self.MAX_LEAF_SIZE) or
+                            (l.height > self.MAX_LEAF_SIZE) or
                             (random.random() > 0.8)):
-                        if leaf.split_leaf():
-                            self._leafs.append(leaf.child_1)
-                            self._leafs.append(leaf.child_2)
+                        if l.split_leaf():  # try to split the leaf
+                            self._leafs.append(l.child_1)
+                            self._leafs.append(l.child_2)
                             split_successfully = True
 
         root_leaf.create_rooms(self)
         self.clean_up_map()
         self.assign_tiles()
-
         return self.level
 
     def place_entrance_exit(self):
-        stairs_x, stairs_y = self._leafs[-1].room.center()
-        spawn_x, spawn_y = self._leafs[0].room.center()
-        self.level[stairs_x][stairs_y] = Tile(False, False, S_STAIRS, "stairs")
-        return spawn_x, spawn_y
+        print(self._leafs[0].get_room().center())
+        stairs_x, stairs_y = self._leafs[-1].get_room().center()
+        spawn_x, spawn_y = self._leafs[0].get_room().center()
+        self.level[int(stairs_x)][int(stairs_y)] = Tile(False, False, S_STAIRS, "stairs")
+        return int(spawn_x), int(spawn_y)
 
     def create_room(self, room):
-        # set all tiles within a rectangle to 0
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
-                self.level[x][y] = Tile(False, False, S_FLOOR)
+                self.level[x][y] = Tile(False, False)
 
     def create_hall(self, room1, room2):
         drunkard_x, drunkard_y = room2.center()
@@ -72,66 +69,63 @@ class GameMap:
 
             weight = 1
 
-            # weight the random walk against edges
-            if drunkard_x < goal_x:  # drunkard is left of point1
+            if drunkard_x < goal_x:
                 east += weight
-            elif drunkard_x > goal_x:  # drunkard is right of point1
+            elif drunkard_x > goal_x:
                 west += weight
-            if drunkard_y < goal_y:  # drunkard is above point1
+            elif drunkard_y < goal_y:
                 south += weight
-            elif drunkard_y > goal_y:  # drunkard is below point1
+            elif drunkard_y > goal_y:
                 north += weight
 
-                # normalize probabilities so they form a range from 0 to 1
-                total = north + south + east + west
-                north /= total
-                south /= total
-                east /= total
-                west /= total
+            total = north + south + east + west
+            north /= total
+            south /= total
+            east /= total
+            west /= total
 
-                # choose the direction
-                choice = random.random()
-                if 0 <= choice < north:
-                    dx = 0
-                    dy = -1
-                elif north <= choice < (north + south):
-                    dx = 0
-                    dy = 1
-                elif (north + south) <= choice < (north + south + east):
-                    dx = 1
-                    dy = 0
-                else:
-                    dx = -1
-                    dy = 0
+            choice = random.random()
+            if 0 <= choice < north:
+                dx = 0
+                dy = -1
+            elif north <= choice < (north + south):
+                dx = 0
+                dy = 1
+            elif (north + south) <= choice < (north + south + east):
+                dx = 1
+                dy = 0
+            else:
+                dx = -1
+                dy = 0
 
-                # check colision at edges
-                if (0 < drunkard_x + dx < self.map_width - 1) and (0 < drunkard_y + dy < self.map_height - 1):
-                    drunkard_x += dx
-                    drunkard_y += dy
-                    if self.level[int(drunkard_x)][int(drunkard_y)].block_path:
-                        self.level[int(drunkard_x)][int(drunkard_y)] = Tile(False, False, S_FLOOR)
+            if (0 < drunkard_x + dx < self.map_width - 1) and \
+               (0 < drunkard_y + dy < self.map_height - 1):
+                drunkard_x += dx
+                drunkard_y += dy
+                if self.level[int(drunkard_x)][int(drunkard_y)].block_path:
+                    self.level[int(drunkard_x)][int(drunkard_y)] = Tile(False, False)
 
     def clean_up_map(self):
-        if self.smoothEdges:
+        if self.smooth_edges:
             for i in range(3):
+                # Look at each cell individually and check for smoothness
                 for x in range(1, self.map_width - 1):
-                    for y in range(1, self.map_height - 2):
+                    for y in range(1, self.map_height - 1):
                         if self.level[x][y].block_path and (self.get_adjacent_walls_simple(x, y) <= self.smoothing):
-                            self.level[x][y] = Tile(False, False, S_FLOOR)
+                            self.level[x][y] = Tile(False, False)
 
                         if (not self.level[x][y].block_path) and (self.get_adjacent_walls_simple(x, y) >= self.filling):
-                            self.level[x][y] = Tile(True, True, S_WALL)
+                            self.level[x][y] = Tile(True, True)
 
     def get_adjacent_walls_simple(self, x, y):
         wall_counter = 0
-        # print("(",x,",",y,") = ",self.level[x][y])
-        if self.level[x][y - 1].block_path:  # Check north
+        if self.level[x][y - 1].block_path:
             wall_counter += 1
-        if self.level[x][y + 1].block_path:  # Check south
+        if self.level[x][y + 1].block_path:
             wall_counter += 1
-        if self.level[x - 1][y].block_path:  # Check west
+        if self.level[x - 1][y].block_path:
             wall_counter += 1
-        if self.level[x + 1][y].block_path:  # Check east
+        if self.level[x + 1][y].block_path:
             wall_counter += 1
 
         return wall_counter
@@ -159,9 +153,11 @@ class GameMap:
                         tile_assignment += 8
                     self.level[x][y].sprite = assets.wall_dict[tile_assignment]
                     self.level[x][y].assignment = tile_assignment
+                else:
+                    self.level[x][y].sprite = S_FLOOR
 
 
-class Rect:  # used for the tunneling algorithm
+class Rect:
     def __init__(self, x, y, w, h):
         self.x1 = x
         self.y1 = y
@@ -171,15 +167,14 @@ class Rect:  # used for the tunneling algorithm
     def center(self):
         center_x = (self.x1 + self.x2) / 2
         center_y = (self.y1 + self.y2) / 2
-        return int(center_x), int(center_y)
+        return center_x, center_y
 
-    def intersect(self, other):
-        # returns true if this rectangle intersects with another one
+    def interset(self, other):
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
 
 
-class Leaf:  # used for the BSP tree algorithm
+class Leaf:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -188,23 +183,14 @@ class Leaf:  # used for the BSP tree algorithm
         self.MIN_LEAF_SIZE = 10
         self.child_1 = None
         self.child_2 = None
-        self.room = None
-        self.room_1, self.room_2 = None, None
         self.hall = None
+        self.room = None  # Not in original may cause bugs
+        self.room_1, self.room_2 = None, None  # Not in original may cause bugs
 
     def split_leaf(self):
-        # begin splitting the leaf into two children
         if self.child_1 or self.child_2:
-            return False  # This leaf has already been split
+            return False
 
-        '''
-        ==== Determine the direction of the split ====
-        If the width of the leaf is >25% larger than the height,
-        split the leaf vertically.
-        If the height of the leaf is >25 larger than the width,
-        split the leaf horizontally.
-        Otherwise, choose the direction at random.
-        '''
         split_horizontally = random.choice([True, False])
         if self.width / self.height >= 1.25:
             split_horizontally = False
@@ -212,14 +198,14 @@ class Leaf:  # used for the BSP tree algorithm
             split_horizontally = True
 
         if split_horizontally:
-            _max = self.height - self.MIN_LEAF_SIZE
+            max_ = self.height - self.MIN_LEAF_SIZE
         else:
-            _max = self.width - self.MIN_LEAF_SIZE
+            max_ = self.width - self.MIN_LEAF_SIZE
 
-        if _max <= self.MIN_LEAF_SIZE:
-            return False  # the leaf is too small to split further
+        if max_ <= self.MIN_LEAF_SIZE:
+            return False
 
-        split = random.randint(self.MIN_LEAF_SIZE, _max)  # determine where to split the leaf
+        split = random.randint(self.MIN_LEAF_SIZE, max_)
 
         if split_horizontally:
             self.child_1 = Leaf(self.x, self.y, self.width, split)
@@ -232,7 +218,6 @@ class Leaf:  # used for the BSP tree algorithm
 
     def create_rooms(self, bsp_tree):
         if self.child_1 or self.child_2:
-            # recursively search for children until you hit the end of the branch
             if self.child_1:
                 self.child_1.create_rooms(bsp_tree)
             if self.child_2:
@@ -243,7 +228,6 @@ class Leaf:  # used for the BSP tree algorithm
                                      self.child_2.get_room())
 
         else:
-            # Create rooms in the end branches of the bsp tree
             w = random.randint(bsp_tree.ROOM_MIN_SIZE, min(bsp_tree.ROOM_MAX_SIZE, self.width - 1))
             h = random.randint(bsp_tree.ROOM_MIN_SIZE, min(bsp_tree.ROOM_MAX_SIZE, self.height - 1))
             x = random.randint(self.x, self.x + (self.width - 1) - w)
@@ -254,26 +238,19 @@ class Leaf:  # used for the BSP tree algorithm
     def get_room(self):
         if self.room:
             return self.room
-
         else:
-            if self.child_1:
+            if self.child_2:
                 self.room_1 = self.child_1.get_room()
             if self.child_2:
                 self.room_2 = self.child_2.get_room()
 
             if not self.child_1 and not self.child_2:
-                # neither room_1 nor room_2
                 return None
-
             elif not self.room_2:
-                # room_1 and !room_2
                 return self.room_1
-
             elif not self.room_1:
-                # room_2 and !room_1
                 return self.room_2
 
-            # If both room_1 and room_2 exist, pick one
             elif random.random() < 0.5:
                 return self.room_1
             else:
