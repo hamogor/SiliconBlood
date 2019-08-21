@@ -7,3 +7,4 @@ class Tile:
         self.explored = False
         self.assignment = None
         self.name = name
+        self.unexplorable = False

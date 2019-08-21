@@ -8,7 +8,6 @@ from ecs.level.level import LevelSystem
 from ecs.fov.fov import FovSystem
 from ecs.fov.fov_component import FovComponent
 from ecs.camera.camera_component import CameraComponent
-from ecs.transition.transition import TransitionSystem
 from ecs.container import Container
 from settings import *
 from structs.actor import Actor
@@ -50,6 +49,9 @@ class SiliconBlood:
         self.container.add_system(self.action_system)
         self.container.add_system(self.input_system)
         self.container.add_entity(self.player)
+        for entity in self.level_system.map.entities:
+            self.container.add_entity(entity)
+            print(entity)
 
     def new_level(self):
         self.display_system.transition = True

@@ -2,7 +2,9 @@ import random
 from structs.assets import Assets
 from utils.map_utils import check_for_wall
 from structs.tile import Tile
-from settings import GRIDWIDTH, GRIDHEIGHT, S_STAIRS, S_FOG, S_WALL, S_FLOOR
+from settings import GRIDWIDTH, GRIDHEIGHT, S_STAIRS, S_FLOOR, S_ENEMY
+from structs.actor import Actor
+from ecs.display.display_component import DisplayComponent
 
 
 class LevelGenerator:
@@ -10,7 +12,7 @@ class LevelGenerator:
         self.map_width = GRIDWIDTH
         self.map_height = GRIDHEIGHT
         self.MAX_LEAF_SIZE = 24
-        self.ROOM_MAX_SIZE = 15
+        self.ROOM_MAX_SIZE = 11
         self.ROOM_MIN_SIZE = 6
         self.smooth_edges = True
         self.smoothing = 1
@@ -19,6 +21,7 @@ class LevelGenerator:
         self.tiles = self.generate_level()
         self.assign_tiles()
         self.spawn = self.place_entrance_exit()
+        self.entities = self.place_entities()
 
     def generate_level(self):
         self.level = [[Tile(True, True)
@@ -46,11 +49,19 @@ class LevelGenerator:
         self.assign_tiles()
         return self.level
 
+    def place_entities(self):
+        entities = []
+        for i in range(len(self._leafs)):
+            room_center = self._leafs[i].get_room().center()
+            npc = Actor(DisplayComponent(room_center[0], room_center[1], S_ENEMY, alpha=True))
+            entities.append(npc)
+        return entities
+
     def place_entrance_exit(self):
         print(self._leafs[0].get_room().center())
         stairs_x, stairs_y = self._leafs[-1].get_room().center()
         spawn_x, spawn_y = self._leafs[0].get_room().center()
-        self.level[int(spawn_x)][int(spawn_y)] = Tile(False, False, S_STAIRS, "stairs")
+        #self.level[int(spawn_x)][int(spawn_y)] = Tile(False, False, S_STAIRS, "stairs")
         self.level[int(stairs_x)][int(stairs_y)] = Tile(False, False, S_STAIRS, "stairs")
         return int(spawn_x), int(spawn_y)
 
@@ -154,6 +165,8 @@ class LevelGenerator:
                         tile_assignment += 8
                     self.level[x][y].sprite = assets.wall_dict[tile_assignment]
                     self.level[x][y].assignment = tile_assignment
+                    if self.level[x][y].assignment == 15:
+                        self.level[x][y].unexplorable = True
                 else:
                     self.level[x][y].sprite = S_FLOOR
 
@@ -168,7 +181,7 @@ class Rect:
     def center(self):
         center_x = (self.x1 + self.x2) / 2
         center_y = (self.y1 + self.y2) / 2
-        return center_x, center_y
+        return int(center_x), int(center_y)
 
     def interset(self, other):
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and

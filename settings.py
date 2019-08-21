@@ -25,6 +25,7 @@ GREY = (120, 120, 120)
 BLUE = (0, 0, 255)
 
 S_PLAYER = pygame.image.load("assets/player.png")
+S_ENEMY = pygame.image.load("assets/Enemy.png")
 
 MOVE_N = (pygame.K_KP8, pygame.K_k, pygame.K_UP)
 MOVE_S = (pygame.K_KP2, pygame.K_j, pygame.K_DOWN)

@@ -46,15 +46,17 @@ class DisplaySystem:
                                     self.surface.blit(sprite[1], (put_x, put_y))
                                 else:
                                     self.surface.blit(sprite[1], (put_x, put_y))
+                            elif self.map[x][y].unexplorable and self.map[x][y].explored:
+                                self.surface.blit(sprite[1], (put_x, put_y))
                             else:
                                 self.surface.blit(S_FOG, (put_x, put_y))
                         except IndexError:
                             self.surface.blit(S_FOG, (put_x, put_y))
-                        if e.has(DisplayComponent):
-                            # This is broken
-                            self.surface.blit(e.get(DisplayComponent).sprite,
-                                              ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
-                                               (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
+            if e.has(DisplayComponent):
+                # This is broken
+                self.surface.blit(e.get(DisplayComponent).sprite,
+                                  ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
+                                   (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
 
         self.display.blit(self.surface, (0, 0))
         pygame.display.update()
