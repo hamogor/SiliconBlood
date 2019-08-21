@@ -20,23 +20,28 @@ class DisplaySystem:
     def reset(self, level_map):
         self.__init__(level_map, self.display)
 
-    def transition(self):
+    def fade_out(self):
         clock = pygame.time.Clock()
         fade = pygame.Surface((WIDTH, HEIGHT))
         fade.fill((0, 0, 0))
         fade.set_alpha(0)
         for i in range(255):
             fade.set_alpha(i)
+            #self.display.blit(self.surface, (0, 0))
             self.display.blit(fade, (0, 0))
             pygame.display.flip()
-            clock.tick(60)
+            clock.tick(120)
+
+        return fade
+
+    def fade_in(self, fade):
+        clock = pygame.time.Clock()
         for i in range(255):
             fade.set_alpha(255 - i)
+            self.display.blit(self.surface, (0, 0))
             self.display.blit(fade, (0, 0))
-            #self.display.blit(self.surface, (0, 0))
             pygame.display.flip()
-            clock.tick(60)
-
+            clock.tick(240)
 
     def update(self, entities):
         for e in entities:
