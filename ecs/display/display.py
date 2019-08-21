@@ -11,14 +11,15 @@ import time
 # TODO - Proper tile blitting (from pygame)
 # TODO - only reblit tile if its moved
 class DisplaySystem:
-    def __init__(self, level_map, display):
+    def __init__(self, level_map, display, player):
         self.surface = pygame.Surface((WIDTH, HEIGHT))
         self.display = display
         self.map = level_map.tiles
         self.camera = CameraSystem()
+        self.player = player
 
     def reset(self, level_map):
-        self.__init__(level_map, self.display)
+        self.__init__(level_map, self.display, self.player)
 
     def update(self, entities):
         for e in entities:
@@ -60,3 +61,5 @@ class DisplaySystem:
 
         self.display.blit(self.surface, (0, 0))
         pygame.display.update()
+
+

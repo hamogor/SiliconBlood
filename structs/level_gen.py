@@ -53,7 +53,7 @@ class LevelGenerator:
         entities = []
         for i in range(len(self._leafs)):
             room_center = self._leafs[i].get_room().center()
-            npc = Actor(DisplayComponent(room_center[0], room_center[1], S_ENEMY, alpha=True))
+            npc = Actor(DisplayComponent(room_center[0], room_center[1], S_ENEMY, alpha=True), name="npc")
             entities.append(npc)
         return entities
 

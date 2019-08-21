@@ -27,20 +27,20 @@ class SiliconBlood:
 
         self.level_system = LevelSystem(self.dungeon_level)
 
-        self.input_system = InputSystem()
-
-        self.display_system = DisplaySystem(self.level_system, self.display)
-        self.fov_system = FovSystem(self.level_system)
-
-        self.action_system = ActionSystem(self.level_system)
-
         self.player = Actor(DisplayComponent(self.level_system.map.spawn[0],
                                              self.level_system.map.spawn[1],
                                              S_PLAYER, alpha=True),
                             InputComponent(),
                             ActionComponent(),
                             CameraComponent(0, 0),
-                            FovComponent())
+                            FovComponent(),
+                            name="player")
+
+
+        self.input_system = InputSystem()
+        self.display_system = DisplaySystem(self.level_system, self.display, self.player)
+        self.fov_system = FovSystem(self.level_system)
+        self.action_system = ActionSystem(self.level_system)
 
         self.container = Container()
         self.container.add_system(self.level_system)
@@ -51,7 +51,6 @@ class SiliconBlood:
         self.container.add_entity(self.player)
         for entity in self.level_system.map.entities:
             self.container.add_entity(entity)
-            print(entity)
 
     def new_level(self):
         self.display_system.transition = True
