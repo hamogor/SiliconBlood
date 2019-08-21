@@ -9,12 +9,10 @@ from ecs.fov.fov import FovSystem
 from ecs.fov.fov_component import FovComponent
 from ecs.camera.camera_component import CameraComponent
 from ecs.transition.transition import TransitionSystem
-from ecs.transition.transition_component import TransitionComponent
 from ecs.container import Container
 from settings import *
 from structs.actor import Actor
 import pygame
-import time
 
 
 class SiliconBlood:
@@ -31,7 +29,7 @@ class SiliconBlood:
         self.level_system = LevelSystem(self.dungeon_level)
 
         self.input_system = InputSystem()
-        self.transition_system = TransitionSystem(self.display)
+
         self.display_system = DisplaySystem(self.level_system, self.display)
         self.fov_system = FovSystem(self.level_system)
 
@@ -43,8 +41,7 @@ class SiliconBlood:
                             InputComponent(),
                             ActionComponent(),
                             CameraComponent(0, 0),
-                            FovComponent(),
-                            TransitionComponent())
+                            FovComponent())
 
         self.container = Container()
         self.container.add_system(self.level_system)
@@ -52,11 +49,10 @@ class SiliconBlood:
         self.container.add_system(self.display_system)
         self.container.add_system(self.action_system)
         self.container.add_system(self.input_system)
-        self.container.add_system(self.transition_system)
         self.container.add_entity(self.player)
 
     def new_level(self):
-        self.transition_system.transition = True
+        self.display_system.transition = True
         for system in self.container.systems:
             if getattr(system, "reset", None):
                 system.reset(self.level_system)
@@ -65,8 +61,9 @@ class SiliconBlood:
         for x in range(GRIDWIDTH):
             for y in range(GRIDHEIGHT):
                 self.level_system.map.level[x][y].explored = False
-        pygame.display.flip()
+        # pygame.display.flip()
         self.container.update()
+        self.display_system.transition = False
 
     def game_loop(self):
         self.container.update()
@@ -74,7 +71,6 @@ class SiliconBlood:
             self.input_system.update(self.container.entities)
             self.action_system.update(self.container.entities)
             self.fov_system.update(self.container.entities)
-            self.transition_system.update(self.container.entities)
             self.display_system.update(self.container.entities)
             self.level_system.update(self.container.entities)
             if self.level_system.dungeon_level != self.dungeon_level:
@@ -83,6 +79,8 @@ class SiliconBlood:
 
             if self.player.get(ActionComponent).action == ("quit", ""):
                 self.quit = True
+
+            self.clock.tick(60)
 
 
 if __name__ == '__main__':
