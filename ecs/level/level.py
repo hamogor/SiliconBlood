@@ -11,7 +11,7 @@ class LevelSystem:
 
     def generate_next_level(self):
         self.dungeon_level += 1
-        self.__init__(dungeon_level=1)
+        self.__init__(dungeon_level=self.dungeon_level)
 
     def update(self, entities):
         if self.next_level:

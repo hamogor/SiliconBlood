@@ -7,7 +7,7 @@ import tcod
 # TODO - Play with some fov algorithms
 class FovSystem:
     def __init__(self, level):
-        self.game_map = level
+        self.game_map = level.tiles
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
         for y in range(GRIDWIDTH):
             for x in range(GRIDHEIGHT):

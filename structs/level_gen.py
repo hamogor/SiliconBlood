@@ -16,7 +16,7 @@ class LevelGenerator:
         self.smoothing = 1
         self.filling = 3
         self._leafs = []
-        self.level = self.generate_level()
+        self.tiles = self.generate_level()
         self.assign_tiles()
         self.spawn = self.place_entrance_exit()
 
@@ -50,6 +50,7 @@ class LevelGenerator:
         print(self._leafs[0].get_room().center())
         stairs_x, stairs_y = self._leafs[-1].get_room().center()
         spawn_x, spawn_y = self._leafs[0].get_room().center()
+        self.level[int(spawn_x)][int(spawn_y)] = Tile(False, False, S_STAIRS, "stairs")
         self.level[int(stairs_x)][int(stairs_y)] = Tile(False, False, S_STAIRS, "stairs")
         return int(spawn_x), int(spawn_y)
 

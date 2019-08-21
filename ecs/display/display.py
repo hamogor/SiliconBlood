@@ -5,6 +5,7 @@ from ecs.camera.camera import CameraSystem
 from settings import *
 import pygame
 import tcod
+import time
 
 
 # TODO - Proper tile blitting (from pygame)
@@ -13,11 +14,29 @@ class DisplaySystem:
     def __init__(self, level_map, display):
         self.surface = pygame.Surface((WIDTH, HEIGHT))
         self.display = display
-        self.map = level_map
+        self.map = level_map.tiles
         self.camera = CameraSystem()
 
     def reset(self, level_map):
         self.__init__(level_map, self.display)
+
+    def transition(self):
+        clock = pygame.time.Clock()
+        fade = pygame.Surface((WIDTH, HEIGHT))
+        fade.fill((0, 0, 0))
+        fade.set_alpha(0)
+        for i in range(255):
+            fade.set_alpha(i)
+            self.display.blit(fade, (0, 0))
+            pygame.display.flip()
+            clock.tick(60)
+        for i in range(255):
+            fade.set_alpha(255 - i)
+            self.display.blit(fade, (0, 0))
+            #self.display.blit(self.surface, (0, 0))
+            pygame.display.flip()
+            clock.tick(60)
+
 
     def update(self, entities):
         for e in entities:

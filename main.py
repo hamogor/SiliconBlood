@@ -12,7 +12,7 @@ from ecs.container import Container
 from settings import *
 from structs.actor import Actor
 import pygame
-import tcod as libtcod
+import time
 
 
 class SiliconBlood:
@@ -21,7 +21,7 @@ class SiliconBlood:
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(S_PLAYER)
         pygame.key.set_repeat(200, 40)
-        display = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.quit = False
         self.dungeon_level = 1
@@ -29,8 +29,8 @@ class SiliconBlood:
         self.level_system = LevelSystem(self.dungeon_level)
 
         self.input_system = InputSystem()
-        self.display_system = DisplaySystem(self.level_system.tiles, display)
-        self.fov_system = FovSystem(self.level_system.tiles)
+        self.display_system = DisplaySystem(self.level_system, self.display)
+        self.fov_system = FovSystem(self.level_system)
 
         self.action_system = ActionSystem(self.level_system)
 
@@ -54,6 +54,16 @@ class SiliconBlood:
         for system in self.container.systems:
             if getattr(system, "reset", None):
                 system.reset(self.level_system)
+        self.player.get(DisplayComponent).x, self.player.get(DisplayComponent).y = self.level_system.map.spawn
+        print(self.level_system.map.spawn)
+        for x in range(GRIDWIDTH):
+            for y in range(GRIDHEIGHT):
+                self.level_system.map.level[x][y].explored = False
+        pygame.display.flip()
+        #self.display_system.transition_out()
+        self.display_system.transition()
+        self.container.update()
+        #self.display_system.transition_in()
 
     def game_loop(self):
         self.container.update()

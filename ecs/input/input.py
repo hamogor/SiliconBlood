@@ -9,7 +9,7 @@ class InputSystem:
     def __init__(self):
         self.keys_pressed = []
 
-    def reset(self):
+    def reset(self, level):
         self.__init__()
 
     def update(self, entities):
