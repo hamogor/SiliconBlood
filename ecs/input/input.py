@@ -36,6 +36,7 @@ class InputSystem:
                             e.get(ActionComponent).action = "stairs"
                         elif event.key == pygame.K_ESCAPE:
                             e.get(ActionComponent).action = "quit"
+
                     elif event.type == pygame.KEYUP:
                         e.get(InputComponent).input = False
                         e.get(ActionComponent).action = None

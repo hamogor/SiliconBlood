@@ -11,6 +11,8 @@ from ecs.camera.camera import CameraSystem
 from ecs.camera.camera_component import CameraComponent
 from ecs.fov.fov import FovSystem
 from ecs.fov.fov_component import FovComponent
+from ecs.ai.ai import AiSystem
+from structs.game_states import GameStates
 from settings import *
 from ecs.container import Container
 import pygame
@@ -32,6 +34,7 @@ class SiliconBlood:
         self.fov_system = FovSystem(self.level_system.level)
         self.display_system = DisplaySystem(self.display, self.camera_system, self.level_system.level)
         self.action_system = ActionSystem(self.level_system.level)
+        self.ai_system = AiSystem(self.level_system.level)
         self.input_system = InputSystem()
         self.player = Player(DisplayComponent(S_PLAYER,
                                               self.level_system.map.spawn[0],
@@ -44,10 +47,12 @@ class SiliconBlood:
                              name="player")
 
         self.container = Container()
-        self.container.add_system(self.level_system)
         self.container.add_system(self.display_system)
+        self.container.add_system(self.level_system)
+        self.container.add_system(self.ai_system)
         self.container.add_system(self.fov_system)
         self.container.add_system(self.action_system)
+
         self.container.add_system(self.input_system)
         self.container.add_entity(self.player)
         for entity in self.level_system.map.entities:

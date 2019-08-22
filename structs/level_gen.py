@@ -5,6 +5,8 @@ from structs.tile import Tile
 from settings import GRIDWIDTH, GRIDHEIGHT, S_STAIRS, S_FLOOR, S_ENEMY
 from structs.actor import Actor
 from ecs.display.display_component import DisplayComponent
+from ecs.ai.ai_component import AiComponent
+from ecs.action.action_component import ActionComponent
 
 
 class LevelGenerator:
@@ -49,17 +51,25 @@ class LevelGenerator:
         self.assign_tiles()
         return self.level
 
-    def place_entities(self):
-        entities = []
-        for leaf in self._leafs[1:]:
-            if leaf == self._leafs[0]:
-                break
-            room_center = leaf.get_room().center()
-            npc = Actor(DisplayComponent(S_ENEMY, room_center[0], room_center[1], alpha=True),
-                        name="npc")
-            entities.append(npc)
+    #def place_entities(self):
+    #    entities = []
+    #    for i in range(len(self._leafs)):
+    #        room_center = self._leafs[i].get_room().center()
+    #        npc = Actor(DisplayComponent(S_ENEMY, room_center[0], room_center[1], alpha=True),
+    #                    AiComponent(),
+    #                    ActionComponent(),
+    #                    name="npc")
+    #        entities.append(npc)
+    #    return entities
 
-        return entities
+    def place_entities(self):
+        room_center = self._leafs[0].get_room().center()
+        npc = Actor(DisplayComponent(S_ENEMY, self.spawn[0], self.spawn[1], alpha=True),
+                    AiComponent(),
+                    ActionComponent(),
+                    name="npc")
+        return [npc]
+
 
     def place_entrance_exit(self):
         stairs_x, stairs_y = self._leafs[-1].get_room().center()
@@ -168,8 +178,6 @@ class LevelGenerator:
                         tile_assignment += 8
                     self.level[x][y].sprite = assets.wall_dict[tile_assignment]
                     self.level[x][y].assignment = tile_assignment
-                    if self.level[x][y].assignment == 15:
-                        self.level[x][y].unexplorable = True
                 else:
                     self.level[x][y].sprite = S_FLOOR
 

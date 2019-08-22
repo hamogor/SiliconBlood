@@ -5,3 +5,4 @@ class Tile:
         self.sprite = sprite
         self.explored = False
         self.name = name
+        self.assignment = None
