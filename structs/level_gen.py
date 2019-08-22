@@ -7,6 +7,7 @@ from structs.actor import Actor
 from ecs.display.display_component import DisplayComponent
 from ecs.ai.ai_component import AiComponent
 from ecs.action.action_component import ActionComponent
+from ecs.fov.fov_component import FovComponent
 
 
 class LevelGenerator:

@@ -19,6 +19,7 @@ class DisplaySystem:
             if e.has(CameraComponent):
                 self.camera.update(e)
             if e.has(FovComponent) and e.get(FovComponent).fov_recalculate:
+                self.surface.fill((0, 0, 0))
                 self.player_fov = e.get(FovComponent).fov_map
                 for cam_x in range(0, GRIDWIDTH):
                     for cam_y in range(0, GRIDHEIGHT):
@@ -37,13 +38,10 @@ class DisplaySystem:
                         except IndexError:
                             self.surface.blit(S_FOG, (put_x, put_y))
 
-            if e.name == "player":
-                self.player_fov = e.get(FovComponent).fov_map
             if tcod.map_is_in_fov(self.player_fov, e.get(DisplayComponent).x, e.get(DisplayComponent).y):
                 self.surface.blit(e.get(DisplayComponent).sprite,
                                   ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
                                    (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
-                print(e.name)
 
         self.display.blit(self.surface, (0, 0))
-        pygame.display.flip()
+        pygame.display.update()
