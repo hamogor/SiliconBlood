@@ -37,10 +37,13 @@ class DisplaySystem:
                         except IndexError:
                             self.surface.blit(S_FOG, (put_x, put_y))
 
+            if e.name == "player":
+                self.player_fov = e.get(FovComponent).fov_map
             if tcod.map_is_in_fov(self.player_fov, e.get(DisplayComponent).x, e.get(DisplayComponent).y):
                 self.surface.blit(e.get(DisplayComponent).sprite,
                                   ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
                                    (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
+                print(e.name)
 
         self.display.blit(self.surface, (0, 0))
         pygame.display.flip()
