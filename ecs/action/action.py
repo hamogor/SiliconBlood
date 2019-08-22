@@ -11,6 +11,7 @@ class ActionSystem:
             "quit": self.quit
         }
         self.level = level
+        self.turn_counter = 1
 
     def update(self, entities):
         for e in entities:
@@ -21,6 +22,8 @@ class ActionSystem:
                 else:
                     action = e.get(ActionComponent).action
                     self.actions[action](e, entities)
+
+                self.turn_counter += 1
 
     def move(self, entity, params, entities):
         can_move = False
@@ -43,7 +46,6 @@ class ActionSystem:
             entity.get(DisplayComponent).x += params[0]
             entity.get(DisplayComponent).y += params[1]
             entity.get(ActionComponent).action = None
-
 
     def take_stairs(self, entities):
         print("take stairs")

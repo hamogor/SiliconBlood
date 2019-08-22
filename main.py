@@ -3,6 +3,7 @@ from ecs.display.display_component import DisplayComponent
 from ecs.action.action import ActionSystem
 from ecs.action.action_component import ActionComponent
 from structs.actor import Actor
+from structs.player import Player
 from ecs.input.input import InputSystem
 from ecs.input.input_component import InputComponent
 from ecs.level.level import LevelSystem
@@ -32,12 +33,15 @@ class SiliconBlood:
         self.display_system = DisplaySystem(self.display, self.camera_system, self.level_system.level)
         self.action_system = ActionSystem(self.level_system.level)
         self.input_system = InputSystem()
-        self.player = Actor(DisplayComponent(S_PLAYER, 5, 5, alpha=True),
-                            ActionComponent(),
-                            InputComponent(),
-                            CameraComponent(),
-                            FovComponent(self.fov_system.fov_map),
-                            name="player")
+        self.player = Player(DisplayComponent(S_PLAYER,
+                                              self.level_system.map.spawn[0],
+                                              self.level_system.map.spawn[1],
+                                              alpha=True),
+                             ActionComponent(),
+                             InputComponent(),
+                             CameraComponent(),
+                             FovComponent(self.fov_system.fov_map),
+                             name="player")
 
         self.container = Container()
         self.container.add_system(self.level_system)

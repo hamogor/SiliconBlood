@@ -51,12 +51,14 @@ class LevelGenerator:
 
     def place_entities(self):
         entities = []
-        for i in range(len(self._leafs)):
-            room_center = self._leafs[i].get_room().center()
+        for leaf in self._leafs[1:]:
+            if leaf == self._leafs[0]:
+                break
+            room_center = leaf.get_room().center()
             npc = Actor(DisplayComponent(S_ENEMY, room_center[0], room_center[1], alpha=True),
                         name="npc")
-
             entities.append(npc)
+
         return entities
 
     def place_entrance_exit(self):
