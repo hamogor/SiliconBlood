@@ -4,10 +4,9 @@ from ecs.fov.fov_component import FovComponent
 import tcod
 
 
-# TODO - Play with some fov algorithms
 class FovSystem:
     def __init__(self, level):
-        self.game_map = level.tiles
+        self.game_map = level
         self.fov_map = tcod.map_new(GRIDWIDTH, GRIDHEIGHT)
         for y in range(GRIDWIDTH):
             for x in range(GRIDHEIGHT):
@@ -32,3 +31,4 @@ class FovSystem:
                     FOV_LIGHT_WALLS,
                     FOV_ALGORITHM)
                 e.get(FovComponent).fov_map = self.fov_map
+                e.get(FovComponent).fov_recalculate = False

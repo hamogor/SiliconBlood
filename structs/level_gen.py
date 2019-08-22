@@ -53,12 +53,13 @@ class LevelGenerator:
         entities = []
         for i in range(len(self._leafs)):
             room_center = self._leafs[i].get_room().center()
-            npc = Actor(DisplayComponent(room_center[0], room_center[1], S_ENEMY, alpha=True), name="npc")
+            npc = Actor(DisplayComponent(S_ENEMY, room_center[0], room_center[1], alpha=True),
+                        name="npc")
+
             entities.append(npc)
         return entities
 
     def place_entrance_exit(self):
-        print(self._leafs[0].get_room().center())
         stairs_x, stairs_y = self._leafs[-1].get_room().center()
         spawn_x, spawn_y = self._leafs[0].get_room().center()
         #self.level[int(spawn_x)][int(spawn_y)] = Tile(False, False, S_STAIRS, "stairs")

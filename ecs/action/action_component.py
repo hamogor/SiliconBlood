@@ -1,4 +1,3 @@
 class ActionComponent:
-    def __init__(self, action=None, params=None):
+    def __init__(self, action=None):
         self.action = action
-        self.action_params = params

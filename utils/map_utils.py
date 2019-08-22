@@ -1,4 +1,5 @@
 from settings import GRIDWIDTH, GRIDHEIGHT
+from ecs.display.display_component import DisplayComponent
 
 
 def check_for_wall(x, y, tiles):
@@ -17,4 +18,6 @@ def check_for_corner_movement(x, y, direction, tiles):
         return True
     else:
         return False
+
+
 

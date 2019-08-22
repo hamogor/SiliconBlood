@@ -1,11 +1,12 @@
 import pygame
+
 pygame.init()
+
 TITLE = "Silicon Blood"
 
 GRIDWIDTH, GRIDHEIGHT = 48, 48
 CAM_HEIGHT, CAM_WIDTH = 24, 24
 TILESIZE = 32
-
 WIDTH, HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h
 
 FOV_RADIUS = 10
@@ -14,15 +15,7 @@ FOV_ALGORITHM = 0
 
 FPS = 60
 
-PLAYER_SPEED = 100
-
-# define colors
-WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-GREY = (120, 120, 120)
-BLUE = (0, 0, 255)
 
 S_PLAYER = pygame.image.load("assets/player.png")
 S_ENEMY = pygame.image.load("assets/Enemy.png")
