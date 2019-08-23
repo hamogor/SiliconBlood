@@ -1,3 +1,6 @@
+import pygame
+
+
 class Tile:
     def __init__(self, block_path, block_sight, sprite=None, name=None):
         self.block_path = block_path

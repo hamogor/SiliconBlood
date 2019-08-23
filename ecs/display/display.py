@@ -13,6 +13,7 @@ class DisplaySystem:
         self.camera = camera
         self.level = level
         self.player_fov = None
+        self.current_frame = [[]]
 
     def update(self, entities):
         for e in entities:

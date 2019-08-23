@@ -50,9 +50,9 @@ class SiliconBlood:
 
         self.container.add_system(self.level_system)
         self.container.add_system(self.action_system)
+        self.container.add_system(self.ai_system)
         self.container.add_system(self.display_system)
         self.container.add_system(self.input_system)
-        self.container.add_system(self.ai_system)
         self.container.add_system(self.fov_system)
         self.container.add_entity(self.player)
         for entity in self.level_system.map.entities:
