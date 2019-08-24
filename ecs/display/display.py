@@ -46,3 +46,4 @@ class DisplaySystem:
 
         self.display.blit(self.surface, (0, 0))
         pygame.display.update()
+
