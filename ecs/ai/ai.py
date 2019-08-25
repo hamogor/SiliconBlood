@@ -25,9 +25,11 @@ class AiSystem:
         dx = self.player.get(DisplayComponent).x - entity.get(DisplayComponent).x
         dy = self.player.get(DisplayComponent).y - entity.get(DisplayComponent).y
         distance = math.sqrt(dx ** 2 + dy ** 2)
-
-        dx = int(round(dx / distance))
-        dy = int(round(dy / distance))
+        try:
+            dx = int(round(dx / distance))
+            dy = int(round(dy / distance))
+        except ZeroDivisionError:
+            pass
 
         entity.get(ActionComponent).action = {"move": (dx, dy)}
 

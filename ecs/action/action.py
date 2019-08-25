@@ -64,10 +64,10 @@ class ActionSystem:
     def move_towards(self):
         pass
 
-    def take_stairs(self, entities):
+    def take_stairs(self, entity, entities):
         print("take stairs")
         pass
 
-    def quit(self, entities):
+    def quit(self, entity, entities):
         print("quit")
         pass

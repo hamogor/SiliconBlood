@@ -39,8 +39,15 @@ class DisplaySystem:
                         except IndexError:
                             self.surface.blit(S_FOG, (put_x, put_y))
 
-            self.clear_entities(entities)
-            self.draw_entities(entities)
+            if e.has(DisplayComponent) and e.name != "player":
+                    self.draw_entity(e)
+            elif e.has(DisplayComponent) and e.name == "player" and e.has(FovComponent) and e.get(FovComponent).fov_map:
+                self.surface.blit(e.get(DisplayComponent).sprite,
+                                  ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
+                                   (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
+
+            #self.clear_entities(entities)
+            #self.draw_entities(entities)
         self.display.blit(self.surface, (0, 0))
         pygame.display.update()
 
@@ -51,9 +58,15 @@ class DisplaySystem:
                                   ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
                                    (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
 
+    def draw_entity(self, e):
+        if tcod.map_is_in_fov(self.player_fov, e.get(DisplayComponent).x, e.get(DisplayComponent).y):
+            self.surface.blit(e.get(DisplayComponent).sprite,
+                              ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
+                               (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
+
     def clear_entities(self, entities):
         for e in entities:
-            clear_rec = pygame.Surface((TILESIZE, TILESIZE))
+            clear_rec = pygame.Surface((TILESIZE, TILESIZE))#
             self.surface.blit(clear_rec,
                               ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
                                (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
