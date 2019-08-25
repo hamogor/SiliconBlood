@@ -1,7 +1,7 @@
 from ecs.display.display_component import DisplayComponent
 from ecs.camera.camera_component import CameraComponent
 from ecs.fov.fov_component import FovComponent
-from settings import WIDTH, HEIGHT, TILESIZE, GRIDHEIGHT, GRIDWIDTH, S_FOG
+from settings import WIDTH, HEIGHT, TILESIZE, GRIDHEIGHT, GRIDWIDTH, S_FOG, S_FLOOR
 import pygame
 import tcod
 
@@ -16,11 +16,11 @@ class DisplaySystem:
         self.current_frame = [[]]
 
     def update(self, entities):
+        #self.surface.fill((0, 0, 0))
         for e in entities:
             if e.has(CameraComponent):
                 self.camera.update(e)
             if e.has(FovComponent) and e.get(FovComponent).fov_recalculate:
-                self.surface.fill((0, 0, 0))
                 self.player_fov = e.get(FovComponent).fov_map
                 for cam_x in range(0, GRIDWIDTH):
                     for cam_y in range(0, GRIDHEIGHT):
@@ -39,11 +39,22 @@ class DisplaySystem:
                         except IndexError:
                             self.surface.blit(S_FOG, (put_x, put_y))
 
+            self.clear_entities(entities)
+            self.draw_entities(entities)
+        self.display.blit(self.surface, (0, 0))
+        pygame.display.update()
+
+    def draw_entities(self, entities):
+        for e in entities:
             if tcod.map_is_in_fov(self.player_fov, e.get(DisplayComponent).x, e.get(DisplayComponent).y):
                 self.surface.blit(e.get(DisplayComponent).sprite,
                                   ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
                                    (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
 
-        self.display.blit(self.surface, (0, 0))
-        pygame.display.update()
+    def clear_entities(self, entities):
+        for e in entities:
+            clear_rec = pygame.Surface((TILESIZE, TILESIZE))
+            self.surface.blit(clear_rec,
+                              ((e.get(DisplayComponent).x - self.camera.x) * TILESIZE,
+                               (e.get(DisplayComponent).y - self.camera.y) * TILESIZE))
 
