@@ -71,6 +71,8 @@ class SiliconBlood:
 
             self.clock.tick(FPS)
 
+            pygame.display.flip()
+
 
 
 if __name__ == '__main__':
