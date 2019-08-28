@@ -37,6 +37,7 @@ class ActionSystem:
                 self.turn_counter += 1
 
     def move(self, entity, params, entities):
+
         can_move = False
         current_x, current_y = entity.get(DisplayComponent).x, entity.get(DisplayComponent).y
         direction_x, direction_y = current_x + params[0], current_y + params[1]
@@ -51,8 +52,12 @@ class ActionSystem:
             can_move = True
 
         for e in entities:
-            if e.get(DisplayComponent).x == direction_x and e.get(DisplayComponent).y == direction_y:
+            if e.blocks and e.get(DisplayComponent).x == direction_x and e.get(DisplayComponent).y == direction_y:
                 can_move = False
+                print("cant move {}".format(e.name))
+
+        if entities[0].get(DisplayComponent).x == direction_x and entities[0].get(DisplayComponent).y == direction_y:
+            can_move = False
 
         if can_move:
             if entity.has(FovComponent):

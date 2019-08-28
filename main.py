@@ -48,14 +48,14 @@ class SiliconBlood:
 
         self.container = Container()
 
-        self.container.add_system(self.input_system)
         self.container.add_system(self.action_system)
-        self.container.add_system(self.level_system)
-
         self.container.add_system(self.ai_system)
+        self.container.add_system(self.input_system)
         self.container.add_system(self.display_system)
 
+        self.container.add_system(self.level_system)
         self.container.add_system(self.fov_system)
+
         self.container.add_entity(self.player)
         for entity in self.level_system.map.entities:
             self.container.add_entity(entity)
@@ -66,12 +66,12 @@ class SiliconBlood:
         while not self.quit:
             self.container.update()
 
+
             if self.player.get(ActionComponent).action == "quit":
                 self.quit = True
 
-            self.clock.tick(FPS)
-
             pygame.display.flip()
+            self.clock.tick(FPS)
 
 
 
