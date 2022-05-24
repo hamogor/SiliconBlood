@@ -1,5 +1,3 @@
-![title-splash](assets/blue.png)
-
 **Development Log**:
 - Initial Commit: 19th June 2019
 - Player Movement: 22nd June 2019
